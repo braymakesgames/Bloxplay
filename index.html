@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>BlockPlay</title>
 
 <style>
@@ -14,89 +12,95 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #10131a;
+  background: #111827;
   color: white;
 }
 
 header {
-  background: #181d27;
+  background: #1f2937;
   padding: 15px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
 .logo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
 }
 
 nav button {
-  background: #303847;
+  background: #374151;
   color: white;
   border: 0;
-  padding: 9px;
-  margin: 2px;
+  padding: 11px 15px;
   border-radius: 8px;
+  margin: 3px;
 }
 
-.page {
-  padding: 25px;
+nav button:active {
+  transform: scale(.96);
 }
 
-.hidden {
-  display: none;
-}
-
-.card {
-  background: #1b212c;
+main {
   padding: 20px;
-  border-radius: 15px;
-  margin-top: 15px;
+  max-width: 1000px;
+  margin: auto;
 }
 
-input {
-  width: 100%;
-  padding: 13px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: 1px solid #444;
-  background: #10131a;
-  color: white;
-}
-
-button {
-  cursor: pointer;
-}
-
-.primary {
-  background: #4da3ff;
-  color: white;
-  border: 0;
-  padding: 12px 18px;
-  border-radius: 8px;
-}
-
-.account {
-  background: #292f3b;
-  padding: 12px;
-  margin-top: 8px;
-  border-radius: 9px;
+.search {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
 }
 
-.account button {
-  background: #4da3ff;
-  color: white;
+.search input {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
   border: 0;
-  padding: 8px;
-  border-radius: 7px;
+  font-size: 16px;
 }
 
-.error {
-  color: #ff7070;
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.game {
+  background: #1f2937;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.game-icon {
+  font-size: 50px;
+}
+
+.game h3 {
+  margin-bottom: 5px;
+}
+
+.game p {
+  color: #9ca3af;
+}
+
+.play {
+  width: 100%;
+  padding: 12px;
+  background: #22c55e;
+  border: 0;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white;
+}
+
+.empty {
+  color: #9ca3af;
+  text-align: center;
+  padding: 30px;
 }
 </style>
 </head>
@@ -104,544 +108,189 @@ button {
 <body>
 
 <header>
+  <div class="logo">🧱 BlockPlay</div>
 
-<div class="logo">🧱 BlockPlay</div>
-
-<nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('accounts')">Accounts</button>
-<button onclick="showPage('avatar')">Avatar</button>
-<button onclick="showPage('games')">My Games</button>
-</nav>
-
+  <nav>
+    <button onclick="showHome()">Home</button>
+    <button onclick="showGames()">Games</button>
+    <button onclick="showAccounts()">Accounts</button>
+    <button onclick="showFriends()">Friends</button>
+  </nav>
 </header>
 
-<section id="home" class="page">
-
-<h1>Make. Play. Create.</h1>
-
-<p id="welcome">
-Welcome to BlockPlay!
-</p>
-
-<button class="primary" onclick="showPage('create')">
-Create Game
-</button>
-
-<div class="card">
-
-<h2>🎮 Featured Games</h2>
-
-<p>🏝️ Island Survival</p>
-<p>🏎️ Block Racers</p>
-<p>👻 Ghost Hunt</p>
-<p>💰 Coin Rush</p>
-<p>🏗️ Build City</p>
-
-</div>
-
-</section>
-
-
-<section id="accounts" class="page hidden">
-
-<div class="card">
-
-<h1>👤 Accounts</h1>
-
-<p id="current">
-No account selected.
-</p>
-
-<input
-id="username"
-maxlength="16"
-placeholder="Username"
->
-
-<p id="error" class="error"></p>
-
-<button
-class="primary"
-onclick="createAccount()">
-Create Account
-</button>
-
-<div id="accountList"></div>
-
-</div>
-
-</section>
-
-
-<section id="avatar" class="page hidden">
-
-<div class="card">
-
-<h1>🧍 Avatar</h1>
-
-<div style="font-size:100px;text-align:center;">
-🧍
-</div>
-
-<p>
-Your avatar will be saved to the account you're using.
-</p>
-
-</div>
-
-</section>
-
-
-<section id="create" class="page hidden">
-
-<div class="card">
-
-<h1>🎮 Create Game</h1>
-
-<input
-id="gameName"
-placeholder="Game name"
-maxlength="30"
->
-
-<button
-class="primary"
-onclick="createGame()">
-Create
-</button>
-
-</div>
-
-</section>
-
-
-<section id="games" class="page hidden">
-
-<div class="card">
-
-<h1>🎮 My Games</h1>
-
-<div id="myGames">
-No games yet.
-</div>
-
-</div>
-
-</section>
-
+<main id="app"></main>
 
 <script>
 
-let accounts =
-JSON.parse(
-localStorage.getItem("blockplayAccounts") || "{}"
-);
-
-let currentAccount =
-localStorage.getItem("blockplayCurrentAccount") || "";
-
-const blockedWords = [
-"badword",
-"admin",
-"moderator"
+const games = [
+  {
+    name: "Mystery Hunt",
+    icon: "🕵️",
+    description: "Find the hidden hunter and survive the round.",
+    tags: "mm2 mystery detective"
+  },
+  {
+    name: "Brain Grab",
+    icon: "🧠",
+    description: "Collect characters and bring them back to your base.",
+    tags: "sab collecting base"
+  },
+  {
+    name: "Island Survival",
+    icon: "🏝️",
+    description: "Survive on a dangerous block island.",
+    tags: "survival island"
+  },
+  {
+    name: "Block Racers",
+    icon: "🏎️",
+    description: "Race other players through blocky tracks.",
+    tags: "racing cars race"
+  },
+  {
+    name: "Ghost Hunt",
+    icon: "👻",
+    description: "Search the map and find mysterious ghosts.",
+    tags: "ghost hunt"
+  },
+  {
+    name: "Coin Rush",
+    icon: "🪙",
+    description: "Collect as many coins as possible.",
+    tags: "coins money simulator"
+  },
+  {
+    name: "Build City",
+    icon: "🏙️",
+    description: "Build your own block city.",
+    tags: "building city"
+  }
 ];
 
+function showHome() {
+  document.getElementById("app").innerHTML = `
+    <h1>Welcome to BlockPlay</h1>
+    <p>Make. Play. Create.</p>
 
-function save() {
+    <div class="search">
+      <input
+        id="searchInput"
+        placeholder="🔎 Search games..."
+        oninput="searchGames()"
+      >
+    </div>
 
-localStorage.setItem(
-"blockplayAccounts",
-JSON.stringify(accounts)
-);
+    <h2>Popular Games</h2>
 
-if (currentAccount) {
+    <div id="gameList" class="game-grid"></div>
+  `;
 
-localStorage.setItem(
-"blockplayCurrentAccount",
-currentAccount
-);
-
+  displayGames(games);
 }
 
+function showGames() {
+  document.getElementById("app").innerHTML = `
+    <h1>🎮 Games</h1>
+
+    <div class="search">
+      <input
+        id="searchInput"
+        placeholder="🔎 Search games..."
+        oninput="searchGames()"
+      >
+    </div>
+
+    <div id="gameList" class="game-grid"></div>
+  `;
+
+  displayGames(games);
 }
 
+function searchGames() {
+  const input = document.getElementById("searchInput");
 
-function showPage(page) {
+  if (!input) return;
 
-document
-.querySelectorAll(".page")
-.forEach(function(p) {
+  const search = input.value.toLowerCase().trim();
 
-p.classList.add("hidden");
+  const results = games.filter(game =>
+    game.name.toLowerCase().includes(search) ||
+    game.description.toLowerCase().includes(search) ||
+    game.tags.toLowerCase().includes(search)
+  );
 
-});
-
-document
-.getElementById(page)
-.classList.remove("hidden");
-
-if (page === "accounts") {
-updateAccounts();
+  displayGames(results);
 }
 
-if (page === "games") {
-updateGames();
+function displayGames(list) {
+
+  const container = document.getElementById("gameList");
+
+  if (!container) return;
+
+  if (list.length === 0) {
+    container.innerHTML = `
+      <div class="empty">
+        No games found.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = list.map(game => `
+    <div class="game">
+      <div class="game-icon">${game.icon}</div>
+
+      <h3>${game.name}</h3>
+
+      <p>${game.description}</p>
+
+      <button
+        class="play"
+        onclick="playGame('${game.name}')"
+      >
+        ▶ Play
+      </button>
+    </div>
+  `).join("");
 }
 
+function playGame(name) {
+  document.getElementById("app").innerHTML = `
+    <h1>🎮 ${name}</h1>
+
+    <div class="game">
+      <h2>Game loading...</h2>
+      <p>
+        The playable version of this game will be added next.
+      </p>
+
+      <button class="play" onclick="showGames()">
+        ← Back to Games
+      </button>
+    </div>
+  `;
 }
 
-
-function createAccount() {
-
-let input =
-document.getElementById("username");
-
-let error =
-document.getElementById("error");
-
-let name =
-input.value
-.trim()
-.replace(/[^a-zA-Z0-9_]/g, "");
-
-error.textContent = "";
-
-if (name.length < 3) {
-
-error.textContent =
-"Username must be at least 3 characters.";
-
-return;
-
+function showAccounts() {
+  document.getElementById("app").innerHTML = `
+    <h1>👤 Accounts</h1>
+    <p>Your account system is still connected.</p>
+  `;
 }
 
+function showFriends() {
+  document.getElementById("app").innerHTML = `
+    <h1>👥 Friends</h1>
 
-let lower =
-name.toLowerCase();
-
-for (let word of blockedWords) {
-
-if (lower.includes(word)) {
-
-error.textContent =
-"That username is not allowed.";
-
-return;
-
+    <div class="game">
+      <h2>Friends</h2>
+      <p>Friend requests and online players will be added here.</p>
+    </div>
+  `;
 }
 
-}
-
-
-if (accounts[name]) {
-
-error.textContent =
-"That account already exists.";
-
-return;
-
-}
-
-
-accounts[name] = {
-
-username: name,
-
-games: [],
-
-avatar: {
-
-skin: "#ffd2a6",
-
-shirt: "#4da3ff",
-
-pants: "#303030"
-
-}
-
-};
-
-
-currentAccount = name;
-
-save();
-
-input.value = "";
-
-updateAccounts();
-
-updateWelcome();
-
-}
-
-
-function switchAccount(name) {
-
-currentAccount = name;
-
-save();
-
-updateAccounts();
-
-updateWelcome();
-
-alert(
-"Switched to " + name
-);
-
-}
-
-
-function deleteAccount(name) {
-
-delete accounts[name];
-
-if (currentAccount === name) {
-
-let names =
-Object.keys(accounts);
-
-currentAccount =
-names.length > 0
-? names[0]
-: "";
-
-}
-
-save();
-
-updateAccounts();
-
-updateWelcome();
-
-}
-
-
-function updateAccounts() {
-
-let list =
-document.getElementById("accountList");
-
-let current =
-document.getElementById("current");
-
-if (currentAccount) {
-
-current.textContent =
-"Current account: " +
-currentAccount;
-
-} else {
-
-current.textContent =
-"No account selected.";
-
-}
-
-
-list.innerHTML = "";
-
-Object.keys(accounts)
-.forEach(function(name) {
-
-let div =
-document.createElement("div");
-
-div.className = "account";
-
-div.innerHTML =
-"<strong>👤 " +
-escapeHTML(name) +
-"</strong>";
-
-let buttons =
-document.createElement("div");
-
-let switchButton =
-document.createElement("button");
-
-switchButton.textContent =
-"Switch";
-
-switchButton.onclick =
-function() {
-
-switchAccount(name);
-
-};
-
-
-let deleteButton =
-document.createElement("button");
-
-deleteButton.textContent =
-"Delete";
-
-deleteButton.style.marginLeft =
-"5px";
-
-deleteButton.style.background =
-"#a33";
-
-deleteButton.onclick =
-function() {
-
-deleteAccount(name);
-
-};
-
-
-buttons.appendChild(
-switchButton
-);
-
-buttons.appendChild(
-deleteButton
-);
-
-div.appendChild(buttons);
-
-list.appendChild(div);
-
-});
-
-}
-
-
-function updateWelcome() {
-
-let welcome =
-document.getElementById("welcome");
-
-if (currentAccount) {
-
-welcome.textContent =
-"Welcome, " +
-currentAccount +
-"!";
-
-} else {
-
-welcome.textContent =
-"Welcome to BlockPlay!";
-
-}
-
-}
-
-
-function createGame() {
-
-if (!currentAccount) {
-
-alert(
-"Create an account first."
-);
-
-showPage("accounts");
-
-return;
-
-}
-
-
-let input =
-document.getElementById("gameName");
-
-let name =
-input.value.trim();
-
-if (!name) {
-
-alert(
-"Enter a game name."
-);
-
-return;
-
-}
-
-
-accounts[currentAccount]
-.games
-.push(name);
-
-save();
-
-input.value = "";
-
-updateGames();
-
-alert(
-"Game created!"
-);
-
-}
-
-
-function updateGames() {
-
-let box =
-document.getElementById("myGames");
-
-if (!currentAccount) {
-
-box.textContent =
-"Create an account first.";
-
-return;
-
-}
-
-
-let games =
-accounts[currentAccount].games;
-
-if (games.length === 0) {
-
-box.textContent =
-"No games yet.";
-
-return;
-
-}
-
-
-box.innerHTML = "";
-
-games.forEach(function(game) {
-
-let p =
-document.createElement("p");
-
-p.textContent =
-"🎮 " + game;
-
-box.appendChild(p);
-
-});
-
-}
-
-
-function escapeHTML(text) {
-
-return text
-.replaceAll("&", "&amp;")
-.replaceAll("<", "&lt;")
-.replaceAll(">", "&gt;")
-.replaceAll('"', "&quot;")
-.replaceAll("'", "&#039;");
-
-}
-
-
-updateAccounts();
-
-updateWelcome();
-
-updateGames();
+showHome();
 
 </script>
 
