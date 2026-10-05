@@ -1,398 +1,809 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BloxPlay</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BloxPlay</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+*{box-sizing:border-box}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f2f2;
-      color: #222;
-    }
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f2f2f2;
+ color:#222
+}
 
-    header {
-      background: #111;
-      color: white;
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+header{
+ background:#111;
+ color:white;
+ padding:14px 18px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ position:sticky;
+ top:0;
+ z-index:10;
+ gap:10px;
+ flex-wrap:wrap
+}
 
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
+.logo{
+ font-size:24px;
+ font-weight:bold
+}
 
-    nav button {
-      background: transparent;
-      color: white;
-      border: 0;
-      margin: 0 4px;
-      padding: 9px 10px;
-      font-size: 15px;
-      cursor: pointer;
-    }
+nav button{
+ background:transparent;
+ color:white;
+ border:0;
+ margin:0 3px;
+ padding:9px 10px;
+ font-size:15px;
+ cursor:pointer
+}
 
-    nav button:hover {
-      background: #333;
-      border-radius: 8px;
-    }
+nav button:hover{
+ background:#333;
+ border-radius:8px
+}
 
-    .bux {
-      background: #222;
-      padding: 8px 12px;
-      border-radius: 8px;
-      color: #ffd83d;
-      font-weight: bold;
-    }
+.bux{
+ background:#222;
+ padding:8px 12px;
+ border-radius:8px;
+ color:#ffd83d;
+ font-weight:bold
+}
 
-    main {
-      max-width: 1100px;
-      margin: auto;
-      padding: 25px 16px;
-    }
+main{
+ max-width:1100px;
+ margin:auto;
+ padding:25px 16px
+}
 
-    .hero {
-      background: linear-gradient(135deg, #202020, #444);
-      color: white;
-      padding: 35px;
-      border-radius: 16px;
-      margin-bottom: 25px;
-    }
+.page{display:none}
+.page.active{display:block}
 
-    .hero h1 {
-      margin-top: 0;
-      font-size: 38px;
-    }
+.hero{
+ background:linear-gradient(135deg,#202020,#444);
+ color:white;
+ padding:35px;
+ border-radius:16px;
+ margin-bottom:25px
+}
 
-    .hero p {
-      color: #ddd;
-    }
+.hero h1{
+ margin-top:0;
+ font-size:38px
+}
 
-    .search {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
+.hero p{color:#ddd}
 
-    h2 {
-      margin-top: 25px;
-    }
+.search{
+ width:100%;
+ padding:14px;
+ border:1px solid #ccc;
+ border-radius:10px;
+ font-size:16px;
+ margin-bottom:20px
+}
 
-    .games {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
+.games{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+ gap:16px
+}
 
-    .game {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 3px 12px rgba(0,0,0,.08);
-    }
+.game,.account-box{
+ background:white;
+ border-radius:14px;
+ padding:18px;
+ box-shadow:0 3px 12px rgba(0,0,0,.08);
+ margin-bottom:15px
+}
 
-    .game-icon {
-      height: 120px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #777, #222);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 45px;
-      margin-bottom: 12px;
-    }
+.game-icon{
+ height:120px;
+ border-radius:10px;
+ background:linear-gradient(135deg,#777,#222);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:45px;
+ margin-bottom:12px
+}
 
-    .game h3 {
-      margin: 5px 0;
-    }
+.game h3{margin:5px 0}
+.game p{color:#666}
 
-    .game p {
-      color: #666;
-    }
+.play,.account-btn{
+ width:100%;
+ padding:11px;
+ background:#111;
+ color:white;
+ border:0;
+ border-radius:8px;
+ font-weight:bold;
+ cursor:pointer;
+ margin-top:8px
+}
 
-    .play {
-      width: 100%;
-      padding: 11px;
-      background: #111;
-      color: white;
-      border: 0;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.play:hover,.account-btn:hover{
+ background:#333
+}
 
-    .play:hover {
-      background: #333;
-    }
+input{
+ padding:12px;
+ width:100%;
+ border:1px solid #ccc;
+ border-radius:8px;
+ margin:6px 0;
+ font-size:16px
+}
 
-    .page {
-      display: none;
-    }
+.account-card{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ background:#f5f5f5;
+ padding:12px;
+ border-radius:9px;
+ margin:8px 0;
+ gap:10px
+}
 
-    .page.active {
-      display: block;
-    }
+.account-card button{
+ background:#111;
+ color:white;
+ border:0;
+ border-radius:7px;
+ padding:8px 12px
+}
 
-    footer {
-      text-align: center;
-      color: #777;
-      padding: 30px;
-    }
+.status{
+ padding:12px;
+ border-radius:8px;
+ background:#eee;
+ margin-bottom:15px
+}
 
-    @media (max-width: 700px) {
-      header {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
+.logout{
+ background:#c62828!important
+}
 
-      nav {
-        width: 100%;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
+footer{
+ text-align:center;
+ color:#777;
+ padding:30px
+}
 
-      .hero h1 {
-        font-size: 30px;
-      }
-    }
-  </style>
+@media(max-width:700px){
+ .hero h1{font-size:30px}
+ nav{
+  width:100%;
+  overflow-x:auto;
+  white-space:nowrap
+ }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">🧱 BloxPlay</div>
 
-  <nav>
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('games')">Games</button>
-    <button onclick="showPage('accounts')">Accounts</button>
-    <button onclick="showPage('friends')">Friends</button>
-  </nav>
+<div class="logo">🧱 BloxPlay</div>
 
-  <div class="bux">
-    💰 <span id="bux">0</span> BloxBux
-  </div>
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('games')">Games</button>
+<button onclick="showPage('accounts')">Accounts</button>
+<button onclick="showPage('friends')">Friends</button>
+</nav>
+
+<div class="bux">
+💰 <span id="bux">0</span> BloxBux
+</div>
+
 </header>
+
 
 <main>
 
-  <section id="home" class="page active">
+<!-- HOME -->
 
-    <div class="hero">
-      <h1>Welcome to BloxPlay</h1>
-      <p>Play games, make friends, create experiences, and earn BloxBux.</p>
-    </div>
+<section id="home" class="page active">
 
-    <input
-      class="search"
-      id="homeSearch"
-      placeholder="Search games..."
-      oninput="searchGames('homeSearch','homeGames')"
-    >
+<div class="hero">
+<h1>Welcome to BloxPlay</h1>
+<p>Play games, make friends, create experiences, and earn BloxBux.</p>
+</div>
 
-    <h2>🔥 Popular Games</h2>
+<input
+class="search"
+id="homeSearch"
+placeholder="Search games..."
+oninput="searchGames('homeSearch','homeGames')"
+>
 
-    <div id="homeGames" class="games"></div>
+<h2>🔥 Popular Games</h2>
 
-  </section>
+<div id="homeGames" class="games"></div>
 
-
-  <section id="games" class="page">
-
-    <h1>Games</h1>
-
-    <input
-      class="search"
-      id="gameSearch"
-      placeholder="Search games..."
-      oninput="searchGames('gameSearch','allGames')"
-    >
-
-    <div id="allGames" class="games"></div>
-
-  </section>
+</section>
 
 
-  <section id="accounts" class="page">
+<!-- GAMES -->
 
-    <h1>Accounts</h1>
+<section id="games" class="page">
 
-    <div class="game">
-      <h2>BloxPlay Accounts</h2>
-      <p>Up to 5 accounts can be used on this device.</p>
-      <button class="play" onclick="createAccount()">
-        Create Account
-      </button>
-    </div>
+<h1>Games</h1>
 
-  </section>
+<input
+class="search"
+id="gameSearch"
+placeholder="Search games..."
+oninput="searchGames('gameSearch','allGames')"
+>
+
+<div id="allGames" class="games"></div>
+
+</section>
 
 
-  <section id="friends" class="page">
+<!-- ACCOUNTS -->
 
-    <h1>Friends</h1>
+<section id="accounts" class="page">
 
-    <div class="game">
-      <h2>👥 Friends</h2>
-      <p>Your friends list will be added in the next step.</p>
-    </div>
+<h1>Accounts</h1>
 
-  </section>
+<div id="accountStatus" class="status"></div>
+
+
+<div class="account-box">
+
+<h2>Create Account</h2>
+
+<input
+id="newUsername"
+placeholder="Username"
+maxlength="20"
+>
+
+<input
+id="newPassword"
+type="password"
+placeholder="Password"
+>
+
+<button class="account-btn" onclick="createAccount()">
+Create Account
+</button>
+
+</div>
+
+
+<div class="account-box">
+
+<h2>Login</h2>
+
+<input
+id="loginUsername"
+placeholder="Username"
+>
+
+<input
+id="loginPassword"
+type="password"
+placeholder="Password"
+>
+
+<button class="account-btn" onclick="login()">
+Login
+</button>
+
+</div>
+
+
+<div class="account-box">
+
+<h2>Your Accounts</h2>
+
+<div id="accountList"></div>
+
+</div>
+
+</section>
+
+
+<!-- FRIENDS -->
+
+<section id="friends" class="page">
+
+<h1>Friends</h1>
+
+<div class="game">
+
+<h2>👥 Friends</h2>
+
+<p>
+The friends system will be connected to the BloxPlay server later.
+</p>
+
+</div>
+
+</section>
 
 </main>
 
+
 <footer>
-  BloxPlay © 2026
+BloxPlay © 2026
 </footer>
 
 
 <script>
 
 const games = [
-  {
-    name: "Mystery Hunt",
-    icon: "🔪",
-    description: "A 3D mystery game with secret roles and rounds."
-  },
-  {
-    name: "Brain Grab",
-    icon: "🧠",
-    description: "Collect strange creatures and build your collection."
-  },
-  {
-    name: "Island Survival",
-    icon: "🏝️",
-    description: "Survive events and explore a mysterious island."
-  },
-  {
-    name: "Block Racers",
-    icon: "🏎️",
-    description: "Race against other players on crazy tracks."
-  },
-  {
-    name: "Ghost Hunt",
-    icon: "👻",
-    description: "Explore spooky locations and find hidden clues."
-  },
-  {
-    name: "Coin Rush",
-    icon: "💰",
-    description: "Collect coins and become the richest player."
-  },
-  {
-    name: "Build City",
-    icon: "🏙️",
-    description: "Build and expand your own city."
-  },
-  {
-    name: "Farm Life",
-    icon: "🌾",
-    description: "Grow crops, sell them, and expand your farm."
-  },
-  {
-    name: "Pet World",
-    icon: "🐾",
-    description: "Collect pets and explore a huge world."
-  },
-  {
-    name: "Factory Tycoon",
-    icon: "🏭",
-    description: "Build your factory and become a business owner."
-  }
+
+{
+name:"Mystery Hunt",
+icon:"🔪",
+description:"A 3D mystery game with secret roles and rounds."
+},
+
+{
+name:"Brain Grab",
+icon:"🧠",
+description:"Collect strange creatures and build your collection."
+},
+
+{
+name:"Island Survival",
+icon:"🏝️",
+description:"Survive events and explore a mysterious island."
+},
+
+{
+name:"Block Racers",
+icon:"🏎️",
+description:"Race against other players on crazy tracks."
+},
+
+{
+name:"Ghost Hunt",
+icon:"👻",
+description:"Explore spooky locations and find hidden clues."
+},
+
+{
+name:"Coin Rush",
+icon:"💰",
+description:"Collect coins and become the richest player."
+},
+
+{
+name:"Build City",
+icon:"🏙️",
+description:"Build and expand your own city."
+},
+
+{
+name:"Farm Life",
+icon:"🌾",
+description:"Grow crops, sell them, and expand your farm."
+},
+
+{
+name:"Pet World",
+icon:"🐾",
+description:"Collect pets and explore a huge world."
+},
+
+{
+name:"Factory Tycoon",
+icon:"🏭",
+description:"Build your factory and become a business owner."
+}
+
 ];
 
 
-function showPage(pageName) {
+/* ACCOUNT STORAGE */
 
-  document.querySelectorAll(".page").forEach(page => {
-    page.classList.remove("active");
-  });
+let accounts =
+JSON.parse(localStorage.getItem("bloxplayAccounts") || "[]");
 
-  document.getElementById(pageName).classList.add("active");
-
-}
+let currentUsername =
+localStorage.getItem("bloxplayCurrent") || "";
 
 
-function renderGames(searchText, containerId) {
+/* PAGE SYSTEM */
 
-  const container = document.getElementById(containerId);
+function showPage(pageName){
 
-  const filtered = games.filter(game =>
-    game.name.toLowerCase().includes(searchText.toLowerCase())
-  );
+ document.querySelectorAll(".page").forEach(page=>{
+  page.classList.remove("active");
+ });
 
-  container.innerHTML = "";
+ document.getElementById(pageName).classList.add("active");
 
-  filtered.forEach((game, index) => {
-
-    const card = document.createElement("div");
-
-    card.className = "game";
-
-    card.innerHTML = `
-      <div class="game-icon">${game.icon}</div>
-
-      <h3>${game.name}</h3>
-
-      <p>${game.description}</p>
-
-      <button class="play" onclick="playGame(${index})">
-        ▶ Play
-      </button>
-    `;
-
-    container.appendChild(card);
-
-  });
+ if(pageName==="accounts"){
+  renderAccounts();
+ }
 
 }
 
 
-function searchGames(inputId, containerId) {
+/* GAMES */
 
-  const search = document.getElementById(inputId).value;
+function renderGames(searchText,containerId){
 
-  renderGames(search, containerId);
+ const container=document.getElementById(containerId);
+
+ const filtered=games.filter(game=>
+  game.name.toLowerCase().includes(searchText.toLowerCase())
+ );
+
+ container.innerHTML="";
+
+ filtered.forEach((game,index)=>{
+
+  const card=document.createElement("div");
+
+  card.className="game";
+
+  card.innerHTML=`
+
+  <div class="game-icon">${game.icon}</div>
+
+  <h3>${game.name}</h3>
+
+  <p>${game.description}</p>
+
+  <button class="play" onclick="playGame(${index})">
+  ▶ Play
+  </button>
+
+  `;
+
+  container.appendChild(card);
+
+ });
 
 }
 
 
-function playGame(index) {
+function searchGames(inputId,containerId){
 
-  const game = games[index];
+ const search=document.getElementById(inputId).value;
 
-  alert(game.name + " is being built!");
+ renderGames(search,containerId);
+
+}
+
+
+function playGame(index){
+
+ alert(
+  games[index].name+
+  " is being built!"
+ );
 
 }
 
 
-function createAccount() {
+/* ACCOUNT CREATION */
 
-  alert(
-    "Account creation will be added in Step 2."
-  );
+function createAccount(){
+
+ const username=
+ document.getElementById("newUsername").value.trim();
+
+ const password=
+ document.getElementById("newPassword").value;
+
+
+ if(username.length<3){
+
+  alert("Username must be at least 3 characters.");
+
+  return;
+ }
+
+
+ if(password.length<6){
+
+  alert("Password must be at least 6 characters.");
+
+  return;
+ }
+
+
+ if(accounts.length>=5){
+
+  alert("You can only have 5 BloxPlay accounts on this device.");
+
+  return;
+ }
+
+
+ const exists=accounts.some(account=>
+  account.username.toLowerCase()===username.toLowerCase()
+ );
+
+
+ if(exists){
+
+  alert("That username already exists.");
+
+  return;
+ }
+
+
+ const badWords=[
+  "admin",
+  "owner",
+  "moderator",
+  "fuck",
+  "shit",
+  "bitch"
+ ];
+
+
+ if(badWords.some(word=>
+  username.toLowerCase().includes(word)
+ )){
+
+  alert("That username is not allowed.");
+
+  return;
+ }
+
+
+ const newAccount={
+
+  username:username,
+
+  password:password,
+
+  bloxBux:0,
+
+  friends:[]
+
+ };
+
+
+ accounts.push(newAccount);
+
+ saveAccounts();
+
+ currentUsername=username;
+
+ localStorage.setItem(
+  "bloxplayCurrent",
+  currentUsername
+ );
+
+ document.getElementById("newUsername").value="";
+ document.getElementById("newPassword").value="";
+
+ renderAccounts();
+
+ updateBux();
+
+ alert("Account created!");
 
 }
 
+
+/* LOGIN */
+
+function login(){
+
+ const username=
+ document.getElementById("loginUsername").value.trim();
+
+ const password=
+ document.getElementById("loginPassword").value;
+
+
+ const account=accounts.find(a=>
+  a.username.toLowerCase()===username.toLowerCase()
+  &&
+  a.password===password
+ );
+
+
+ if(!account){
+
+  alert("Incorrect username or password.");
+
+  return;
+ }
+
+
+ currentUsername=account.username;
+
+ localStorage.setItem(
+  "bloxplayCurrent",
+  currentUsername
+ );
+
+ document.getElementById("loginUsername").value="";
+ document.getElementById("loginPassword").value="";
+
+ renderAccounts();
+
+ updateBux();
+
+ alert("Logged in as "+currentUsername+"!");
+
+}
+
+
+/* SWITCH ACCOUNT */
+
+function switchAccount(username){
+
+ const account=accounts.find(a=>
+  a.username===username
+ );
+
+ if(!account)return;
+
+ currentUsername=username;
+
+ localStorage.setItem(
+  "bloxplayCurrent",
+  username
+ );
+
+ renderAccounts();
+
+ updateBux();
+
+}
+
+
+/* LOGOUT */
+
+function logout(){
+
+ currentUsername="";
+
+ localStorage.removeItem("bloxplayCurrent");
+
+ renderAccounts();
+
+ updateBux();
+
+}
+
+
+/* ACCOUNT DISPLAY */
+
+function renderAccounts(){
+
+ const status=
+ document.getElementById("accountStatus");
+
+ const list=
+ document.getElementById("accountList");
+
+
+ if(currentUsername){
+
+  status.innerHTML=
+  "🟢 Logged in as <b>"+
+  currentUsername+
+  "</b>";
+
+ }else{
+
+  status.innerHTML=
+  "🔴 You are not logged in.";
+
+ }
+
+
+ list.innerHTML="";
+
+
+ accounts.forEach(account=>{
+
+  const div=document.createElement("div");
+
+  div.className="account-card";
+
+  div.innerHTML=`
+
+  <span>
+  👤 <b>${account.username}</b>
+  </span>
+
+  <span>
+
+  <button onclick="switchAccount('${account.username}')">
+  Switch
+  </button>
+
+  </span>
+
+  `;
+
+  list.appendChild(div);
+
+ });
+
+
+ if(currentUsername){
+
+  const logoutButton=
+  document.createElement("button");
+
+  logoutButton.className="account-btn logout";
+
+  logoutButton.innerText="Log Out";
+
+  logoutButton.onclick=logout;
+
+  list.appendChild(logoutButton);
+
+ }
+
+}
+
+
+/* BLOXBUX */
+
+function updateBux(){
+
+ const display=
+ document.getElementById("bux");
+
+ if(!currentUsername){
+
+  display.innerText="0";
+
+  return;
+ }
+
+
+ const account=accounts.find(a=>
+  a.username===currentUsername
+ );
+
+ if(account){
+
+  display.innerText=account.bloxBux;
+
+ }
+
+}
+
+
+function saveAccounts(){
+
+ localStorage.setItem(
+  "bloxplayAccounts",
+  JSON.stringify(accounts)
+ );
+
+}
+
+
+/* START */
 
 renderGames("", "homeGames");
+
 renderGames("", "allGames");
+
+renderAccounts();
+
+updateBux();
 
 </script>
 
