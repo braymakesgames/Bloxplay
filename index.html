@@ -1,1710 +1,1342 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>BlockPlay</title>
 
 <style>
-*{
- box-sizing:border-box;
- -webkit-tap-highlight-color:transparent;
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-html,body{
- margin:0;
- padding:0;
- width:100%;
- min-height:100%;
- font-family:Arial,sans-serif;
- background:#10131a;
- color:white;
- touch-action:manipulation;
- -webkit-text-size-adjust:100%;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  font-family: Arial, sans-serif;
+  background: #10131a;
+  color: white;
+  touch-action: manipulation;
+  overscroll-behavior: none;
 }
 
-body{
- overflow-x:hidden;
+button, input {
+  font: inherit;
 }
 
-button{
- border:0;
- cursor:pointer;
- touch-action:manipulation;
+button {
+  cursor: pointer;
+  border: 0;
 }
 
-header{
- height:64px;
- background:#171b24;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 15px;
- position:sticky;
- top:0;
- z-index:50;
+.hidden {
+  display: none !important;
 }
 
-.logo{
- font-size:22px;
- font-weight:bold;
+#app {
+  min-height: 100vh;
 }
 
-.logo span{
- color:#00aaff;
+/* HEADER */
+
+header {
+  height: 65px;
+  background: #171b24;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #292f3d;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
-nav{
- display:flex;
- gap:2px;
+.logo {
+  font-size: 23px;
+  font-weight: bold;
 }
 
-nav button{
- background:none;
- color:white;
- padding:9px 7px;
- font-size:13px;
+.logo span {
+  color: #4da3ff;
 }
 
-.page{
- max-width:1100px;
- margin:auto;
- padding:20px;
+.headerButtons {
+  display: flex;
+  gap: 7px;
 }
 
-.hero{
- background:linear-gradient(135deg,#1261a0,#171b3a);
- border-radius:20px;
- padding:30px 22px;
- margin-bottom:25px;
+.headerButtons button {
+  background: #242a37;
+  color: white;
+  padding: 9px 12px;
+  border-radius: 9px;
 }
 
-.hero h1{
- font-size:40px;
- margin:0 0 8px;
+.headerButtons button:active {
+  transform: scale(.96);
 }
 
-.hero p{
- color:#d8e5ef;
+/* PAGES */
+
+.page {
+  padding: 25px;
+  max-width: 1100px;
+  margin: auto;
 }
 
-.primary{
- background:#00aaff;
- color:white;
- padding:13px 20px;
- border-radius:10px;
- font-size:16px;
- font-weight:bold;
+.hero {
+  background: linear-gradient(135deg, #1d2940, #18202d);
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 25px;
 }
 
-.games{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
- gap:16px;
+.hero h1 {
+  font-size: 42px;
+  margin: 0 0 8px;
 }
 
-.game{
- background:#191e28;
- border:1px solid #2c3442;
- border-radius:15px;
- overflow:hidden;
+.hero p {
+  color: #b8c0cf;
 }
 
-.thumbnail{
- height:130px;
- display:flex;
- justify-content:center;
- align-items:center;
- font-size:58px;
+.primary {
+  background: #4da3ff;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-weight: bold;
 }
 
-.t1{background:linear-gradient(#58d1ff,#0876b9)}
-.t2{background:linear-gradient(#555,#111)}
-.t3{background:linear-gradient(#41286a,#090510)}
-.t4{background:linear-gradient(#9b6a00,#241600)}
-.t5{background:linear-gradient(#65b8e8,#28384b)}
+/* GAMES */
 
-.gameInfo{
- padding:14px;
+.gamesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
 }
 
-.gameInfo h3{
- margin:0 0 7px;
+.gameCard {
+  background: #191e28;
+  border: 1px solid #292f3d;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
-.gameInfo p{
- color:#aeb7c5;
+.gameImage {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 55px;
+  background: linear-gradient(135deg, #30445e, #18202b);
 }
 
-.play{
- width:100%;
- padding:12px;
- background:#00aaff;
- color:white;
- border-radius:8px;
- font-weight:bold;
+.gameInfo {
+  padding: 13px;
 }
 
-.panel{
- background:#191e28;
- border:1px solid #2c3442;
- border-radius:16px;
- padding:20px;
+.gameInfo h3 {
+  margin: 0 0 8px;
 }
 
-input{
- width:100%;
- padding:14px;
- margin:8px 0 18px;
- background:#0f131a;
- color:white;
- border:1px solid #394353;
- border-radius:8px;
- font-size:16px;
+.playButton {
+  background: #4da3ff;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.choices{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:10px;
+/* ACCOUNT */
+
+.accountBox {
+  max-width: 500px;
+  margin: 30px auto;
+  background: #191e28;
+  border: 1px solid #292f3d;
+  padding: 25px;
+  border-radius: 18px;
 }
 
-.choice{
- background:#252c38;
- color:white;
- padding:13px;
- border-radius:9px;
- border:2px solid transparent;
+.accountBox h2 {
+  margin-top: 0;
 }
 
-.choice.selected{
- border-color:#00aaff;
+.accountInput {
+  width: 100%;
+  padding: 13px;
+  border-radius: 9px;
+  border: 1px solid #3a4252;
+  background: #10131a;
+  color: white;
+  margin-bottom: 12px;
+  outline: none;
 }
 
-.avatarPreview{
- width:180px;
- height:240px;
- margin:auto;
- display:flex;
- flex-direction:column;
- align-items:center;
- position:relative;
+.accountInput:focus {
+  border-color: #4da3ff;
 }
 
-.head{
- width:80px;
- height:80px;
- margin-top:25px;
- border-radius:8px;
+.error {
+  color: #ff7070;
+  min-height: 22px;
+  margin-bottom: 8px;
 }
 
-.body{
- width:105px;
- height:85px;
- margin-top:5px;
- border-radius:7px;
+.accountList {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.legs{
- display:flex;
- gap:10px;
- margin-top:5px;
+.accountItem {
+  background: #242a37;
+  padding: 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.leg{
- width:42px;
- height:70px;
- border-radius:6px;
+.accountName {
+  font-weight: bold;
 }
 
-.hat{
- position:absolute;
- width:100px;
- height:25px;
- top:10px;
- border-radius:7px;
+.accountActions {
+  display: flex;
+  gap: 6px;
 }
 
-.savedGame{
- background:#202631;
- border-radius:10px;
- padding:15px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:10px;
+.smallButton {
+  background: #343c4c;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 8px;
 }
 
-.savedGame button{
- background:#00aaff;
- color:white;
- padding:10px 14px;
- border-radius:7px;
+.deleteButton {
+  background: #9e3944;
+}
+
+/* AVATAR */
+
+.avatarPreview {
+  width: 160px;
+  height: 160px;
+  background: #242a37;
+  border-radius: 18px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 80px;
 }
 
 /* GAME */
 
-#gameScreen{
- display:none;
- position:fixed;
- inset:0;
- z-index:999;
- background:#75c9ee;
- overflow:hidden;
- touch-action:none;
+#gameScreen {
+  position: fixed;
+  inset: 0;
+  background: #111;
+  z-index: 100;
+  overflow: hidden;
 }
 
-#gameCanvas{
- position:absolute;
- inset:0;
- width:100%;
- height:100%;
- touch-action:none;
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
-.gameHUD{
- position:absolute;
- top:14px;
- left:14px;
- right:14px;
- display:flex;
- justify-content:space-between;
- z-index:10;
- pointer-events:none;
+#gameTop {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  pointer-events: none;
 }
 
-.gameTitle{
- background:#0009;
- padding:10px 14px;
- border-radius:9px;
+#gameTop > * {
+  pointer-events: auto;
 }
 
-.exitButton{
- pointer-events:auto;
- background:#e53935;
- color:white;
- padding:11px 15px;
- border-radius:8px;
- font-weight:bold;
+#playerNameLabel {
+  background: rgba(0,0,0,.65);
+  padding: 8px 12px;
+  border-radius: 9px;
 }
 
-.nameBox{
- position:absolute;
- top:75px;
- left:50%;
- transform:translateX(-50%);
- z-index:20;
- background:#0009;
- padding:10px;
- border-radius:9px;
- width:220px;
+#exitGame {
+  background: rgba(0,0,0,.7);
+  color: white;
+  padding: 9px 13px;
+  border-radius: 9px;
 }
 
-.nameBox input{
- margin:0;
+/* MOBILE CONTROLS */
+
+#controls {
+  position: absolute;
+  bottom: 25px;
+  left: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
 }
 
-.nameBox button{
- margin-top:7px;
- width:100%;
- background:#00aaff;
- color:white;
- padding:10px;
- border-radius:7px;
+#joystick {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.15);
+  border: 2px solid rgba(255,255,255,.3);
+  position: relative;
+  pointer-events: auto;
+  touch-action: none;
 }
 
-.joystick{
- position:absolute;
- left:25px;
- bottom:25px;
- width:130px;
- height:130px;
- border-radius:50%;
- background:#1118;
- border:2px solid #ffffff66;
- z-index:20;
- touch-action:none;
+#stick {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.65);
+  position: absolute;
+  left: 35px;
+  top: 35px;
 }
 
-.stick{
- position:absolute;
- width:55px;
- height:55px;
- left:35px;
- top:35px;
- border-radius:50%;
- background:#ffffffaa;
+#lookArea {
+  width: 45%;
+  height: 180px;
+  pointer-events: auto;
+  touch-action: none;
 }
 
-.lookText{
- position:absolute;
- right:18px;
- bottom:25px;
- background:#0008;
- padding:10px;
- border-radius:8px;
- z-index:10;
- pointer-events:none;
- font-size:13px;
-}
+@media (max-width: 600px) {
+  .page {
+    padding: 16px;
+  }
 
-.playerCount{
- position:absolute;
- top:75px;
- right:15px;
- background:#0009;
- padding:9px 12px;
- border-radius:8px;
- z-index:10;
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .headerButtons button {
+    padding: 8px;
+    font-size: 12px;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div id="app">
+
 <header>
+  <div class="logo">🧱 <span>BlockPlay</span></div>
 
-<div class="logo">
-🧱 <span>Block</span>Play
-</div>
-
-<nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('create')">Create</button>
-<button onclick="showPage('avatar')">Avatar</button>
-<button onclick="showPage('mygames')">My Games</button>
-</nav>
-
+  <div class="headerButtons">
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('accounts')">Accounts</button>
+    <button onclick="showPage('avatar')">Avatar</button>
+    <button onclick="showPage('games')">My Games</button>
+  </div>
 </header>
 
 <!-- HOME -->
 
-<main id="home" class="page">
+<section id="home" class="page">
 
-<section class="hero">
+  <div class="hero">
+    <h1>Make. Play. Create.</h1>
+    <p id="welcomeText">Create your own block games.</p>
 
-<h1>Make. Play. Create.</h1>
+    <button class="primary" onclick="showPage('create')">
+      + Create Game
+    </button>
+  </div>
 
-<p>
-Play 3D games, customize your avatar,
-and create your own worlds.
-</p>
+  <h2>Featured Games</h2>
 
-<button class="primary"
-onclick="showPage('create')">
-＋ Create Game
-</button>
+  <div class="gamesGrid">
+
+    <div class="gameCard">
+      <div class="gameImage">🏝️</div>
+      <div class="gameInfo">
+        <h3>Island Survival</h3>
+        <button class="playButton" onclick="startGame('Island Survival')">Play</button>
+      </div>
+    </div>
+
+    <div class="gameCard">
+      <div class="gameImage">🏎️</div>
+      <div class="gameInfo">
+        <h3>Block Racers</h3>
+        <button class="playButton" onclick="startGame('Block Racers')">Play</button>
+      </div>
+    </div>
+
+    <div class="gameCard">
+      <div class="gameImage">👻</div>
+      <div class="gameInfo">
+        <h3>Ghost Hunt</h3>
+        <button class="playButton" onclick="startGame('Ghost Hunt')">Play</button>
+      </div>
+    </div>
+
+    <div class="gameCard">
+      <div class="gameImage">💰</div>
+      <div class="gameInfo">
+        <h3>Coin Rush</h3>
+        <button class="playButton" onclick="startGame('Coin Rush')">Play</button>
+      </div>
+    </div>
+
+    <div class="gameCard">
+      <div class="gameImage">🏗️</div>
+      <div class="gameInfo">
+        <h3>Build City</h3>
+        <button class="playButton" onclick="startGame('Build City')">Play</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACCOUNTS -->
+
+<section id="accounts" class="page hidden">
+
+  <div class="accountBox">
+
+    <h2>👤 Accounts</h2>
+
+    <p id="currentAccountText">
+      No account selected.
+    </p>
+
+    <input
+      id="usernameInput"
+      class="accountInput"
+      maxlength="16"
+      placeholder="Enter username"
+      autocomplete="off"
+    >
+
+    <div id="accountError" class="error"></div>
+
+    <button class="primary" onclick="createAccount()">
+      Create Account
+    </button>
+
+    <div class="accountList" id="accountList"></div>
+
+  </div>
 
 </section>
 
-<h2>🔥 Featured Games</h2>
+<!-- AVATAR -->
 
-<div class="games">
+<section id="avatar" class="page hidden">
 
-<div class="game">
-<div class="thumbnail t1">🏝️</div>
+  <div class="accountBox">
 
-<div class="gameInfo">
-<h3>Island Survival</h3>
-<p>Explore a 3D island.</p>
+    <h2>🧍 Avatar</h2>
 
-<button class="play"
-onclick="startGame('Island Survival','Island')">
-PLAY
-</button>
-</div>
-</div>
+    <div class="avatarPreview" id="avatarPreview">
+      🧍
+    </div>
 
-<div class="game">
-<div class="thumbnail t2">🏎️</div>
+    <label>Skin</label>
 
-<div class="gameInfo">
-<h3>Block Racers</h3>
-<p>Explore the race world.</p>
+    <input
+      id="skinColor"
+      type="color"
+      value="#ffd2a6"
+      class="accountInput"
+      onchange="saveAvatar()"
+    >
 
-<button class="play"
-onclick="startGame('Block Racers','City')">
-PLAY
-</button>
-</div>
-</div>
+    <label>Shirt</label>
 
-<div class="game">
-<div class="thumbnail t3">👻</div>
+    <input
+      id="shirtColor"
+      type="color"
+      value="#4da3ff"
+      class="accountInput"
+      onchange="saveAvatar()"
+    >
 
-<div class="gameInfo">
-<h3>Ghost Hunt</h3>
-<p>Explore the dark world.</p>
+    <label>Pants</label>
 
-<button class="play"
-onclick="startGame('Ghost Hunt','Space')">
-PLAY
-</button>
-</div>
-</div>
+    <input
+      id="pantsColor"
+      type="color"
+      value="#303030"
+      class="accountInput"
+      onchange="saveAvatar()"
+    >
 
-<div class="game">
-<div class="thumbnail t4">💰</div>
+    <button class="primary" onclick="saveAvatar()">
+      Save Avatar
+    </button>
 
-<div class="gameInfo">
-<h3>Coin Rush</h3>
-<p>Explore and collect coins.</p>
+  </div>
 
-<button class="play"
-onclick="startGame('Coin Rush','Grass')">
-PLAY
-</button>
-</div>
-</div>
-
-<div class="game">
-<div class="thumbnail t5">🏙️</div>
-
-<div class="gameInfo">
-<h3>Build City</h3>
-<p>Explore the city.</p>
-
-<button class="play"
-onclick="startGame('Build City','City')">
-PLAY
-</button>
-</div>
-</div>
-
-</div>
-
-</main>
+</section>
 
 <!-- CREATE -->
 
-<main id="create" class="page" style="display:none">
+<section id="create" class="page hidden">
 
-<h1>🎮 Create Game</h1>
+  <div class="accountBox">
 
-<div class="panel">
+    <h2>🎮 Create Game</h2>
 
-<h3>Game Name</h3>
+    <input
+      id="gameName"
+      class="accountInput"
+      maxlength="30"
+      placeholder="Game name"
+    >
 
-<input id="gameName"
-placeholder="My Game">
+    <select id="gameTemplate" class="accountInput">
+      <option>Grass</option>
+      <option>City</option>
+      <option>Island</option>
+      <option>Space</option>
+    </select>
 
-<h3>World</h3>
+    <button class="primary" onclick="createGame()">
+      Create
+    </button>
 
-<div class="choices">
+  </div>
 
-<button class="choice selected"
-onclick="chooseTemplate(this,'Grass')">
-🌳 Grass
-</button>
-
-<button class="choice"
-onclick="chooseTemplate(this,'City')">
-🏙️ City
-</button>
-
-<button class="choice"
-onclick="chooseTemplate(this,'Island')">
-🏝️ Island
-</button>
-
-<button class="choice"
-onclick="chooseTemplate(this,'Space')">
-🚀 Space
-</button>
-
-</div>
-
-<br>
-
-<button class="primary"
-onclick="createGame()">
-CREATE GAME
-</button>
-
-</div>
-
-</main>
-
-<!-- AVATAR -->
-
-<main id="avatar" class="page" style="display:none">
-
-<h1>👤 Customize Avatar</h1>
-
-<div class="panel">
-
-<div class="avatarPreview">
-
-<div id="previewHat"
-class="hat"
-style="display:none"></div>
-
-<div id="previewHead"
-class="head"></div>
-
-<div id="previewBody"
-class="body"></div>
-
-<div class="legs">
-
-<div id="previewLeg1"
-class="leg"></div>
-
-<div id="previewLeg2"
-class="leg"></div>
-
-</div>
-
-</div>
-
-<h3>Skin</h3>
-
-<div class="choices">
-
-<button class="choice selected"
-onclick="changeAvatar('skin','#f0b27a',this)">
-Light
-</button>
-
-<button class="choice"
-onclick="changeAvatar('skin','#8d5524',this)">
-Brown
-</button>
-
-<button class="choice"
-onclick="changeAvatar('skin','#ffd1a9',this)">
-Peach
-</button>
-
-<button class="choice"
-onclick="changeAvatar('skin','#704214',this)">
-Dark
-</button>
-
-</div>
-
-<h3>Shirt</h3>
-
-<div class="choices">
-
-<button class="choice selected"
-onclick="changeAvatar('shirt','#168cff',this)">
-🔵 Blue
-</button>
-
-<button class="choice"
-onclick="changeAvatar('shirt','#e53935',this)">
-🔴 Red
-</button>
-
-<button class="choice"
-onclick="changeAvatar('shirt','#22aa55',this)">
-🟢 Green
-</button>
-
-<button class="choice"
-onclick="changeAvatar('shirt','#8e44ad',this)">
-🟣 Purple
-</button>
-
-</div>
-
-<h3>Pants</h3>
-
-<div class="choices">
-
-<button class="choice selected"
-onclick="changeAvatar('pants','#222222',this)">
-⚫ Black
-</button>
-
-<button class="choice"
-onclick="changeAvatar('pants','#2455aa',this)">
-🔵 Blue
-</button>
-
-<button class="choice"
-onclick="changeAvatar('pants','#777777',this)">
-⚪ Gray
-</button>
-
-</div>
-
-<h3>Hat</h3>
-
-<div class="choices">
-
-<button class="choice selected"
-onclick="changeAvatar('hat','none',this)">
-🚫 None
-</button>
-
-<button class="choice"
-onclick="changeAvatar('hat','#111111',this)">
-🧢 Black Hat
-</button>
-
-<button class="choice"
-onclick="changeAvatar('hat','#d62828',this)">
-🧢 Red Hat
-</button>
-
-<button class="choice"
-onclick="changeAvatar('hat','#f0c419',this)">
-👑 Crown
-</button>
-
-</div>
-
-</div>
-
-</main>
+</section>
 
 <!-- MY GAMES -->
 
-<main id="mygames" class="page" style="display:none">
+<section id="games" class="page hidden">
 
-<h1>🎮 My Games</h1>
+  <h2>🎮 My Games</h2>
 
-<div id="myGamesList"></div>
+  <div id="myGamesList" class="gamesGrid"></div>
 
-</main>
-
-<!-- GAME -->
-
-<div id="gameScreen">
-
-<canvas id="gameCanvas"></canvas>
-
-<div class="gameHUD">
-
-<div class="gameTitle"
-id="gameTitle">
-BlockPlay
-</div>
-
-<button class="exitButton"
-onclick="closeGame()">
-EXIT
-</button>
+</section>
 
 </div>
 
-<div class="playerCount"
-id="playerCount">
-Players: 1
-</div>
+<!-- 3D GAME -->
 
-<div class="nameBox"
-id="nameBox">
+<div id="gameScreen" class="hidden">
 
-<input
-id="playerName"
-maxlength="20"
-placeholder="Your name">
+  <canvas id="gameCanvas"></canvas>
 
-<button onclick="setPlayerName()">
-JOIN GAME
-</button>
+  <div id="gameTop">
+    <div id="playerNameLabel"></div>
+    <button id="exitGame" onclick="exitGame()">Exit</button>
+  </div>
 
-</div>
+  <div id="controls">
 
-<div class="joystick"
-id="joystick">
+    <div id="joystick">
+      <div id="stick"></div>
+    </div>
 
-<div class="stick"
-id="stick"></div>
+    <div id="lookArea"></div>
+
+  </div>
 
 </div>
 
-<div class="lookText">
-Drag right/center to look
-</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
-</div>
+<script>
 
-<script type="module">
+/* =========================
+   ACCOUNT SYSTEM
+========================= */
 
-import * as THREE from
-"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+const BAD_WORDS = [
+  "badword",
+  "admin",
+  "moderator"
+];
 
-/*
-=================================================
-BLOCKPLAY
-=================================================
-*/
+let accounts = JSON.parse(
+  localStorage.getItem("blockplayAccounts") || "{}"
+);
 
-let avatar = {
- skin:"#f0b27a",
- shirt:"#168cff",
- pants:"#222222",
- hat:"none"
-};
+let currentAccount =
+  localStorage.getItem("blockplayCurrentAccount") || null;
 
-try{
+function saveAccounts() {
+  localStorage.setItem(
+    "blockplayAccounts",
+    JSON.stringify(accounts)
+  );
+}
 
- const saved =
- localStorage.getItem("blockplay_avatar");
+function cleanUsername(name) {
+  return name.trim().replace(/[^a-zA-Z0-9_]/g, "");
+}
 
- if(saved)
-  avatar = JSON.parse(saved);
+function usernameAllowed(name) {
 
-}catch(e){}
+  const lower = name.toLowerCase();
 
-let template = "Grass";
+  for (const word of BAD_WORDS) {
+    if (lower.includes(word)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function createAccount() {
+
+  const input =
+    document.getElementById("usernameInput");
+
+  const error =
+    document.getElementById("accountError");
+
+  let name = cleanUsername(input.value);
+
+  error.textContent = "";
+
+  if (name.length < 3) {
+    error.textContent =
+      "Username must be at least 3 characters.";
+    return;
+  }
+
+  if (!usernameAllowed(name)) {
+    error.textContent =
+      "That username contains a blocked word.";
+    return;
+  }
+
+  if (accounts[name]) {
+    error.textContent =
+      "That username already exists.";
+    return;
+  }
+
+  accounts[name] = {
+    username: name,
+
+    avatar: {
+      skin: "#ffd2a6",
+      shirt: "#4da3ff",
+      pants: "#303030"
+    },
+
+    games: []
+  };
+
+  currentAccount = name;
+
+  saveAccounts();
+
+  localStorage.setItem(
+    "blockplayCurrentAccount",
+    currentAccount
+  );
+
+  input.value = "";
+
+  updateAccountUI();
+  loadAvatar();
+
+  showPage("home");
+}
+
+function switchAccount(name) {
+
+  if (!accounts[name]) return;
+
+  currentAccount = name;
+
+  localStorage.setItem(
+    "blockplayCurrentAccount",
+    currentAccount
+  );
+
+  updateAccountUI();
+  loadAvatar();
+  loadMyGames();
+
+  showPage("home");
+}
+
+function deleteAccount(name) {
+
+  if (!accounts[name]) return;
+
+  delete accounts[name];
+
+  if (currentAccount === name) {
+
+    const remaining =
+      Object.keys(accounts);
+
+    currentAccount =
+      remaining.length > 0
+        ? remaining[0]
+        : null;
+
+    if (currentAccount) {
+      localStorage.setItem(
+        "blockplayCurrentAccount",
+        currentAccount
+      );
+    } else {
+      localStorage.removeItem(
+        "blockplayCurrentAccount"
+      );
+    }
+  }
+
+  saveAccounts();
+
+  updateAccountUI();
+  loadMyGames();
+}
+
+function updateAccountUI() {
+
+  const text =
+    document.getElementById(
+      "currentAccountText"
+    );
+
+  const welcome =
+    document.getElementById(
+      "welcomeText"
+    );
+
+  const list =
+    document.getElementById(
+      "accountList"
+    );
+
+  if (currentAccount) {
+
+    text.textContent =
+      "Current account: " +
+      currentAccount;
+
+    welcome.textContent =
+      "Welcome, " +
+      currentAccount +
+      "! Create your own block games.";
+
+  } else {
+
+    text.textContent =
+      "No account selected.";
+
+    welcome.textContent =
+      "Create your own block games.";
+
+  }
+
+  list.innerHTML = "";
+
+  Object.keys(accounts).forEach(name => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "accountItem";
+
+    item.innerHTML = `
+      <div class="accountName">
+        👤 ${escapeHTML(name)}
+      </div>
+
+      <div class="accountActions">
+
+        <button
+          class="smallButton"
+          onclick="switchAccount('${escapeJS(name)}')">
+          Switch
+        </button>
+
+        <button
+          class="smallButton deleteButton"
+          onclick="deleteAccount('${escapeJS(name)}')">
+          Delete
+        </button>
+
+      </div>
+    `;
+
+    list.appendChild(item);
+  });
+}
+
+function escapeHTML(text) {
+
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function escapeJS(text) {
+  return text.replaceAll("\\", "\\\\")
+             .replaceAll("'", "\\'");
+}
+
+/* =========================
+   AVATAR
+========================= */
+
+function loadAvatar() {
+
+  if (!currentAccount) return;
+
+  const avatar =
+    accounts[currentAccount].avatar;
+
+  document.getElementById("skinColor").value =
+    avatar.skin;
+
+  document.getElementById("shirtColor").value =
+    avatar.shirt;
+
+  document.getElementById("pantsColor").value =
+    avatar.pants;
+}
+
+function saveAvatar() {
+
+  if (!currentAccount) {
+    alert("Create or switch to an account first.");
+    return;
+  }
+
+  accounts[currentAccount].avatar = {
+
+    skin:
+      document.getElementById("skinColor").value,
+
+    shirt:
+      document.getElementById("shirtColor").value,
+
+    pants:
+      document.getElementById("pantsColor").value
+  };
+
+  saveAccounts();
+}
+
+/* =========================
+   CREATE GAMES
+========================= */
+
+function createGame() {
+
+  if (!currentAccount) {
+    alert("Create an account first.");
+    return;
+  }
+
+  const name =
+    document.getElementById("gameName")
+      .value
+      .trim();
+
+  const template =
+    document.getElementById(
+      "gameTemplate"
+    ).value;
+
+  if (!name) {
+    alert("Enter a game name.");
+    return;
+  }
+
+  accounts[currentAccount].games.push({
+
+    name: name,
+
+    template: template,
+
+    created:
+      Date.now()
+  });
+
+  saveAccounts();
+
+  document.getElementById(
+    "gameName"
+  ).value = "";
+
+  loadMyGames();
+
+  showPage("games");
+}
+
+function loadMyGames() {
+
+  const list =
+    document.getElementById(
+      "myGamesList"
+    );
+
+  list.innerHTML = "";
+
+  if (!currentAccount) {
+
+    list.innerHTML =
+      "<p>Create an account first.</p>";
+
+    return;
+  }
+
+  const games =
+    accounts[currentAccount].games;
+
+  if (games.length === 0) {
+
+    list.innerHTML =
+      "<p>You have not created any games yet.</p>";
+
+    return;
+  }
+
+  games.forEach((game, index) => {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "gameCard";
+
+    card.innerHTML = `
+
+      <div class="gameImage">
+        🎮
+      </div>
+
+      <div class="gameInfo">
+
+        <h3>
+          ${escapeHTML(game.name)}
+        </h3>
+
+        <p>
+          ${escapeHTML(game.template)}
+        </p>
+
+        <button
+          class="playButton"
+          onclick="startGame('${escapeJS(game.name)}')">
+          Play
+        </button>
+
+      </div>
+    `;
+
+    list.appendChild(card);
+  });
+}
+
+/* =========================
+   PAGE SYSTEM
+========================= */
+
+function showPage(page) {
+
+  document.querySelectorAll(".page")
+    .forEach(p =>
+      p.classList.add("hidden")
+    );
+
+  const selected =
+    document.getElementById(page);
+
+  if (selected) {
+    selected.classList.remove("hidden");
+  }
+
+  if (page === "accounts") {
+    updateAccountUI();
+  }
+
+  if (page === "avatar") {
+    loadAvatar();
+  }
+
+  if (page === "games") {
+    loadMyGames();
+  }
+}
+
+/* =========================
+   3D GAME
+========================= */
 
 let scene;
 let camera;
 let renderer;
 let player;
-let animationID;
+let gameRunning = false;
 
-let yaw = 0;
-let pitch = 0.35;
+let playerX = 0;
+let playerZ = 0;
 
-let joystickX = 0;
-let joystickY = 0;
-let joystickDown = false;
+let cameraAngle = 0;
+let cameraDistance = 7;
 
-let lookDown = false;
-let lookX = 0;
-let lookY = 0;
+let moveX = 0;
+let moveZ = 0;
 
-let playerName =
- localStorage.getItem("blockplay_name") ||
- "Player";
+function startGame(gameName) {
 
-let otherPlayers = {};
-
-const keys = {
- w:false,
- a:false,
- s:false,
- d:false
-};
-
-function showPage(page){
-
- document.getElementById("home").style.display =
-  page==="home" ? "block":"none";
-
- document.getElementById("create").style.display =
-  page==="create" ? "block":"none";
-
- document.getElementById("avatar").style.display =
-  page==="avatar" ? "block":"none";
-
- document.getElementById("mygames").style.display =
-  page==="mygames" ? "block":"none";
-
- updatePreview();
-}
-
-window.showPage = showPage;
-
-function chooseTemplate(button,value){
-
- template=value;
-
- button.parentElement
- .querySelectorAll(".choice")
- .forEach(x=>x.classList.remove("selected"));
-
- button.classList.add("selected");
-}
-
-window.chooseTemplate=chooseTemplate;
-
-function changeAvatar(type,value,button){
-
- avatar[type]=value;
-
- button.parentElement
- .querySelectorAll(".choice")
- .forEach(x=>x.classList.remove("selected"));
-
- button.classList.add("selected");
-
- localStorage.setItem(
-  "blockplay_avatar",
-  JSON.stringify(avatar)
- );
-
- updatePreview();
-}
-
-window.changeAvatar=changeAvatar;
-
-function updatePreview(){
-
- document.getElementById("previewHead")
- .style.background=avatar.skin;
-
- document.getElementById("previewBody")
- .style.background=avatar.shirt;
-
- document.getElementById("previewLeg1")
- .style.background=avatar.pants;
-
- document.getElementById("previewLeg2")
- .style.background=avatar.pants;
-
- const hat=
-  document.getElementById("previewHat");
-
- if(avatar.hat==="none"){
-
-  hat.style.display="none";
-
- }else{
-
-  hat.style.display="block";
-  hat.style.background=avatar.hat;
-
- }
-}
-
-function createGame(){
-
- const input=
-  document.getElementById("gameName");
-
- const name=
-  input.value.trim();
-
- if(!name){
-
-  alert("Enter a game name.");
-  return;
- }
-
- let games=[];
-
- try{
-
-  games=JSON.parse(
-   localStorage.getItem("blockplay_games")||"[]"
-  );
-
- }catch(e){}
-
- games.push({
-  name:name,
-  world:template
- });
-
- localStorage.setItem(
-  "blockplay_games",
-  JSON.stringify(games)
- );
-
- input.value="";
-
- loadMyGames();
-
- startGame(name,template);
-}
-
-window.createGame=createGame;
-
-function loadMyGames(){
-
- const list=
-  document.getElementById("myGamesList");
-
- list.innerHTML="";
-
- let games=[];
-
- try{
-
-  games=JSON.parse(
-   localStorage.getItem("blockplay_games")||"[]"
-  );
-
- }catch(e){}
-
- if(!games.length){
-
-  list.innerHTML=
-   "<p>You haven't created any games yet.</p>";
-
-  return;
- }
-
- games.forEach(game=>{
-
-  const box=
-   document.createElement("div");
-
-  box.className="savedGame";
-
-  const text=
-   document.createElement("div");
-
-  text.innerHTML=
-   "<b>"+escapeHTML(game.name)+
-   "</b><br><small>"+
-   escapeHTML(game.world)+
-   " world</small>";
-
-  const button=
-   document.createElement("button");
-
-  button.textContent="PLAY";
-
-  button.onclick=()=>{
-   startGame(game.name,game.world);
-  };
-
-  box.appendChild(text);
-  box.appendChild(button);
-
-  list.appendChild(box);
- });
-}
-
-function escapeHTML(value){
-
- return String(value)
- .replaceAll("&","&amp;")
- .replaceAll("<","&lt;")
- .replaceAll(">","&gt;")
- .replaceAll('"',"&quot;");
-}
-
-/* AVATAR */
-
-function makeAvatar(){
-
- const group=
-  new THREE.Group();
-
- const skin=
-  new THREE.MeshStandardMaterial({
-   color:avatar.skin
-  });
-
- const shirt=
-  new THREE.MeshStandardMaterial({
-   color:avatar.shirt
-  });
-
- const pants=
-  new THREE.MeshStandardMaterial({
-   color:avatar.pants
-  });
-
- const head=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(.9,.9,.9),
-   skin
-  );
-
- head.position.y=2.65;
-
- group.add(head);
-
- const body=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(1.2,1.25,.65),
-   shirt
-  );
-
- body.position.y=1.65;
-
- group.add(body);
-
- const arm1=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(.4,1.15,.5),
-   shirt
-  );
-
- arm1.position.set(-.8,1.7,0);
-
- group.add(arm1);
-
- const arm2=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(.4,1.15,.5),
-   shirt
-  );
-
- arm2.position.set(.8,1.7,0);
-
- group.add(arm2);
-
- const leg1=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(.45,1.25,.55),
-   pants
-  );
-
- leg1.position.set(-.3,.35,0);
-
- group.add(leg1);
-
- const leg2=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(.45,1.25,.55),
-   pants
-  );
-
- leg2.position.set(.3,.35,0);
-
- group.add(leg2);
-
- if(avatar.hat!=="none"){
-
-  const hat=
-   new THREE.Mesh(
-    new THREE.BoxGeometry(
-     1.08,.25,1.08
-    ),
-    new THREE.MeshStandardMaterial({
-     color:avatar.hat
-    })
-   );
-
-  hat.position.y=3.2;
-
-  group.add(hat);
- }
-
- addNameTag(group,playerName);
-
- return group;
-}
-
-/* NAME TAG */
-
-function addNameTag(object,name){
-
- const canvas=
-  document.createElement("canvas");
-
- canvas.width=512;
- canvas.height=128;
-
- const ctx=
-  canvas.getContext("2d");
-
- ctx.clearRect(0,0,512,128);
-
- ctx.fillStyle="rgba(0,0,0,.75)";
-
- ctx.roundRect(
-  30,20,452,88,20
- );
-
- ctx.fill();
-
- ctx.fillStyle="white";
-
- ctx.font="bold 42px Arial";
-
- ctx.textAlign="center";
-
- ctx.textBaseline="middle";
-
- ctx.fillText(
-  name.substring(0,20),
-  256,
-  64
- );
-
- const texture=
-  new THREE.CanvasTexture(canvas);
-
- const material=
-  new THREE.SpriteMaterial({
-   map:texture,
-   transparent:true
-  });
-
- const sprite=
-  new THREE.Sprite(material);
-
- sprite.scale.set(3.2,.8,1);
-
- sprite.position.y=4.2;
-
- object.add(sprite);
-}
-
-/* WORLD */
-
-function addWorld(){
-
- let color=0x45a848;
-
- if(template==="City")
-  color=0x555b63;
-
- if(template==="Island")
-  color=0xd9bd70;
-
- if(template==="Space")
-  color=0x292d38;
-
- const ground=
-  new THREE.Mesh(
-   new THREE.BoxGeometry(100,1,100),
-   new THREE.MeshStandardMaterial({
-    color:color
-   })
-  );
-
- ground.position.y=-.5;
-
- scene.add(ground);
-
- if(template==="Island"){
-
-  const water=
-   new THREE.Mesh(
-    new THREE.BoxGeometry(
-     150,.3,150
-    ),
-    new THREE.MeshStandardMaterial({
-     color:0x178bd0
-    })
-   );
-
-  water.position.y=-1;
-
-  scene.add(water);
- }
-
- for(let i=0;i<70;i++){
-
-  const x=
-   Math.random()*90-45;
-
-  const z=
-   Math.random()*90-45;
-
-  const h=
-   Math.random()*4+1;
-
-  const block=
-   new THREE.Mesh(
-    new THREE.BoxGeometry(3,h,3),
-    new THREE.MeshStandardMaterial({
-     color:
-      template==="City"
-       ? 0x777f88
-       : template==="Space"
-       ? 0x505666
-       : 0x6c9650
-    })
-   );
-
-  block.position.set(
-   x,
-   h/2,
-   z
-  );
-
-  scene.add(block);
- }
-}
-
-/* GAME */
-
-function startGame(name,world){
-
- template=world||"Grass";
-
- document.getElementById(
-  "gameScreen"
- ).style.display="block";
-
- document.getElementById(
-  "gameTitle"
- ).textContent="🎮 "+name;
-
- document.getElementById(
-  "playerName"
- ).value=playerName;
-
- document.getElementById(
-  "nameBox"
- ).style.display="block";
-
- scene=
-  new THREE.Scene();
-
- scene.background=
-  new THREE.Color(
-   template==="Space"
-    ? 0x090d1a
-    : 0x75cbed
-  );
-
- camera=
-  new THREE.PerspectiveCamera(
-   65,
-   innerWidth/innerHeight,
-   .1,
-   500
-  );
-
- renderer=
-  new THREE.WebGLRenderer({
-   canvas:document.getElementById(
-    "gameCanvas"
-   ),
-   antialias:true
-  });
-
- renderer.setPixelRatio(
-  Math.min(devicePixelRatio,2)
- );
-
- renderer.setSize(
-  innerWidth,
-  innerHeight
- );
-
- scene.add(
-  new THREE.HemisphereLight(
-   0xffffff,
-   0x526b52,
-   2
-  )
- );
-
- const sun=
-  new THREE.DirectionalLight(
-   0xffffff,
-   2
-  );
-
- sun.position.set(
-  20,30,10
- );
-
- scene.add(sun);
-
- addWorld();
-
- player=makeAvatar();
-
- scene.add(player);
-
- player.position.set(0,0,0);
-
- yaw=0;
- pitch=.35;
-
- animate();
-}
-
-window.startGame=startGame;
-
-function setPlayerName(){
-
- const input=
-  document.getElementById("playerName");
-
- const name=
-  input.value.trim();
-
- if(!name)
-  return;
-
- playerName=
-  name.substring(0,20);
-
- localStorage.setItem(
-  "blockplay_name",
-  playerName
- );
-
- document.getElementById(
-  "nameBox"
- ).style.display="none";
-
- if(player){
-
-  scene.remove(player);
-
-  player=makeAvatar();
-
-  scene.add(player);
- }
-
-}
-
-window.setPlayerName=setPlayerName;
-
-/* CONTROLS */
-
-function animate(){
-
- animationID=
-  requestAnimationFrame(animate);
-
- if(!player)
-  return;
-
- let x=0;
- let z=0;
-
- if(keys.w) z-=1;
- if(keys.s) z+=1;
- if(keys.a) x-=1;
- if(keys.d) x+=1;
-
- /*
- IMPORTANT:
- joystick UP now means forward.
- */
-
- x+=joystickX;
- z+=joystickY;
-
- const length=
-  Math.hypot(x,z);
-
- if(length>0){
-
-  x/=length;
-  z/=length;
-
-  const speed=7;
-
-  /*
-  Forward is NEGATIVE Z.
-  */
-
-  const forwardX=
-   -Math.sin(yaw);
-
-  const forwardZ=
-   -Math.cos(yaw);
-
-  const rightX=
-   Math.cos(yaw);
-
-  const rightZ=
-   -Math.sin(yaw);
-
-  const dx=
-   forwardX*(-z)+
-   rightX*x;
-
-  const dz=
-   forwardZ*(-z)+
-   rightZ*x;
-
-  player.position.x+=
-   dx*speed/60;
-
-  player.position.z+=
-   dz*speed/60;
-
-  player.rotation.y=
-   Math.atan2(dx,dz);
- }
-
- player.position.x=
-  THREE.MathUtils.clamp(
-   player.position.x,-47,47
-  );
-
- player.position.z=
-  THREE.MathUtils.clamp(
-   player.position.z,-47,47
-  );
-
- const distance=7;
-
- const camX=
-  player.position.x+
-  Math.sin(yaw)*
-  Math.cos(pitch)*
-  distance;
-
- const camZ=
-  player.position.z+
-  Math.cos(yaw)*
-  Math.cos(pitch)*
-  distance;
-
- const camY=
-  player.position.y+
-  1.6+
-  Math.sin(pitch)*
-  distance;
-
- camera.position.lerp(
-  new THREE.Vector3(
-   camX,
-   camY,
-   camZ
-  ),
-  .15
- );
-
- camera.lookAt(
-  player.position.x,
-  player.position.y+1.5,
-  player.position.z
- );
-
- renderer.render(
-  scene,
-  camera
- );
-}
-
-/* KEYBOARD */
-
-document.addEventListener(
- "keydown",
- e=>{
-
-  if(e.key==="w"||e.key==="ArrowUp")
-   keys.w=true;
-
-  if(e.key==="s"||e.key==="ArrowDown")
-   keys.s=true;
-
-  if(e.key==="a"||e.key==="ArrowLeft")
-   keys.a=true;
-
-  if(e.key==="d"||e.key==="ArrowRight")
-   keys.d=true;
- }
-);
-
-document.addEventListener(
- "keyup",
- e=>{
-
-  if(e.key==="w"||e.key==="ArrowUp")
-   keys.w=false;
-
-  if(e.key==="s"||e.key==="ArrowDown")
-   keys.s=false;
-
-  if(e.key==="a"||e.key==="ArrowLeft")
-   keys.a=false;
-
-  if(e.key==="d"||e.key==="ArrowRight")
-   keys.d=false;
- }
-);
-
-/* JOYSTICK */
-
-const joystick=
- document.getElementById("joystick");
-
-const stick=
- document.getElementById("stick");
-
-function updateJoystick(e){
-
- const rect=
-  joystick.getBoundingClientRect();
-
- const centerX=
-  rect.left+rect.width/2;
-
- const centerY=
-  rect.top+rect.height/2;
-
- let x=e.clientX-centerX;
- let y=e.clientY-centerY;
-
- const max=42;
-
- const distance=
-  Math.hypot(x,y);
-
- if(distance>max){
-
-  x=x/distance*max;
-  y=y/distance*max;
- }
-
- stick.style.transform=
-  "translate("+x+"px,"+y+"px)";
-
- joystickX=x/max;
-
- /*
- Y is NOT inverted here.
- UP gives a negative browser Y value,
- and animate() converts that into forward.
- */
-
- joystickY=y/max;
-
- e.preventDefault();
-}
-
-joystick.addEventListener(
- "pointerdown",
- e=>{
-
-  joystickDown=true;
-
-  joystick.setPointerCapture(
-   e.pointerId
-  );
-
-  updateJoystick(e);
- }
-);
-
-joystick.addEventListener(
- "pointermove",
- e=>{
-
-  if(joystickDown)
-   updateJoystick(e);
- }
-);
-
-joystick.addEventListener(
- "pointerup",
- ()=>{
-
-  joystickDown=false;
-
-  joystickX=0;
-  joystickY=0;
-
-  stick.style.transform=
-   "translate(0,0)";
- }
-);
-
-/* CAMERA */
-
-const gameScreen=
- document.getElementById(
-  "gameScreen"
- );
-
-gameScreen.addEventListener(
- "pointerdown",
- e=>{
-
-  if(
-   e.target.closest(".joystick")||
-   e.target.closest(".exitButton")||
-   e.target.closest(".nameBox")
-  ){
-   return;
+  if (!currentAccount) {
+    alert("Create or switch to an account first.");
+    showPage("accounts");
+    return;
   }
 
-  lookDown=true;
+  document.getElementById(
+    "gameScreen"
+  ).classList.remove("hidden");
 
-  lookX=e.clientX;
-  lookY=e.clientY;
+  document.getElementById(
+    "playerNameLabel"
+  ).textContent =
+    currentAccount;
 
-  gameScreen.setPointerCapture(
-   e.pointerId
-  );
- }
-);
+  setup3D();
 
-gameScreen.addEventListener(
- "pointermove",
- e=>{
+  gameRunning = true;
 
-  if(!lookDown)
-   return;
-
-  const dx=
-   e.clientX-lookX;
-
-  const dy=
-   e.clientY-lookY;
-
-  lookX=e.clientX;
-  lookY=e.clientY;
-
-  /*
-  RIGHT = look right.
-  LEFT = look left.
-  */
-
-  yaw-=dx*.006;
-
-  pitch-=dy*.004;
-
-  pitch=
-   THREE.MathUtils.clamp(
-    pitch,
-    -.1,
-    .9
-   );
-
-  e.preventDefault();
- }
-);
-
-gameScreen.addEventListener(
- "pointerup",
- ()=>{
-  lookDown=false;
- }
-);
-
-/* EXIT */
-
-function closeGame(){
-
- document.getElementById(
-  "gameScreen"
- ).style.display="none";
-
- if(animationID)
-  cancelAnimationFrame(animationID);
-
- if(renderer)
-  renderer.dispose();
-
- scene=null;
- camera=null;
- renderer=null;
- player=null;
- animationID=null;
+  animate();
 }
 
-window.closeGame=closeGame;
+function setup3D() {
 
-window.addEventListener(
- "resize",
- ()=>{
+  scene =
+    new THREE.Scene();
 
-  if(!camera||!renderer)
-   return;
+  scene.background =
+    new THREE.Color(0x87bdf5);
 
-  camera.aspect=
-   innerWidth/innerHeight;
+  camera =
+    new THREE.PerspectiveCamera(
+      70,
+      window.innerWidth /
+      window.innerHeight,
+      0.1,
+      1000
+    );
+
+  renderer =
+    new THREE.WebGLRenderer({
+      canvas:
+        document.getElementById(
+          "gameCanvas"
+        ),
+      antialias: true
+    });
+
+  renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  renderer.setPixelRatio(
+    Math.min(
+      window.devicePixelRatio,
+      2
+    )
+  );
+
+  const light =
+    new THREE.HemisphereLight(
+      0xffffff,
+      0x555555,
+      2
+    );
+
+  scene.add(light);
+
+  const ground =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        40,
+        1,
+        40
+      ),
+      new THREE.MeshStandardMaterial({
+        color: 0x55a85a
+      })
+    );
+
+  ground.position.y = -0.5;
+
+  scene.add(ground);
+
+  createPlayer();
+
+  window.addEventListener(
+    "resize",
+    resizeGame
+  );
+}
+
+function createPlayer() {
+
+  if (player) {
+    scene.remove(player);
+  }
+
+  player =
+    new THREE.Group();
+
+  const avatar =
+    accounts[currentAccount].avatar;
+
+  const bodyMaterial =
+    new THREE.MeshStandardMaterial({
+      color:
+        avatar.shirt
+    });
+
+  const skinMaterial =
+    new THREE.MeshStandardMaterial({
+      color:
+        avatar.skin
+    });
+
+  const pantsMaterial =
+    new THREE.MeshStandardMaterial({
+      color:
+        avatar.pants
+    });
+
+  const body =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        1,
+        1.4,
+        .6
+      ),
+      bodyMaterial
+    );
+
+  body.position.y = 1.7;
+
+  player.add(body);
+
+  const head =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        .9,
+        .9,
+        .9
+      ),
+      skinMaterial
+    );
+
+  head.position.y = 2.85;
+
+  player.add(head);
+
+  const legs =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(
+        .85,
+        1.1,
+        .55
+      ),
+      pantsMaterial
+    );
+
+  legs.position.y = .45;
+
+  player.add(legs);
+
+  player.position.set(
+    0,
+    0,
+    0
+  );
+
+  scene.add(player);
+}
+
+function animate() {
+
+  if (!gameRunning) return;
+
+  requestAnimationFrame(
+    animate
+  );
+
+  const speed = .12;
+
+  playerX += moveX * speed;
+  playerZ += moveZ * speed;
+
+  playerX =
+    Math.max(
+      -18,
+      Math.min(
+        18,
+        playerX
+      )
+    );
+
+  playerZ =
+    Math.max(
+      -18,
+      Math.min(
+        18,
+        playerZ
+      )
+    );
+
+  player.position.x =
+    playerX;
+
+  player.position.z =
+    playerZ;
+
+  const cameraX =
+    playerX +
+    Math.sin(cameraAngle) *
+    cameraDistance;
+
+  const cameraZ =
+    playerZ +
+    Math.cos(cameraAngle) *
+    cameraDistance;
+
+  camera.position.set(
+    cameraX,
+    5,
+    cameraZ
+  );
+
+  camera.lookAt(
+    player.position.x,
+    1.5,
+    player.position.z
+  );
+
+  renderer.render(
+    scene,
+    camera
+  );
+}
+
+function resizeGame() {
+
+  if (!camera || !renderer)
+    return;
+
+  camera.aspect =
+    window.innerWidth /
+    window.innerHeight;
 
   camera.updateProjectionMatrix();
 
   renderer.setSize(
-   innerWidth,
-   innerHeight
+    window.innerWidth,
+    window.innerHeight
   );
- }
+}
+
+function exitGame() {
+
+  gameRunning = false;
+
+  document.getElementById(
+    "gameScreen"
+  ).classList.add("hidden");
+}
+
+/* =========================
+   JOYSTICK
+========================= */
+
+const joystick =
+  document.getElementById(
+    "joystick"
+  );
+
+const stick =
+  document.getElementById(
+    "stick"
+  );
+
+let joystickActive = false;
+
+joystick.addEventListener(
+  "pointerdown",
+  e => {
+
+    joystickActive = true;
+
+    joystick.setPointerCapture(
+      e.pointerId
+    );
+
+    updateJoystick(e);
+  }
 );
 
-updatePreview();
-loadMyGames();
+joystick.addEventListener(
+  "pointermove",
+  e => {
 
-</script>
+    if (!joystickActive)
+      return;
 
-</body>
-</html>
+    updateJoystick(e);
+  }
+);
+
+joystick.addEventListener(
+  "pointerup",
+  resetJoystick
+);
+
+joystick.addEventListener(
+  "pointercancel",
+  resetJoystick
+);
+
+function updateJoystick(e) {
+
+  const rect =
+    joystick.getBoundingClientRect();
+
+  let x =
+    e.clientX -
+    (rect.left + rect.width / 2);
+
+  let y =
+    e.clientY -
