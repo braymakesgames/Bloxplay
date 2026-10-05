@@ -1,679 +1,1261 @@
 const BloxPlayGameLauncher = {
 
-    mysteryTimer: null,
-    mysteryBloxBuxTimer: null,
+    currentGame: null,
+    threeModule: null,
+    animationFrame: null,
+    bloxBuxTimer: null,
+    gameStartTime: 0,
 
-    mysteryHunt() {
-        const app = document.getElementById("app");
+    async loadThree() {
+        if (this.threeModule) {
+            return this.threeModule;
+        }
 
-        app.innerHTML = `
-            <div id="mysteryGame" style="
-                position:relative;
-                width:100%;
-                height:650px;
-                background:#111;
-                overflow:hidden;
-                border-radius:16px;
-            ">
+        this.threeModule = await import(
+            "https://cdn.jsdelivr.net/npm/three@0.186.0/build/three.module.js"
+        );
 
-                <canvas id="mysteryCanvas" style="
-                    width:100%;
-                    height:100%;
-                    display:block;
-                    touch-action:none;
-                "></canvas>
+        return this.threeModule;
+    },
 
-                <div style="
-                    position:absolute;
-                    top:15px;
-                    left:15px;
-                    right:15px;
-                    display:flex;
-                    justify-content:space-between;
-                    gap:10px;
-                    pointer-events:none;
-                ">
+    async mysteryHunt() {
 
-                    <div style="
-                        background:rgba(0,0,0,.75);
-                        padding:12px;
-                        border-radius:10px;
-                    ">
-                        🕵️ Mystery Hunt
-                        <br>
-                        ⏱️ Time:
-                        <span id="mysteryTime">120</span>
-                        <br>
-                        💰 BloxBux:
-                        <span id="mysteryBloxBux">0</span>
+        this.cleanup();
+
+        const THREE = await this.loadThree();
+
+        this.currentGame = "Mystery Hunt";
+        this.gameStartTime = Date.now();
+
+        document.body.innerHTML = `
+            <div id="bloxplay3dGame">
+
+                <div id="bloxplayTopBar">
+                    <div>
+                        <strong>🕵️ Mystery Hunt</strong>
                     </div>
 
-                    <button
-                        id="leaveMystery"
-                        style="
-                            pointer-events:auto;
-                            height:45px;
-                        "
-                    >
+                    <div id="bloxplayStats">
+                        💰 <span id="bloxBuxAmount">0</span> BloxBux
+                        <span id="gameTimer">00:00</span>
+                    </div>
+
+                    <button id="leaveGameButton">
                         Leave
                     </button>
+                </div>
+
+                <div id="bloxplay3dContainer"></div>
+
+                <div id="mobileControls">
+
+                    <div class="controlRow">
+                        <button id="upButton">▲</button>
+                    </div>
+
+                    <div class="controlRow">
+                        <button id="leftButton">◀</button>
+                        <button id="downButton">▼</button>
+                        <button id="rightButton">▶</button>
+                    </div>
 
                 </div>
 
-                <div style="
-                    position:absolute;
-                    bottom:20px;
-                    left:20px;
-                    display:grid;
-                    grid-template-columns:60px 60px 60px;
-                    gap:6px;
-                ">
-
-                    <div></div>
-
-                    <button id="moveForward">▲</button>
-
-                    <div></div>
-
-                    <button id="moveLeft">◀</button>
-
-                    <button id="moveBack">▼</button>
-
-                    <button id="moveRight">▶</button>
-
-                </div>
-
-                <div style="
-                    position:absolute;
-                    bottom:20px;
-                    right:20px;
-                    background:rgba(0,0,0,.7);
-                    padding:12px;
-                    border-radius:10px;
-                    font-size:13px;
-                ">
-                    Drag the screen to look around
+                <div id="gameMessage">
+                    Find the clues around the map!
                 </div>
 
             </div>
+
+            <style>
+
+                html,
+                body {
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    background: #111;
+                    font-family: Arial, sans-serif;
+                }
+
+                #bloxplay3dGame {
+                    position: fixed;
+                    inset: 0;
+                    background: #111;
+                    overflow: hidden;
+                }
+
+                #bloxplay3dContainer {
+                    position: absolute;
+                    inset: 0;
+                }
+
+                #bloxplay3dContainer canvas {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    touch-action: none;
+                }
+
+                #bloxplayTopBar {
+                    position: absolute;
+                    z-index: 10;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+
+                    min-height: 58px;
+
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    gap: 10px;
+                    padding: 8px 12px;
+
+                    box-sizing: border-box;
+
+                    background: rgba(15,15,15,.92);
+                    color: white;
+                }
+
+                #bloxplayStats {
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+                    font-size: 14px;
+                }
+
+                #leaveGameButton {
+                    border: 0;
+                    border-radius: 8px;
+                    padding: 10px 14px;
+                    background: #d33;
+                    color: white;
+                    font-weight: bold;
+                }
+
+                #mobileControls {
+                    position: absolute;
+                    z-index: 20;
+                    left: 18px;
+                    bottom: 20px;
+
+                    user-select: none;
+                    touch-action: none;
+                }
+
+                .controlRow {
+                    display: flex;
+                    justify-content: center;
+                    gap: 8px;
+                }
+
+                .controlRow button {
+                    width: 58px;
+                    height: 58px;
+
+                    border: 2px solid rgba(255,255,255,.5);
+                    border-radius: 14px;
+
+                    background: rgba(20,20,20,.7);
+                    color: white;
+
+                    font-size: 24px;
+                    font-weight: bold;
+
+                    touch-action: none;
+                }
+
+                #gameMessage {
+                    position: absolute;
+                    z-index: 15;
+
+                    left: 50%;
+                    bottom: 20px;
+
+                    transform: translateX(-50%);
+
+                    padding: 10px 16px;
+
+                    border-radius: 10px;
+
+                    background: rgba(0,0,0,.65);
+                    color: white;
+
+                    text-align: center;
+                    pointer-events: none;
+                }
+
+                @media (max-width: 600px) {
+
+                    #bloxplayTopBar {
+                        font-size: 13px;
+                    }
+
+                    #bloxplayStats {
+                        flex-direction: column;
+                        gap: 2px;
+                    }
+
+                    #gameMessage {
+                        bottom: 145px;
+                        font-size: 13px;
+                    }
+
+                }
+
+            </style>
         `;
 
-        this.start3DMystery();
-    },
+        const container =
+            document.getElementById("bloxplay3dContainer");
 
-    start3DMystery() {
+        /*
+         * REAL THREE.JS 3D
+         */
 
-        const canvas =
-            document.getElementById("mysteryCanvas");
+        const scene = new THREE.Scene();
 
-        const ctx =
-            canvas.getContext("2d");
+        scene.background =
+            new THREE.Color(0x87b7df);
 
-        let width = 0;
-        let height = 0;
+        scene.fog =
+            new THREE.Fog(0x87b7df, 35, 120);
 
-        function resize() {
-            const rect =
-                canvas.getBoundingClientRect();
 
-            width = Math.max(320, rect.width);
-            height = Math.max(400, rect.height);
+        /*
+         * CAMERA
+         */
 
-            canvas.width = width * devicePixelRatio;
-            canvas.height = height * devicePixelRatio;
-
-            ctx.setTransform(
-                devicePixelRatio,
-                0,
-                0,
-                devicePixelRatio,
-                0,
-                0
+        const camera =
+            new THREE.PerspectiveCamera(
+                70,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                500
             );
-        }
 
-        resize();
 
-        window.addEventListener(
-            "resize",
-            resize
+        /*
+         * RENDERER
+         */
+
+        const renderer =
+            new THREE.WebGLRenderer({
+                antialias: true
+            });
+
+        renderer.setPixelRatio(
+            Math.min(window.devicePixelRatio, 2)
         );
 
-        const player = {
-            x: 0,
-            z: 5,
-            angle: 0,
-            speed: 0.12
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+        renderer.shadowMap.enabled = true;
+
+        container.appendChild(renderer.domElement);
+
+
+        /*
+         * LIGHTING
+         */
+
+        const ambientLight =
+            new THREE.HemisphereLight(
+                0xffffff,
+                0x445566,
+                2
+            );
+
+        scene.add(ambientLight);
+
+
+        const sun =
+            new THREE.DirectionalLight(
+                0xffffff,
+                2
+            );
+
+        sun.position.set(
+            20,
+            40,
+            10
+        );
+
+        sun.castShadow = true;
+
+        scene.add(sun);
+
+
+        /*
+         * GROUND
+         */
+
+        const groundGeometry =
+            new THREE.BoxGeometry(
+                120,
+                1,
+                120
+            );
+
+        const groundMaterial =
+            new THREE.MeshStandardMaterial({
+                color: 0x4f8a45
+            });
+
+        const ground =
+            new THREE.Mesh(
+                groundGeometry,
+                groundMaterial
+            );
+
+        ground.position.y = -0.5;
+
+        ground.receiveShadow = true;
+
+        scene.add(ground);
+
+
+        /*
+         * ROAD
+         */
+
+        const roadGeometry =
+            new THREE.BoxGeometry(
+                12,
+                0.05,
+                120
+            );
+
+        const roadMaterial =
+            new THREE.MeshStandardMaterial({
+                color: 0x444444
+            });
+
+        const road =
+            new THREE.Mesh(
+                roadGeometry,
+                roadMaterial
+            );
+
+        road.position.y = 0.03;
+
+        scene.add(road);
+
+
+        /*
+         * BUILDINGS
+         */
+
+        function createBuilding(
+            x,
+            z,
+            width,
+            height,
+            depth,
+            color
+        ) {
+
+            const geometry =
+                new THREE.BoxGeometry(
+                    width,
+                    height,
+                    depth
+                );
+
+            const material =
+                new THREE.MeshStandardMaterial({
+                    color: color
+                });
+
+            const building =
+                new THREE.Mesh(
+                    geometry,
+                    material
+                );
+
+            building.position.set(
+                x,
+                height / 2,
+                z
+            );
+
+            building.castShadow = true;
+            building.receiveShadow = true;
+
+            scene.add(building);
+
+            /*
+             * ROOF
+             */
+
+            const roofGeometry =
+                new THREE.BoxGeometry(
+                    width + 0.4,
+                    0.5,
+                    depth + 0.4
+                );
+
+            const roofMaterial =
+                new THREE.MeshStandardMaterial({
+                    color: 0x333333
+                });
+
+            const roof =
+                new THREE.Mesh(
+                    roofGeometry,
+                    roofMaterial
+                );
+
+            roof.position.set(
+                x,
+                height + 0.25,
+                z
+            );
+
+            roof.castShadow = true;
+
+            scene.add(roof);
+
+        }
+
+
+        createBuilding(
+            -22,
+            -20,
+            16,
+            10,
+            14,
+            0xb85c5c
+        );
+
+        createBuilding(
+            22,
+            -20,
+            16,
+            14,
+            14,
+            0x5c7eb8
+        );
+
+        createBuilding(
+            -22,
+            22,
+            16,
+            12,
+            14,
+            0xb88d5c
+        );
+
+        createBuilding(
+            22,
+            22,
+            16,
+            9,
+            14,
+            0x765cb8
+        );
+
+
+        /*
+         * PLAYER
+         */
+
+        const player =
+            new THREE.Group();
+
+        scene.add(player);
+
+        player.position.set(
+            0,
+            0,
+            35
+        );
+
+
+        /*
+         * PLAYER BODY
+         */
+
+        const body =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    1.4,
+                    2,
+                    0.8
+                ),
+                new THREE.MeshStandardMaterial({
+                    color: 0x3498db
+                })
+            );
+
+        body.position.y = 1.4;
+
+        body.castShadow = true;
+
+        player.add(body);
+
+
+        /*
+         * PLAYER HEAD
+         */
+
+        const head =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    1.2,
+                    1.2,
+                    1.2
+                ),
+                new THREE.MeshStandardMaterial({
+                    color: 0xf0c8a0
+                })
+            );
+
+        head.position.y = 3;
+
+        head.castShadow = true;
+
+        player.add(head);
+
+
+        /*
+         * PLAYER LEGS
+         */
+
+        const legMaterial =
+            new THREE.MeshStandardMaterial({
+                color: 0x222222
+            });
+
+
+        const leftLeg =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    0.55,
+                    1.5,
+                    0.65
+                ),
+                legMaterial
+            );
+
+        leftLeg.position.set(
+            -0.35,
+            0.45,
+            0
+        );
+
+        leftLeg.castShadow = true;
+
+        player.add(leftLeg);
+
+
+        const rightLeg =
+            new THREE.Mesh(
+                new THREE.BoxGeometry(
+                    0.55,
+                    1.5,
+                    0.65
+                ),
+                legMaterial
+            );
+
+        rightLeg.position.set(
+            0.35,
+            0.45,
+            0
+        );
+
+        rightLeg.castShadow = true;
+
+        player.add(rightLeg);
+
+
+        /*
+         * CLUES
+         */
+
+        const clues = [];
+
+        function createClue(x, z) {
+
+            const geometry =
+                new THREE.OctahedronGeometry(0.7);
+
+            const material =
+                new THREE.MeshStandardMaterial({
+                    color: 0xffdd22,
+                    emissive: 0x665500
+                });
+
+            const clue =
+                new THREE.Mesh(
+                    geometry,
+                    material
+                );
+
+            clue.position.set(
+                x,
+                1,
+                z
+            );
+
+            clue.castShadow = true;
+
+            scene.add(clue);
+
+            clues.push({
+                object: clue,
+                collected: false
+            });
+
+        }
+
+
+        createClue(-8, 15);
+        createClue(9, 10);
+        createClue(-10, -5);
+        createClue(10, -8);
+        createClue(0, -25);
+
+
+        /*
+         * CAMERA
+         */
+
+        camera.position.set(
+            player.position.x,
+            7,
+            player.position.z + 11
+        );
+
+        camera.lookAt(
+            player.position.x,
+            1.5,
+            player.position.z
+        );
+
+
+        /*
+         * MOVEMENT
+         */
+
+        const keys = {
+            up: false,
+            down: false,
+            left: false,
+            right: false
         };
 
-        const buildings = [
-            {x:-8,z:-10,w:5,d:5,h:5},
-            {x:8,z:-12,w:6,d:5,h:6},
-            {x:-10,z:5,w:4,d:7,h:4},
-            {x:10,z:6,w:5,d:5,h:5},
-            {x:0,z:-18,w:7,d:4,h:7}
-        ];
 
-        const clues = [
-            {x:-5,z:-3,found:false},
-            {x:6,z:-4,found:false},
-            {x:-4,z:12,found:false},
-            {x:8,z:14,found:false}
-        ];
+        function setKey(name, value) {
+            keys[name] = value;
+        }
 
-        let keys = {};
 
-        document.onkeydown = function(e) {
-            keys[e.key.toLowerCase()] = true;
-        };
+        document.addEventListener(
+            "keydown",
+            event => {
 
-        document.onkeyup = function(e) {
-            keys[e.key.toLowerCase()] = false;
-        };
+                if (event.key === "w" ||
+                    event.key === "ArrowUp") {
 
-        function buttonMove(id, key) {
+                    setKey("up", true);
+
+                }
+
+                if (event.key === "s" ||
+                    event.key === "ArrowDown") {
+
+                    setKey("down", true);
+
+                }
+
+                if (event.key === "a" ||
+                    event.key === "ArrowLeft") {
+
+                    setKey("left", true);
+
+                }
+
+                if (event.key === "d" ||
+                    event.key === "ArrowRight") {
+
+                    setKey("right", true);
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "keyup",
+            event => {
+
+                if (event.key === "w" ||
+                    event.key === "ArrowUp") {
+
+                    setKey("up", false);
+
+                }
+
+                if (event.key === "s" ||
+                    event.key === "ArrowDown") {
+
+                    setKey("down", false);
+
+                }
+
+                if (event.key === "a" ||
+                    event.key === "ArrowLeft") {
+
+                    setKey("left", false);
+
+                }
+
+                if (event.key === "d" ||
+                    event.key === "ArrowRight") {
+
+                    setKey("right", false);
+
+                }
+
+            }
+        );
+
+
+        function setupTouchButton(
+            id,
+            key
+        ) {
 
             const button =
                 document.getElementById(id);
 
-            if (!button) return;
-
             button.addEventListener(
                 "pointerdown",
-                e => {
-                    e.preventDefault();
-                    keys[key] = true;
+                event => {
+
+                    event.preventDefault();
+
+                    setKey(key, true);
+
                 }
             );
 
             button.addEventListener(
                 "pointerup",
-                e => {
-                    e.preventDefault();
-                    keys[key] = false;
+                event => {
+
+                    event.preventDefault();
+
+                    setKey(key, false);
+
                 }
             );
 
             button.addEventListener(
                 "pointercancel",
                 () => {
-                    keys[key] = false;
+
+                    setKey(key, false);
+
                 }
             );
 
             button.addEventListener(
                 "pointerleave",
                 () => {
-                    keys[key] = false;
+
+                    setKey(key, false);
+
                 }
             );
+
         }
 
-        buttonMove("moveForward","w");
-        buttonMove("moveBack","s");
-        buttonMove("moveLeft","a");
-        buttonMove("moveRight","d");
 
-        let dragging = false;
+        setupTouchButton(
+            "upButton",
+            "up"
+        );
+
+        setupTouchButton(
+            "downButton",
+            "down"
+        );
+
+        setupTouchButton(
+            "leftButton",
+            "left"
+        );
+
+        setupTouchButton(
+            "rightButton",
+            "right"
+        );
+
+
+        /*
+         * LOOK AROUND
+         */
+
+        let looking = false;
         let lastX = 0;
 
-        canvas.addEventListener(
+        renderer.domElement.addEventListener(
             "pointerdown",
-            e => {
-                dragging = true;
-                lastX = e.clientX;
+            event => {
+
+                looking = true;
+                lastX = event.clientX;
+
             }
         );
 
-        canvas.addEventListener(
+        renderer.domElement.addEventListener(
             "pointermove",
-            e => {
+            event => {
 
-                if (!dragging) return;
+                if (!looking) return;
 
                 const difference =
-                    e.clientX - lastX;
+                    event.clientX - lastX;
 
-                player.angle +=
+                lastX = event.clientX;
+
+                player.rotation.y -=
                     difference * 0.008;
 
-                lastX = e.clientX;
             }
         );
 
-        canvas.addEventListener(
+        renderer.domElement.addEventListener(
             "pointerup",
             () => {
-                dragging = false;
+
+                looking = false;
+
             }
         );
 
-        canvas.addEventListener(
+        renderer.domElement.addEventListener(
             "pointercancel",
             () => {
-                dragging = false;
+
+                looking = false;
+
             }
         );
 
-        function project(x,y,z) {
 
-            const dx =
-                x - player.x;
+        /*
+         * BLOXBUX SYSTEM
+         *
+         * 1 minute = 1 BloxBux
+         */
 
-            const dz =
-                z - player.z;
+        function updateBloxBuxDisplay() {
 
-            const cos =
-                Math.cos(player.angle);
+            const amount =
+                typeof BlockPlayAccounts !== "undefined"
+                    ? BlockPlayAccounts.getBloxBux()
+                    : 0;
 
-            const sin =
-                Math.sin(player.angle);
-
-            const cameraX =
-                dx * cos - dz * sin;
-
-            const cameraZ =
-                dx * sin + dz * cos;
-
-            if (cameraZ <= 0.2) {
-                return null;
-            }
-
-            const scale =
-                300 / cameraZ;
-
-            return {
-                x: width / 2 + cameraX * scale,
-                y: height / 2 - y * scale,
-                scale: scale
-            };
-        }
-
-        function drawCube(x,z,w,d,h,color) {
-
-            const bottom =
-                project(x,z * 0 + 0,z);
-
-            const top =
-                project(x, h, z);
-
-            if (!bottom || !top) return;
-
-            const scale =
-                top.scale;
-
-            const width3D =
-                w * scale;
-
-            const depth3D =
-                d * scale;
-
-            const height3D =
-                h * scale;
-
-            ctx.fillStyle = color;
-
-            ctx.fillRect(
-                top.x - width3D / 2,
-                top.y,
-                width3D,
-                height3D
-            );
-
-            ctx.fillStyle = "rgba(0,0,0,.25)";
-
-            ctx.fillRect(
-                top.x + width3D / 2,
-                top.y,
-                depth3D * .35,
-                height3D
-            );
-        }
-
-        function drawGround() {
-
-            ctx.fillStyle = "#26382a";
-
-            ctx.fillRect(
-                0,
-                0,
-                width,
-                height
-            );
-
-            for (
-                let x = -30;
-                x <= 30;
-                x += 2
-            ) {
-
-                const p1 =
-                    project(x,0,-30);
-
-                const p2 =
-                    project(x,0,30);
-
-                if (!p1 || !p2) continue;
-
-                ctx.strokeStyle =
-                    "rgba(255,255,255,.08)";
-
-                ctx.beginPath();
-
-                ctx.moveTo(p1.x,p1.y);
-                ctx.lineTo(p2.x,p2.y);
-
-                ctx.stroke();
-            }
-
-            for (
-                let z = -30;
-                z <= 30;
-                z += 2
-            ) {
-
-                const p1 =
-                    project(-30,0,z);
-
-                const p2 =
-                    project(30,0,z);
-
-                if (!p1 || !p2) continue;
-
-                ctx.beginPath();
-
-                ctx.moveTo(p1.x,p1.y);
-                ctx.lineTo(p2.x,p2.y);
-
-                ctx.stroke();
-            }
-        }
-
-        function drawClue(clue) {
-
-            if (clue.found) return;
-
-            const p =
-                project(clue.x,1,clue.z);
-
-            if (!p) return;
-
-            ctx.fillStyle = "#facc15";
-
-            ctx.beginPath();
-
-            ctx.arc(
-                p.x,
-                p.y,
-                Math.max(5,p.scale * .18),
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-            ctx.fillStyle = "white";
-
-            ctx.font = "bold 14px Arial";
-
-            ctx.textAlign = "center";
-
-            ctx.fillText(
-                "?",
-                p.x,
-                p.y + 5
-            );
-        }
-
-        function drawPlayer() {
-
-            const head =
-                project(
-                    player.x,
-                    2.7,
-                    player.z
+            const label =
+                document.getElementById(
+                    "bloxBuxAmount"
                 );
 
-            const body =
-                project(
-                    player.x,
-                    1.5,
-                    player.z
-                );
+            if (label) {
+                label.textContent =
+                    amount.toLocaleString();
+            }
 
-            if (!head || !body) return;
-
-            const size =
-                Math.max(12, body.scale * .7);
-
-            ctx.fillStyle = "#f2c7a5";
-
-            ctx.beginPath();
-
-            ctx.arc(
-                head.x,
-                head.y,
-                size * .3,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-            ctx.fillStyle = "#2563eb";
-
-            ctx.fillRect(
-                body.x - size / 2,
-                body.y,
-                size,
-                size * 1.2
-            );
-
-            ctx.fillStyle = "#111827";
-
-            ctx.fillRect(
-                body.x - size / 2,
-                body.y + size * 1.2,
-                size * .35,
-                size
-            );
-
-            ctx.fillRect(
-                body.x + size * .15,
-                body.y + size * 1.2,
-                size * .35,
-                size
-            );
         }
 
-        function update() {
 
-            let forward = 0;
-            let sideways = 0;
+        updateBloxBuxDisplay();
 
-            if (
-                keys["w"] ||
-                keys["arrowup"]
-            ) forward += 1;
 
-            if (
-                keys["s"] ||
-                keys["arrowdown"]
-            ) forward -= 1;
+        this.bloxBuxTimer =
+            setInterval(() => {
 
-            if (
-                keys["a"] ||
-                keys["arrowleft"]
-            ) sideways -= 1;
+                if (
+                    typeof BlockPlayAccounts !==
+                    "undefined"
+                ) {
 
-            if (
-                keys["d"] ||
-                keys["arrowright"]
-            ) sideways += 1;
+                    BlockPlayAccounts.addBloxBux(1);
 
-            player.x +=
-                Math.cos(player.angle) *
-                sideways *
-                player.speed;
+                    updateBloxBuxDisplay();
 
-            player.z +=
-                Math.sin(player.angle) *
-                sideways *
-                player.speed;
+                }
 
-            player.x +=
-                Math.sin(player.angle) *
-                forward *
-                player.speed;
+            }, 60000);
 
-            player.z -=
-                Math.cos(player.angle) *
-                forward *
-                player.speed;
 
-            player.x =
-                Math.max(-25,Math.min(25,player.x));
+        /*
+         * GAME TIMER
+         */
 
-            player.z =
-                Math.max(-25,Math.min(25,player.z));
+        const timerInterval =
+            setInterval(() => {
+
+                const elapsed =
+                    Math.floor(
+                        (Date.now() -
+                            this.gameStartTime) /
+                        1000
+                    );
+
+                const minutes =
+                    Math.floor(elapsed / 60);
+
+                const seconds =
+                    elapsed % 60;
+
+                const timer =
+                    document.getElementById(
+                        "gameTimer"
+                    );
+
+                if (timer) {
+
+                    timer.textContent =
+                        String(minutes).padStart(2, "0") +
+                        ":" +
+                        String(seconds).padStart(2, "0");
+
+                }
+
+            }, 1000);
+
+
+        this.gameTimerInterval =
+            timerInterval;
+
+
+        /*
+         * LEAVE
+         */
+
+        document
+            .getElementById("leaveGameButton")
+            .addEventListener(
+                "click",
+                () => {
+
+                    this.cleanup();
+
+                    if (
+                        typeof showGames ===
+                        "function"
+                    ) {
+
+                        showGames();
+
+                    } else {
+
+                        location.reload();
+
+                    }
+
+                }
+            );
+
+
+        /*
+         * ANIMATION
+         */
+
+        const clock =
+            new THREE.Clock();
+
+
+        const animate = () => {
+
+            this.animationFrame =
+                requestAnimationFrame(
+                    animate
+                );
+
+            const delta =
+                Math.min(
+                    clock.getDelta(),
+                    0.05
+                );
+
+
+            /*
+             * PLAYER MOVEMENT
+             */
+
+            const moveSpeed =
+                8 * delta;
+
+
+            if (keys.up) {
+
+                player.translateZ(
+                    -moveSpeed
+                );
+
+            }
+
+            if (keys.down) {
+
+                player.translateZ(
+                    moveSpeed
+                );
+
+            }
+
+            if (keys.left) {
+
+                player.rotation.y +=
+                    2.5 * delta;
+
+            }
+
+            if (keys.right) {
+
+                player.rotation.y -=
+                    2.5 * delta;
+
+            }
+
+
+            /*
+             * KEEP PLAYER ON MAP
+             */
+
+            player.position.x =
+                Math.max(
+                    -54,
+                    Math.min(
+                        54,
+                        player.position.x
+                    )
+                );
+
+            player.position.z =
+                Math.max(
+                    -54,
+                    Math.min(
+                        54,
+                        player.position.z
+                    )
+                );
+
+
+            /*
+             * CAMERA FOLLOW
+             */
+
+            const cameraOffset =
+                new THREE.Vector3(
+                    0,
+                    6,
+                    10
+                );
+
+            cameraOffset.applyAxisAngle(
+                new THREE.Vector3(0, 1, 0),
+                player.rotation.y
+            );
+
+            const targetCamera =
+                player.position.clone()
+                    .add(cameraOffset);
+
+            camera.position.lerp(
+                targetCamera,
+                0.12
+            );
+
+            camera.lookAt(
+                player.position.x,
+                player.position.y + 1.5,
+                player.position.z
+            );
+
+
+            /*
+             * ROTATE CLUES
+             */
 
             clues.forEach(clue => {
 
-                const distance =
-                    Math.hypot(
-                        player.x - clue.x,
-                        player.z - clue.z
-                    );
+                if (!clue.collected) {
 
-                if (
-                    distance < 1.5 &&
-                    !clue.found
-                ) {
+                    clue.object.rotation.y +=
+                        delta * 2;
 
-                    clue.found = true;
+                    clue.object.rotation.x +=
+                        delta;
 
-                    mysteryClues++;
+                    const distance =
+                        clue.object.position
+                            .distanceTo(
+                                player.position
+                            );
 
-                    mysteryBloxBux += 5;
+                    if (distance < 2) {
+
+                        clue.collected = true;
+
+                        scene.remove(
+                            clue.object
+                        );
+
+                        const message =
+                            document.getElementById(
+                                "gameMessage"
+                            );
+
+                        if (message) {
+
+                            message.textContent =
+                                "Clue collected!";
+
+                            setTimeout(() => {
+
+                                if (message) {
+
+                                    message.textContent =
+                                        "Find the clues around the map!";
+
+                                }
+
+                            }, 1500);
+
+                        }
+
+                    }
+
                 }
+
             });
+
+
+            /*
+             * RENDER REAL 3D
+             */
+
+            renderer.render(
+                scene,
+                camera
+            );
+
+        };
+
+
+        animate();
+
+
+        /*
+         * RESIZE
+         */
+
+        const resizeHandler = () => {
+
+            camera.aspect =
+                window.innerWidth /
+                window.innerHeight;
+
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+            );
+
+        };
+
+
+        window.addEventListener(
+            "resize",
+            resizeHandler
+        );
+
+        this.resizeHandler =
+            resizeHandler;
+
+    },
+
+
+    cleanup() {
+
+        if (this.animationFrame) {
+
+            cancelAnimationFrame(
+                this.animationFrame
+            );
+
+            this.animationFrame = null;
+
         }
 
-        function render() {
+        if (this.bloxBuxTimer) {
 
-            update();
+            clearInterval(
+                this.bloxBuxTimer
+            );
 
-            drawGround();
+            this.bloxBuxTimer = null;
 
-            buildings.forEach(building => {
-
-                drawCube(
-                    building.x,
-                    building.z,
-                    building.w,
-                    building.d,
-                    building.h,
-                    "#64748b"
-                );
-
-            });
-
-            clues.forEach(drawClue);
-
-            drawPlayer();
-
-            requestAnimationFrame(render);
         }
 
-        let mysteryTime = 120;
-        let mysteryBloxBux = 0;
-        let mysteryClues = 0;
+        if (this.gameTimerInterval) {
 
-        const timeLabel =
-            document.getElementById("mysteryTime");
+            clearInterval(
+                this.gameTimerInterval
+            );
 
-        const buxLabel =
-            document.getElementById("mysteryBloxBux");
+            this.gameTimerInterval = null;
 
-        this.mysteryTimer =
-            setInterval(() => {
+        }
 
-                mysteryTime--;
+        if (this.resizeHandler) {
 
-                if (timeLabel) {
-                    timeLabel.textContent =
-                        mysteryTime;
-                }
+            window.removeEventListener(
+                "resize",
+                this.resizeHandler
+            );
 
-                if (mysteryTime <= 0) {
+            this.resizeHandler = null;
 
-                    clearInterval(
-                        this.mysteryTimer
-                    );
+        }
 
-                    alert(
-                        "The mystery round ended!"
-                    );
-                }
-
-            },1000);
-
-        this.mysteryBloxBuxTimer =
-            setInterval(() => {
-
-                mysteryBloxBux += 1;
-
-                if (buxLabel) {
-                    buxLabel.textContent =
-                        mysteryBloxBux;
-                }
-
-            },10000);
-
-        document
-            .getElementById("leaveMystery")
-            .onclick = () => {
-
-                clearInterval(
-                    this.mysteryTimer
-                );
-
-                clearInterval(
-                    this.mysteryBloxBuxTimer
-                );
-
-                if (
-                    typeof showGames ===
-                    "function"
-                ) {
-                    showGames();
-                }
-            };
-
-        render();
-    },
-
-    brainGrab() {
-        alert("Brain Grab is next.");
-    },
-
-    islandSurvival() {
-        alert("Island Survival is next.");
-    },
-
-    blockRacers() {
-        alert("Block Racers is next.");
-    },
-
-    ghostHunt() {
-        alert("Ghost Hunt is next.");
-    },
-
-    coinRush() {
-        alert("Coin Rush is next.");
-    },
-
-    buildCity() {
-        alert("Build City is next.");
     }
+
 };
+
+
+/*
+ * GAME LAUNCHER
+ */
+
+async function launchBloxPlayGame(gameName) {
+
+    if (gameName === "Mystery Hunt") {
+
+        await BloxPlayGameLauncher.mysteryHunt();
+
+        return;
+
+    }
+
+    alert(
+        gameName + " is coming soon!"
+    );
+
+}
