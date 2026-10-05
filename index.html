@@ -1,1406 +1,1372 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>BloxPlay</title>
 
 <style>
 *{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,sans-serif;background:#10131a;color:white;overflow:hidden}
+button,input{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
 
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f2f2f2;
-color:#222
-}
+#app{width:100%;height:100%;display:flex;flex-direction:column}
 
 header{
-background:#111;
-color:white;
-padding:12px 16px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-flex-wrap:wrap;
-position:sticky;
-top:0;
-z-index:50
+ height:62px;background:#181c25;border-bottom:1px solid #303746;
+ display:flex;align-items:center;padding:0 16px;gap:14px;z-index:20
 }
+.logo{font-size:25px;font-weight:900;color:#61a7ff}
+.search{
+ flex:1;max-width:430px;background:#0d1016;border:1px solid #343b4a;
+ color:white;border-radius:10px;padding:11px 14px;outline:none
+}
+.bux{background:#202633;padding:10px 14px;border-radius:10px;font-weight:bold;color:#ffd84d}
+.accountMini{font-weight:bold}
 
-.logo{
-font-size:24px;
-font-weight:bold
-}
+#layout{flex:1;display:flex;min-height:0}
 
 nav{
-display:flex;
-gap:4px;
-overflow-x:auto
+ width:190px;background:#151922;border-right:1px solid #303746;padding:12px;
+ display:flex;flex-direction:column;gap:7px
 }
-
 nav button{
-background:transparent;
-border:0;
-color:white;
-padding:10px 12px;
-border-radius:8px;
-font-size:15px;
-white-space:nowrap
+ background:transparent;color:#b9c0cc;text-align:left;padding:12px;border-radius:9px
+}
+nav button:hover,nav button.active{background:#252c39;color:white}
+
+main{flex:1;overflow:auto;padding:22px}
+
+.page{display:none}
+.page.active{display:block}
+
+h1{margin:0 0 8px;font-size:30px}
+h2{margin:22px 0 12px}
+.sub{color:#9099a8}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+ gap:15px
 }
 
-nav button:hover{
-background:#333
+.card{
+ background:#191e28;border:1px solid #303746;border-radius:14px;
+ padding:14px;transition:.15s
+}
+.card:hover{transform:translateY(-2px);border-color:#5576a8}
+
+.gameThumb{
+ height:115px;border-radius:10px;margin-bottom:12px;
+ display:flex;align-items:center;justify-content:center;
+ font-size:42px;background:linear-gradient(135deg,#2c3850,#151922)
 }
 
-.bux{
-background:#222;
-color:#ffd83d;
-padding:9px 12px;
-border-radius:8px;
-font-weight:bold
+.card button,.primary{
+ background:#347bea;color:white;padding:10px 14px;border-radius:9px;font-weight:bold
 }
-
-main{
-max-width:1100px;
-margin:auto;
-padding:25px 16px
+.secondary{
+ background:#292f3c;color:white;padding:10px 14px;border-radius:9px
 }
+.danger{background:#c94747!important}
+.row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 
-.page{
-display:none
-}
-
-.page.active{
-display:block
-}
-
-.hero{
-background:linear-gradient(135deg,#151515,#444);
-color:white;
-padding:35px;
-border-radius:16px;
-margin-bottom:25px
-}
-
-.hero h1{
-font-size:38px;
-margin-top:0
-}
-
-.search,
-input,
-select{
-width:100%;
-padding:13px;
-border:1px solid #ccc;
-border-radius:9px;
-font-size:16px;
-margin:6px 0
-}
-
-.games{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:16px
-}
-
-.game,
 .panel{
-background:white;
-border-radius:14px;
-padding:18px;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
-margin-bottom:16px
+ background:#191e28;border:1px solid #303746;border-radius:14px;padding:18px;margin-bottom:16px
 }
 
-.game-icon{
-height:120px;
-border-radius:10px;
-background:linear-gradient(135deg,#777,#222);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:45px
-}
-
-.game h3{
-margin-bottom:5px
-}
-
-.game p{
-color:#666
-}
-
-button{
-cursor:pointer
-}
-
-.play,
-.mainButton{
-width:100%;
-padding:12px;
-border:0;
-border-radius:8px;
-background:#111;
-color:white;
-font-weight:bold;
-margin-top:8px
-}
-
-.play:hover,
-.mainButton:hover{
-background:#333
-}
-
-.red{
-background:#c62828
-}
-
-.accountCard{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-background:#f4f4f4;
-border-radius:9px;
-margin:8px 0;
-gap:10px
-}
-
-.accountCard button{
-border:0;
-background:#111;
-color:white;
-padding:8px 12px;
-border-radius:7px
-}
-
-.status{
-padding:12px;
-background:#eee;
-border-radius:8px;
-margin-bottom:15px
-}
-
-
-/* AVATAR */
-
-.avatarEditor{
-display:grid;
-grid-template-columns:280px 1fr;
-gap:25px;
-align-items:start
+input,select{
+ background:#0e1117;color:white;border:1px solid #343b4a;
+ border-radius:9px;padding:11px;outline:none
 }
 
 .avatarPreview{
-height:350px;
-background:linear-gradient(#9bd7ff 0 60%,#5e9b48 60%);
-border-radius:15px;
-position:relative;
-overflow:hidden
+ width:250px;height:300px;background:#10141c;border-radius:16px;
+ display:flex;align-items:center;justify-content:center;position:relative;
+ perspective:700px
 }
 
-.avatar{
-position:absolute;
-left:50%;
-top:50%;
-width:100px;
-height:230px;
-transform:translate(-50%,-50%)
+.avatar3d{
+ width:90px;height:190px;position:relative;transform:rotateY(-18deg)
+}
+.head{
+ width:72px;height:72px;border-radius:50%;position:absolute;top:0;left:9px;
+ background:#f0bd91;border:3px solid #222
+}
+.body{
+ width:76px;height:92px;position:absolute;top:70px;left:7px;
+ background:#347bea;border-radius:9px
+}
+.arm{
+ width:24px;height:84px;position:absolute;top:75px;
+ background:#f0bd91;border:3px solid #222;border-radius:10px
+}
+.arm.left{left:-18px}.arm.right{right:-18px}
+.leg{
+ width:28px;height:82px;position:absolute;top:155px;background:#252b38;border-radius:8px
+}
+.leg.left{left:15px}.leg.right{right:15px}
+
+.color{
+ width:34px;height:34px;border-radius:7px;border:2px solid #777
 }
 
-.avatarHead{
-width:76px;
-height:76px;
-background:#f1c27d;
-border-radius:12px;
-position:absolute;
-left:12px;
-top:0
+#gameOverlay{
+ position:fixed;inset:0;background:#05070a;z-index:50;display:none
 }
-
-.avatarBody{
-width:70px;
-height:95px;
-background:#2673d8;
-position:absolute;
-left:15px;
-top:78px;
-border-radius:8px
+#gameUI{
+ position:absolute;inset:0;pointer-events:none;z-index:5
 }
-
-.avatarArm{
-width:25px;
-height:90px;
-background:#2673d8;
-position:absolute;
-top:82px;
-border-radius:8px
+#gameTop{
+ display:flex;justify-content:space-between;padding:15px
 }
-
-.avatarArm.left{
-left:-13px;
-transform:rotate(8deg)
+#roundBox,#gameBux{
+ background:#111722dd;padding:10px 14px;border-radius:10px
 }
-
-.avatarArm.right{
-right:-13px;
-transform:rotate(-8deg)
+#leaveGame{
+ pointer-events:auto;background:#d14949;color:white;padding:10px 14px;border-radius:9px
 }
-
-.avatarLeg{
-width:28px;
-height:75px;
-background:#222;
-position:absolute;
-top:168px;
-border-radius:7px
+#gameMessage{
+ position:absolute;top:70px;left:50%;transform:translateX(-50%);
+ background:#111722dd;padding:10px 16px;border-radius:10px;text-align:center
 }
-
-.avatarLeg.left{
-left:17px
-}
-
-.avatarLeg.right{
-right:17px
-}
-
-.colorButtons{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px
-}
-
-.colorButtons button{
-height:42px;
-border:0;
-border-radius:8px;
-color:white;
-font-weight:bold
-}
-
-.avatarBlue{background:#2673d8}
-.avatarRed{background:#c62828}
-.avatarGreen{background:#39834a}
-.avatarPurple{background:#743db8}
-.avatarBlack{background:#222}
-.avatarOrange{background:#e88722}
-
-
-/* GAME */
-
-#gameScreen{
-display:none;
-position:fixed;
-inset:0;
-background:#111;
-z-index:100;
-color:white
-}
-
-#gameScreen.active{
-display:block
-}
-
-#gameHeader{
-position:absolute;
-top:0;
-left:0;
-right:0;
-z-index:20;
-background:rgba(0,0,0,.8);
-padding:12px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px
-}
-
-#gameHeader button{
-border:0;
-background:#c62828;
-color:white;
-padding:10px 14px;
-border-radius:8px;
-font-weight:bold
-}
-
-#gameWorld{
-position:absolute;
-inset:0;
-overflow:hidden;
-background:
-linear-gradient(
-#78c5ed 0%,
-#bfeaff 48%,
-#65a451 49%,
-#4b873b 100%
-)
-}
-
-#gameGround{
-position:absolute;
-width:1100px;
-height:1100px;
-left:50%;
-top:54%;
-transform:translate(-50%,-50%) rotateX(55deg);
-background:
-repeating-linear-gradient(
-0deg,
-#5c994d 0px,
-#5c994d 49px,
-#508b43 50px,
-#508b43 51px
-);
-border:8px solid #396d31
-}
-
-.gameRoad{
-position:absolute;
-background:#444;
-border:5px solid #555
-}
-
-.gameRoad.a{
-width:1000px;
-height:120px;
-left:50%;
-top:48%;
-transform:translate(-50%,-50%) rotateX(55deg)
-}
-
-.gameRoad.b{
-width:120px;
-height:1000px;
-left:50%;
-top:48%;
-transform:translate(-50%,-50%) rotateX(55deg)
-}
-
-.house{
-position:absolute;
-width:160px;
-height:130px;
-background:#ddd;
-border:5px solid #333
-}
-
-.house:after{
-content:"";
-position:absolute;
-width:48px;
-height:65px;
-background:#333;
-bottom:0;
-left:50%;
-transform:translateX(-50%)
-}
-
-.house.one{left:7%;top:22%}
-.house.two{right:7%;top:22%;background:#d5b8b8}
-.house.three{left:7%;bottom:12%;background:#b8c8d5}
-.house.four{right:7%;bottom:12%;background:#c6d5b8}
-
-#gamePlayer{
-position:absolute;
-width:100px;
-height:230px;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-z-index:10
-}
-
-#gamePlayer .head{
-width:76px;
-height:76px;
-background:#f1c27d;
-border-radius:12px;
-position:absolute;
-left:12px;
-top:0
-}
-
-#gamePlayer .body{
-width:70px;
-height:95px;
-background:#2673d8;
-position:absolute;
-left:15px;
-top:78px;
-border-radius:8px
-}
-
-#gamePlayer .arm{
-width:25px;
-height:90px;
-background:#2673d8;
-position:absolute;
-top:82px;
-border-radius:8px
-}
-
-#gamePlayer .arm.left{
-left:-13px;
-transform:rotate(8deg)
-}
-
-#gamePlayer .arm.right{
-right:-13px;
-transform:rotate(-8deg)
-}
-
-#gamePlayer .leg{
-width:28px;
-height:75px;
-background:#222;
-position:absolute;
-top:168px;
-border-radius:7px
-}
-
-#gamePlayer .leg.left{
-left:17px
-}
-
-#gamePlayer .leg.right{
-right:17px
-}
-
-.playerName{
-position:absolute;
-top:-28px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,.65);
-padding:4px 8px;
-border-radius:5px;
-font-size:12px;
-white-space:nowrap
-}
-
-#roundMessage{
-position:absolute;
-top:90px;
-left:50%;
-transform:translateX(-50%);
-background:rgba(0,0,0,.8);
-padding:15px 22px;
-border-radius:12px;
-text-align:center;
-z-index:20;
-min-width:230px
-}
-
 #mobileControls{
-position:absolute;
-bottom:25px;
-left:20px;
-z-index:30;
-display:grid;
-grid-template-columns:55px 55px 55px;
-gap:6px
+ position:absolute;bottom:25px;left:20px;right:20px;
+ display:flex;justify-content:space-between;pointer-events:none
 }
-
-#mobileControls button{
-width:55px;
-height:55px;
-border:0;
-border-radius:10px;
-background:rgba(0,0,0,.7);
-color:white;
-font-size:22px
+.controlGroup{display:grid;grid-template-columns:55px 55px 55px;gap:5px;pointer-events:auto}
+.control{
+ width:55px;height:55px;background:#ffffff22;color:white;border-radius:12px;
+ backdrop-filter:blur(5px);font-weight:bold
 }
+#actionControls{display:flex;gap:8px;pointer-events:auto}
+#actionControls button{width:75px;height:55px;background:#ffffff22;color:white;border-radius:12px}
 
-#up{grid-column:2}
-#left{grid-column:1}
-#down{grid-column:2}
-#right{grid-column:3;grid-row:2}
+#loginModal{
+ position:fixed;inset:0;background:#07090dcc;z-index:100;
+ display:flex;align-items:center;justify-content:center
+}
+.modal{
+ width:min(410px,92vw);background:#191e28;border:1px solid #343b4a;
+ padding:22px;border-radius:16px
+}
+.modal input{width:100%;margin:6px 0}
+.modal button{width:100%;margin-top:8px}
 
-#roundTimer{
-font-weight:bold
+.chat{
+ height:320px;background:#0e1117;border-radius:10px;padding:12px;
+ display:flex;flex-direction:column
+}
+.chatMessages{flex:1;overflow:auto}
+.chatInput{display:flex;gap:7px;margin-top:8px}
+.chatInput input{flex:1}
+
+.friend{
+ display:flex;justify-content:space-between;align-items:center;
+ padding:12px;background:#151a23;border-radius:9px;margin-bottom:7px
 }
 
 @media(max-width:700px){
-
-.avatarEditor{
-grid-template-columns:1fr
-}
-
-.avatarPreview{
-height:300px
-}
-
-.hero h1{
-font-size:30px
-}
+ nav{width:70px;padding:7px}
+ nav button{font-size:0;text-align:center}
+ nav button:before{font-size:22px}
+ nav button:nth-child(1):before{content:"🏠"}
+ nav button:nth-child(2):before{content:"🎮"}
+ nav button:nth-child(3):before{content:"👤"}
+ nav button:nth-child(4):before{content:"👥"}
+ nav button:nth-child(5):before{content:"⚙️"}
+ main{padding:13px}
+ .search{max-width:none}
+ .accountMini{display:none}
+ header{padding:0 8px}
 }
 </style>
 </head>
 
 <body>
 
+<div id="app">
+
 <header>
-
-<div class="logo">🧱 BloxPlay</div>
-
-<nav>
-<button onclick="showPage('home')">Home</button>
-<button onclick="showPage('games')">Games</button>
-<button onclick="showPage('avatarPage')">Avatar</button>
-<button onclick="showPage('accounts')">Accounts</button>
-<button onclick="showPage('friends')">Friends</button>
-</nav>
-
-<div class="bux">
-💰 <span id="bux">∞</span> BloxBux
-</div>
-
+ <b class="logo">BloxPlay</b>
+ <input id="search" class="search" placeholder="Search games or players...">
+ <div class="bux">💰 <span id="bux">∞</span></div>
+ <div class="accountMini" id="accountMini">Guest</div>
 </header>
 
+<div id="layout">
+
+<nav>
+ <button class="active" data-page="home">Home</button>
+ <button data-page="games">Games</button>
+ <button data-page="avatar">Avatar</button>
+ <button data-page="friends">Friends</button>
+ <button data-page="settings">Settings</button>
+</nav>
 
 <main>
 
 <section id="home" class="page active">
+ <h1>Welcome to BloxPlay</h1>
+ <p class="sub">Play. Create. Explore.</p>
 
-<div class="hero">
-<h1>Welcome to BloxPlay</h1>
-<p>Play games, customize your avatar, and explore BloxPlay.</p>
-</div>
+ <div class="panel">
+  <h2>Featured</h2>
+  <div id="featured" class="grid"></div>
+ </div>
 
-<input
-class="search"
-id="homeSearch"
-placeholder="Search games..."
-oninput="searchGames('homeSearch','homeGames')"
->
-
-<h2>🔥 Popular Games</h2>
-
-<div id="homeGames" class="games"></div>
-
+ <div class="panel">
+  <h2>Quick Start</h2>
+  <div class="row">
+   <button class="primary" onclick="playGame('mystery')">🔪 Mystery Hunt</button>
+   <button class="secondary" onclick="playGame('coin')">🪙 Coin Rush</button>
+   <button class="secondary" onclick="playGame('island')">🏝️ Island Survival</button>
+  </div>
+ </div>
 </section>
-
 
 <section id="games" class="page">
-
-<h1>Games</h1>
-
-<input
-class="search"
-id="gameSearch"
-placeholder="Search games..."
-oninput="searchGames('gameSearch','allGames')"
->
-
-<div id="allGames" class="games"></div>
-
+ <h1>Games</h1>
+ <p class="sub">Original BloxPlay games.</p>
+ <div id="gamesGrid" class="grid"></div>
 </section>
 
+<section id="avatar" class="page">
+ <h1>Your Avatar</h1>
 
-<section id="avatarPage" class="page">
+ <div class="panel row">
 
-<h1>👤 Avatar</h1>
+  <div class="avatarPreview">
+   <div class="avatar3d">
+    <div class="head" id="avHead"></div>
+    <div class="body" id="avBody"></div>
+    <div class="arm left" id="avArmL"></div>
+    <div class="arm right" id="avArmR"></div>
+    <div class="leg left"></div>
+    <div class="leg right"></div>
+   </div>
+  </div>
 
-<div class="avatarEditor">
+  <div>
+   <h2>Body</h2>
+   <div class="row">
+    <button class="color" style="background:#f0bd91" onclick="setSkin('#f0bd91')"></button>
+    <button class="color" style="background:#8d5524" onclick="setSkin('#8d5524')"></button>
+    <button class="color" style="background:#ffd6b0" onclick="setSkin('#ffd6b0')"></button>
+    <button class="color" style="background:#704214" onclick="setSkin('#704214')"></button>
+   </div>
 
-<div class="avatarPreview">
+   <h2>Shirt</h2>
+   <div class="row">
+    <button class="color" style="background:#347bea" onclick="setShirt('#347bea')"></button>
+    <button class="color" style="background:#e84855" onclick="setShirt('#e84855')"></button>
+    <button class="color" style="background:#42b883" onclick="setShirt('#42b883')"></button>
+    <button class="color" style="background:#9b59b6" onclick="setShirt('#9b59b6')"></button>
+    <button class="color" style="background:#f1c40f" onclick="setShirt('#f1c40f')"></button>
+   </div>
 
-<div class="avatar" id="avatarPreview">
+   <h2>Username</h2>
+   <input id="displayName" maxlength="20">
+   <br><br>
+   <button class="primary" onclick="saveAvatar()">Save Avatar</button>
+   <button class="secondary" onclick="randomAvatar()">Randomize</button>
+  </div>
 
-<div class="avatarHead"></div>
-<div class="avatarBody"></div>
-<div class="avatarArm left"></div>
-<div class="avatarArm right"></div>
-<div class="avatarLeg left"></div>
-<div class="avatarLeg right"></div>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<h2>Customize Avatar</h2>
-
-<p>Choose your shirt color.</p>
-
-<div class="colorButtons">
-
-<button class="avatarBlue" onclick="setAvatarColor('#2673d8')">Blue</button>
-
-<button class="avatarRed" onclick="setAvatarColor('#c62828')">Red</button>
-
-<button class="avatarGreen" onclick="setAvatarColor('#39834a')">Green</button>
-
-<button class="avatarPurple" onclick="setAvatarColor('#743db8')">Purple</button>
-
-<button class="avatarBlack" onclick="setAvatarColor('#222')">Black</button>
-
-<button class="avatarOrange" onclick="setAvatarColor('#e88722')">Orange</button>
-
-</div>
-
-<h3>Avatar</h3>
-
-<p>Head, body, arms, and legs are included.</p>
-
-<button class="mainButton" onclick="randomAvatar()">
-🎲 Random Avatar
-</button>
-
-</div>
-
-</div>
-
+ </div>
 </section>
-
-
-<section id="accounts" class="page">
-
-<h1>Accounts</h1>
-
-<div id="accountStatus" class="status"></div>
-
-<div class="panel">
-
-<h2>Create Account</h2>
-
-<input id="newUsername" placeholder="Username" maxlength="20">
-
-<input id="newPassword" type="password" placeholder="Password">
-
-<button class="mainButton" onclick="createAccount()">
-Create Account
-</button>
-
-</div>
-
-
-<div class="panel">
-
-<h2>Login</h2>
-
-<input id="loginUsername" placeholder="Username">
-
-<input id="loginPassword" type="password" placeholder="Password">
-
-<button class="mainButton" onclick="login()">
-Login
-</button>
-
-</div>
-
-
-<div class="panel">
-
-<h2>Your Accounts</h2>
-
-<div id="accountList"></div>
-
-</div>
-
-</section>
-
 
 <section id="friends" class="page">
+ <h1>Friends</h1>
 
-<h1>👥 Friends</h1>
+ <div class="panel">
+  <input id="friendSearch" placeholder="Search a player...">
+  <button class="primary" onclick="addFriend()">Add Friend</button>
+ </div>
 
-<div class="panel">
+ <div id="friendsList"></div>
 
-<p>Friends and multiplayer connections are coming with the BloxPlay server.</p>
+ <div class="panel">
+  <h2>Chat</h2>
+  <div class="chat">
+   <div class="chatMessages" id="chatMessages">
+    <div><b>BloxPlay:</b> Welcome to chat!</div>
+   </div>
+   <div class="chatInput">
+    <input id="chatInput" maxlength="120" placeholder="Type a message...">
+    <button class="primary" onclick="sendChat()">Send</button>
+   </div>
+  </div>
+ </div>
+</section>
 
-</div>
+<section id="settings" class="page">
+ <h1>Settings</h1>
 
+ <div class="panel">
+  <h2>Account</h2>
+  <button class="primary" onclick="openAccounts()">Manage Accounts</button>
+  <button class="secondary" onclick="logout()">Log Out</button>
+ </div>
+
+ <div class="panel">
+  <h2>Create a Game</h2>
+  <input id="newGameName" placeholder="Game name">
+  <select id="newGameType">
+   <option value="coin">Coin Rush</option>
+   <option value="island">Island Survival</option>
+   <option value="racer">Block Racer</option>
+   <option value="mystery">Mystery Hunt</option>
+  </select>
+  <button class="primary" onclick="createGame()">Create Game</button>
+ </div>
+
+ <div class="panel">
+  <h2>BloxPlay Account</h2>
+  <p class="sub">Official moderation tools require the server version of BloxPlay.</p>
+  <div class="row">
+   <button class="secondary">⚠️ Report Player</button>
+   <button class="secondary">🚫 Report Game</button>
+  </div>
+ </div>
 </section>
 
 </main>
-
-
-<footer>
-BloxPlay © 2026
-</footer>
-
-
-<!-- GAME -->
-
-<div id="gameScreen">
-
-<div id="gameHeader">
-
-<strong>🔪 Mystery Hunt</strong>
-
-<span>💰 ∞ BloxBux</span>
-
-<span id="roundTimer">Lobby</span>
-
-<button onclick="leaveGame()">Leave</button>
-
+</div>
 </div>
 
+<div id="loginModal">
+ <div class="modal">
+  <h1>BloxPlay</h1>
+  <p class="sub">Create or switch to an account.</p>
 
-<div id="gameWorld">
+  <input id="loginName" maxlength="20" placeholder="Username">
+  <input id="loginPassword" type="password" placeholder="Password">
 
-<div id="gameGround"></div>
+  <button class="primary" onclick="createAccount()">Create Account</button>
+  <button class="secondary" onclick="login()">Log In</button>
 
-<div class="gameRoad a"></div>
-<div class="gameRoad b"></div>
-
-<div class="house one"></div>
-<div class="house two"></div>
-<div class="house three"></div>
-<div class="house four"></div>
-
-
-<div id="gamePlayer">
-
-<div class="playerName" id="playerName">
-Player
+  <p id="loginError" style="color:#ff7777"></p>
+ </div>
 </div>
 
-<div class="head"></div>
-<div class="body"></div>
-
-<div class="arm left"></div>
-<div class="arm right"></div>
-
-<div class="leg left"></div>
-<div class="leg right"></div>
-
+<div id="accountModal" class="hidden">
+ <div class="modal">
+  <h2>Your Accounts</h2>
+  <div id="accountsList"></div>
+  <button class="secondary" onclick="closeAccounts()">Close</button>
+ </div>
 </div>
 
+<div id="gameOverlay">
 
-<div id="roundMessage">
-Waiting in lobby...
+ <canvas id="gameCanvas"></canvas>
+
+ <div id="gameUI">
+  <div id="gameTop">
+   <div id="roundBox">Lobby</div>
+   <div class="row">
+    <div id="gameBux">💰 ∞</div>
+    <button id="leaveGame" onclick="leaveGame()">Leave</button>
+   </div>
+  </div>
+
+  <div id="gameMessage">Loading...</div>
+
+  <div id="mobileControls">
+
+   <div class="controlGroup">
+    <span></span>
+    <button class="control" data-key="w">▲</button>
+    <span></span>
+
+    <button class="control" data-key="a">◀</button>
+    <button class="control" data-key="s">▼</button>
+    <button class="control" data-key="d">▶</button>
+   </div>
+
+   <div id="actionControls">
+    <button onclick="gameAction()">ACTION</button>
+    <button onclick="gameJump()">JUMP</button>
+   </div>
+
+  </div>
+ </div>
 </div>
 
+<script type="module">
 
-<div id="mobileControls">
-
-<button id="up">▲</button>
-<button id="left">◀</button>
-<button id="down">▼</button>
-<button id="right">▶</button>
-
-</div>
-
-</div>
-
-</div>
-
-
-<script>
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js';
 
 /* =========================
-ACCOUNTS
-========================= */
-
-let accounts=
-JSON.parse(localStorage.getItem("bloxplayAccounts")||"[]");
-
-let currentUsername=
-localStorage.getItem("bloxplayCurrent")||"";
-
-
-function saveAccounts(){
-
-localStorage.setItem(
-"bloxplayAccounts",
-JSON.stringify(accounts)
-);
-
-}
-
-
-function createAccount(){
-
-const username=
-document.getElementById("newUsername").value.trim();
-
-const password=
-document.getElementById("newPassword").value;
-
-if(username.length<3){
-
-alert("Username must be at least 3 characters.");
-
-return;
-}
-
-if(password.length<6){
-
-alert("Password must be at least 6 characters.");
-
-return;
-}
-
-if(accounts.length>=5){
-
-alert("You can only have 5 accounts.");
-
-return;
-}
-
-if(accounts.some(a=>
-a.username.toLowerCase()===username.toLowerCase()
-)){
-
-alert("That username already exists.");
-
-return;
-}
-
-const banned=[
-"admin",
-"owner",
-"moderator",
-"fuck",
-"shit",
-"bitch"
-];
-
-if(banned.some(word=>
-username.toLowerCase().includes(word)
-)){
-
-alert("That username is not allowed.");
-
-return;
-}
-
-accounts.push({
-
-username:username,
-password:password,
-bloxBux:0,
-friends:[],
-avatarColor:"#2673d8"
-
-});
-
-saveAccounts();
-
-currentUsername=username;
-
-localStorage.setItem(
-"bloxplayCurrent",
-username
-);
-
-document.getElementById("newUsername").value="";
-document.getElementById("newPassword").value="";
-
-renderAccounts();
-
-updateBux();
-
-loadAvatar();
-
-alert("Account created!");
-
-}
-
-
-function login(){
-
-const username=
-document.getElementById("loginUsername").value.trim();
-
-const password=
-document.getElementById("loginPassword").value;
-
-const account=accounts.find(a=>
-a.username.toLowerCase()===username.toLowerCase()
-&&
-a.password===password
-);
-
-if(!account){
-
-alert("Incorrect username or password.");
-
-return;
-}
-
-currentUsername=account.username;
-
-localStorage.setItem(
-"bloxplayCurrent",
-currentUsername
-);
-
-renderAccounts();
-updateBux();
-loadAvatar();
-
-alert("Logged in as "+currentUsername+"!");
-
-}
-
-
-function switchAccount(username){
-
-const account=accounts.find(a=>
-a.username===username
-);
-
-if(!account)return;
-
-currentUsername=username;
-
-localStorage.setItem(
-"bloxplayCurrent",
-username
-);
-
-renderAccounts();
-updateBux();
-loadAvatar();
-
-}
-
-
-function logout(){
-
-currentUsername="";
-
-localStorage.removeItem("bloxplayCurrent");
-
-renderAccounts();
-
-updateBux();
-
-}
-
-
-function renderAccounts(){
-
-const status=
-document.getElementById("accountStatus");
-
-const list=
-document.getElementById("accountList");
-
-if(currentUsername){
-
-status.innerHTML=
-"🟢 Logged in as <b>"+
-currentUsername+
-"</b>";
-
-}else{
-
-status.innerHTML=
-"🔴 Not logged in.";
-
-}
-
-list.innerHTML="";
-
-accounts.forEach(account=>{
-
-const div=document.createElement("div");
-
-div.className="accountCard";
-
-div.innerHTML=`
-
-<span>
-👤 <b>${account.username}</b>
-</span>
-
-<button onclick="switchAccount('${account.username}')">
-Switch
-</button>
-
-`;
-
-list.appendChild(div);
-
-});
-
-if(currentUsername){
-
-const button=document.createElement("button");
-
-button.className="mainButton red";
-
-button.innerText="Log Out";
-
-button.onclick=logout;
-
-list.appendChild(button);
-
-}
-
-}
-
-
-/* =========================
-AVATAR
-========================= */
-
-function setAvatarColor(color){
-
-if(!currentUsername){
-
-alert("Log into an account first.");
-
-return;
-}
-
-const account=accounts.find(a=>
-a.username===currentUsername
-);
-
-if(!account)return;
-
-account.avatarColor=color;
-
-saveAccounts();
-
-loadAvatar();
-
-}
-
-
-function loadAvatar(){
-
-if(!currentUsername)return;
-
-const account=accounts.find(a=>
-a.username===currentUsername
-);
-
-if(!account)return;
-
-const color=account.avatarColor||"#2673d8";
-
-document
-.querySelectorAll(".avatarBody,.avatarArm")
-.forEach(part=>{
-part.style.background=color;
-});
-
-document
-.querySelectorAll("#gamePlayer .body,#gamePlayer .arm")
-.forEach(part=>{
-part.style.background=color;
-});
-
-}
-
-
-function randomAvatar(){
-
-const colors=[
-"#2673d8",
-"#c62828",
-"#39834a",
-"#743db8",
-"#222",
-"#e88722"
-];
-
-const color=
-colors[Math.floor(Math.random()*colors.length)];
-
-setAvatarColor(color);
-
-}
-
-
-/* =========================
-PAGES
-========================= */
-
-function showPage(page){
-
-document
-.querySelectorAll(".page")
-.forEach(p=>{
-p.classList.remove("active");
-});
-
-document
-.getElementById(page)
-.classList.add("active");
-
-if(page==="accounts"){
-renderAccounts();
-}
-
-}
-
-
-/* =========================
-GAMES
+   DATA
 ========================= */
 
 const games=[
-
-{
-name:"Mystery Hunt",
-icon:"🔪",
-description:"A mystery game with a lobby, secret roles and rounds."
-},
-
-{
-name:"Brain Grab",
-icon:"🧠",
-description:"Collect strange creatures and build your collection."
-},
-
-{
-name:"Island Survival",
-icon:"🏝️",
-description:"Survive events and explore an island."
-},
-
-{
-name:"Block Racers",
-icon:"🏎️",
-description:"Race through wild tracks."
-},
-
-{
-name:"Ghost Hunt",
-icon:"👻",
-description:"Explore strange locations and find clues."
-},
-
-{
-name:"Coin Rush",
-icon:"💰",
-description:"Collect coins and become the richest player."
-},
-
-{
-name:"Build City",
-icon:"🏙️",
-description:"Build and expand your city."
-},
-
-{
-name:"Farm Life",
-icon:"🌾",
-description:"Grow crops and expand your farm."
-},
-
-{
-name:"Pet World",
-icon:"🐾",
-description:"Collect pets and explore."
-},
-
-{
-name:"Factory Tycoon",
-icon:"🏭",
-description:"Build a huge factory."
-}
-
+ {
+  id:'mystery',
+  name:'Mystery Hunt',
+  icon:'🔪',
+  description:'A round-based mystery game.',
+  type:'mystery'
+ },
+ {
+  id:'brain',
+  name:'Brain Grab',
+  icon:'🧠',
+  description:'Grab valuable objects and escape.',
+  type:'brain'
+ },
+ {
+  id:'island',
+  name:'Island Survival',
+  icon:'🏝️',
+  description:'Explore an island and survive.',
+  type:'island'
+ },
+ {
+  id:'racer',
+  name:'Block Racers',
+  icon:'🏎️',
+  description:'Race around the block.',
+  type:'racer'
+ },
+ {
+  id:'coin',
+  name:'Coin Rush',
+  icon:'🪙',
+  description:'Collect as many coins as possible.',
+  type:'coin'
+ },
+ {
+  id:'city',
+  name:'Build City',
+  icon:'🏙️',
+  description:'Build and explore a block city.',
+  type:'city'
+ },
+ {
+  id:'farm',
+  name:'Farm Life',
+  icon:'🌾',
+  description:'Grow crops and explore your farm.',
+  type:'farm'
+ },
+ {
+  id:'pets',
+  name:'Pet World',
+  icon:'🐾',
+  description:'Collect and explore with pets.',
+  type:'pets'
+ },
+ {
+  id:'factory',
+  name:'Factory Tycoon',
+  icon:'🏭',
+  description:'Build your own factory.',
+  type:'factory'
+ },
+ {
+  id:'ghost',
+  name:'Ghost Hunt',
+  icon:'👻',
+  description:'Explore a strange abandoned place.',
+  type:'ghost'
+ }
 ];
-
-
-function renderGames(search,containerId){
-
-const container=
-document.getElementById(containerId);
-
-container.innerHTML="";
-
-games
-.filter(game=>
-game.name.toLowerCase()
-.includes(search.toLowerCase())
-)
-.forEach(game=>{
-
-const index=games.indexOf(game);
-
-const card=document.createElement("div");
-
-card.className="game";
-
-card.innerHTML=`
-
-<div class="game-icon">
-${game.icon}
-</div>
-
-<h3>${game.name}</h3>
-
-<p>${game.description}</p>
-
-<button
-class="play"
-onclick="playGame(${index})">
-▶ Play
-</button>
-
-`;
-
-container.appendChild(card);
-
-});
-
-}
-
-
-function searchGames(input,container){
-
-renderGames(
-document.getElementById(input).value,
-container
-);
-
-}
-
-
-function playGame(index){
-
-if(games[index].name==="Mystery Hunt"){
-
-startMystery();
-
-}else{
-
-alert(
-games[index].name+
-" is still being built."
-);
-
-}
-
-}
-
 
 /* =========================
-MYSTERY HUNT
+   ACCOUNTS
 ========================= */
 
+let accounts=JSON.parse(localStorage.getItem('bloxplay_accounts')||'[]');
+let currentUsername=localStorage.getItem('bloxplay_current')||'';
+
+function saveAccounts(){
+ localStorage.setItem('bloxplay_accounts',JSON.stringify(accounts));
+}
+
+function validUsername(name){
+ return /^[A-Za-z0-9_]{3,20}$/.test(name)
+ && !/admin|owner|roblox|bloxplay/i.test(name);
+}
+
+window.createAccount=()=>{
+ const name=document.getElementById('loginName').value.trim();
+ const password=document.getElementById('loginPassword').value;
+
+ if(!validUsername(name)){
+  document.getElementById('loginError').textContent=
+   'Username must be 3-20 letters/numbers/underscores.';
+  return;
+ }
+
+ if(password.length<4){
+  document.getElementById('loginError').textContent=
+   'Password must be at least 4 characters.';
+  return;
+ }
+
+ if(accounts.length>=5){
+  document.getElementById('loginError').textContent=
+   'Maximum 5 local accounts reached.';
+  return;
+ }
+
+ if(accounts.some(a=>a.username.toLowerCase()===name.toLowerCase())){
+  document.getElementById('loginError').textContent='Username already exists.';
+  return;
+ }
+
+ accounts.push({
+  username:name,
+  password:password,
+  avatar:{
+   skin:'#f0bd91',
+   shirt:'#347bea'
+  },
+  friends:[]
+ });
+
+ saveAccounts();
+ currentUsername=name;
+ localStorage.setItem('bloxplay_current',name);
+ document.getElementById('loginModal').classList.add('hidden');
+ loadUser();
+};
+
+window.login=()=>{
+ const name=document.getElementById('loginName').value.trim();
+ const password=document.getElementById('loginPassword').value;
+
+ const user=accounts.find(a=>
+  a.username.toLowerCase()===name.toLowerCase() &&
+  a.password===password
+ );
+
+ if(!user){
+  document.getElementById('loginError').textContent='Invalid account.';
+  return;
+ }
+
+ currentUsername=user.username;
+ localStorage.setItem('bloxplay_current',currentUsername);
+ document.getElementById('loginModal').classList.add('hidden');
+ loadUser();
+};
+
+window.logout=()=>{
+ currentUsername='';
+ localStorage.removeItem('bloxplay_current');
+ document.getElementById('loginModal').classList.remove('hidden');
+};
+
+function user(){
+ return accounts.find(a=>a.username===currentUsername);
+}
+
+function loadUser(){
+ const u=user();
+ if(!u)return;
+
+ document.getElementById('accountMini').textContent=u.username;
+ document.getElementById('displayName').value=u.username;
+
+ setSkin(u.avatar?.skin||'#f0bd91');
+ setShirt(u.avatar?.shirt||'#347bea');
+
+ renderFriends();
+ updateBux();
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+document.querySelectorAll('nav button').forEach(button=>{
+ button.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  button.classList.add('active');
+
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+
+  document.getElementById(button.dataset.page).classList.add('active');
+ };
+});
+
+function renderGames(list=games){
+ const grid=document.getElementById('gamesGrid');
+ grid.innerHTML='';
+
+ list.forEach(game=>{
+  const card=document.createElement('div');
+  card.className='card';
+
+  card.innerHTML=`
+   <div class="gameThumb">${game.icon}</div>
+   <h3>${game.name}</h3>
+   <p class="sub">${game.description}</p>
+   <button onclick="playGame('${game.type}')">Play</button>
+  `;
+
+  grid.appendChild(card);
+ });
+}
+
+function renderFeatured(){
+ document.getElementById('featured').innerHTML=
+  games.slice(0,5).map(game=>`
+   <div class="card">
+    <div class="gameThumb">${game.icon}</div>
+    <h3>${game.name}</h3>
+    <p class="sub">${game.description}</p>
+    <button onclick="playGame('${game.type}')">Play</button>
+   </div>
+  `).join('');
+}
+
+document.getElementById('search').addEventListener('input',e=>{
+ const q=e.target.value.toLowerCase();
+
+ const matches=games.filter(g=>
+  g.name.toLowerCase().includes(q)||
+  g.description.toLowerCase().includes(q)
+ );
+
+ if(q){
+  document.querySelector('[data-page="games"]').click();
+  renderGames(matches);
+ }else{
+  renderGames();
+ }
+});
+
+/* =========================
+   AVATAR
+========================= */
+
+function setSkin(color){
+ document.getElementById('avHead').style.background=color;
+ document.getElementById('avArmL').style.background=color;
+ document.getElementById('avArmR').style.background=color;
+}
+
+function setShirt(color){
+ document.getElementById('avBody').style.background=color;
+}
+
+window.setSkin=setSkin;
+window.setShirt=setShirt;
+
+window.saveAvatar=()=>{
+ const u=user();
+ if(!u)return;
+
+ u.avatar={
+  skin:document.getElementById('avHead').style.background,
+  shirt:document.getElementById('avBody').style.background
+ };
+
+ const newName=document.getElementById('displayName').value.trim();
+
+ if(validUsername(newName)){
+  u.username=newName;
+  currentUsername=newName;
+  localStorage.setItem('bloxplay_current',newName);
+ }
+
+ saveAccounts();
+ loadUser();
+};
+
+window.randomAvatar=()=>{
+ const skins=['#f0bd91','#8d5524','#ffd6b0','#704214'];
+ const shirts=['#347bea','#e84855','#42b883','#9b59b6','#f1c40f'];
+
+ setSkin(skins[Math.floor(Math.random()*skins.length)]);
+ setShirt(shirts[Math.floor(Math.random()*shirts.length)]);
+};
+
+/* =========================
+   BUX
+========================= */
+
+function updateBux(){
+ document.getElementById('bux').textContent='∞';
+}
+
+/* =========================
+   FRIENDS
+========================= */
+
+window.addFriend=()=>{
+ const name=document.getElementById('friendSearch').value.trim();
+
+ if(!name||name===currentUsername)return;
+
+ const u=user();
+
+ if(!u.friends)u.friends=[];
+
+ if(!u.friends.includes(name)){
+  u.friends.push(name);
+  saveAccounts();
+ }
+
+ document.getElementById('friendSearch').value='';
+ renderFriends();
+};
+
+function renderFriends(){
+ const box=document.getElementById('friendsList');
+ const u=user();
+
+ if(!u){
+  box.innerHTML='';
+  return;
+ }
+
+ const friends=u.friends||[];
+
+ box.innerHTML=friends.length?
+  friends.map(name=>`
+   <div class="friend">
+    <b>👤 ${name}</b>
+    <span style="color:#42d98a">Online</span>
+   </div>
+  `).join(''):
+  '<div class="panel">No friends yet.</div>';
+}
+
+/* =========================
+   CHAT
+========================= */
+
+window.sendChat=()=>{
+ const input=document.getElementById('chatInput');
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ const allowed=text
+  .replace(/https?:\/\/\S+/gi,'')
+  .replace(/<[^>]*>/g,'');
+
+ if(!allowed)return;
+
+ const box=document.getElementById('chatMessages');
+
+ const msg=document.createElement('div');
+ msg.innerHTML=`<b>${escapeHtml(currentUsername)}:</b> ${escapeHtml(allowed)}`;
+
+ box.appendChild(msg);
+ box.scrollTop=box.scrollHeight;
+
+ input.value='';
+};
+
+function escapeHtml(text){
+ const div=document.createElement('div');
+ div.textContent=text;
+ return div.innerHTML;
+}
+
+/* =========================
+   ACCOUNT SWITCHING
+========================= */
+
+window.openAccounts=()=>{
+ document.getElementById('accountModal').classList.remove('hidden');
+ renderAccounts();
+};
+
+window.closeAccounts=()=>{
+ document.getElementById('accountModal').classList.add('hidden');
+};
+
+function renderAccounts(){
+ const box=document.getElementById('accountsList');
+
+ box.innerHTML=accounts.map(a=>`
+  <div class="friend">
+   <b>${escapeHtml(a.username)}</b>
+   <button class="secondary"
+    onclick="switchAccount('${escapeHtml(a.username)}')">
+    Switch
+   </button>
+  </div>
+ `).join('');
+}
+
+window.switchAccount=(name)=>{
+ const u=accounts.find(a=>a.username===name);
+ if(!u)return;
+
+ currentUsername=u.username;
+ localStorage.setItem('bloxplay_current',currentUsername);
+
+ closeAccounts();
+ loadUser();
+};
+
+/* =========================
+   CREATE GAME
+========================= */
+
+window.createGame=()=>{
+ const name=document.getElementById('newGameName').value.trim();
+ const type=document.getElementById('newGameType').value;
+
+ if(!name)return;
+
+ games.push({
+  id:'custom_'+Date.now(),
+  name,
+  icon:'🧱',
+  description:'Created on BloxPlay.',
+  type
+ });
+
+ document.getElementById('newGameName').value='';
+ renderGames();
+ renderFeatured();
+};
+
+/* =========================
+   THREE.JS GAME ENGINE
+========================= */
+
+let scene,camera,renderer;
+let player;
+let keys={};
+let clock;
+let gameType='';
 let gameRunning=false;
+let coins=[];
+let npcs=[];
+let gameObjects=[];
 
-let gameStage="lobby";
+const gameOverlay=document.getElementById('gameOverlay');
+const canvas=document.getElementById('gameCanvas');
+const roundBox=document.getElementById('roundBox');
+const gameMessage=document.getElementById('gameMessage');
 
-let gameTimer=20;
-
-let countdownTimer=null;
-
-let playerX=50;
-
-let playerY=50;
-
-
-function startMystery(){
-
-gameRunning=true;
-
-gameStage="lobby";
-
-gameTimer=20;
-
-playerX=50;
-playerY=50;
-
-document
-.getElementById("gameScreen")
-.classList.add("active");
-
-const account=
-accounts.find(a=>
-a.username===currentUsername
-);
-
-document.getElementById("playerName")
-.innerText=
-account
-?account.username
-:"Guest";
-
-loadAvatar();
-
-startLobby();
-
+function makeMaterial(color){
+ return new THREE.MeshStandardMaterial({color});
 }
 
+function cube(x,y,z,w,h,d,color){
+ const mesh=new THREE.Mesh(
+  new THREE.BoxGeometry(w,h,d),
+  makeMaterial(color)
+ );
 
-function startLobby(){
-
-gameStage="lobby";
-
-gameTimer=20;
-
-document
-.getElementById("roundMessage")
-.innerHTML=
-"🏠 <b>Mystery Hunt Lobby</b><br>Waiting for players...";
-
-runCountdown();
-
+ mesh.position.set(x,y,z);
+ scene.add(mesh);
+ gameObjects.push(mesh);
+ return mesh;
 }
 
+function cylinder(x,y,z,r,h,color){
+ const mesh=new THREE.Mesh(
+  new THREE.CylinderGeometry(r,r,h,16),
+  makeMaterial(color)
+ );
 
-function runCountdown(){
-
-clearInterval(countdownTimer);
-
-document
-.getElementById("roundTimer")
-.innerText=
-"Lobby: "+gameTimer;
-
-countdownTimer=
-setInterval(()=>{
-
-if(!gameRunning){
-
-clearInterval(countdownTimer);
-
-return;
+ mesh.position.set(x,y,z);
+ scene.add(mesh);
+ gameObjects.push(mesh);
+ return mesh;
 }
 
-gameTimer--;
+function clearWorld(){
+ coins.forEach(c=>scene.remove(c));
+ npcs.forEach(n=>scene.remove(n));
 
-document
-.getElementById("roundTimer")
-.innerText=
-"Lobby: "+gameTimer;
+ coins=[];
+ npcs=[];
 
-if(gameTimer<=0){
-
-clearInterval(countdownTimer);
-
-startRound();
-
+ gameObjects.forEach(o=>scene.remove(o));
+ gameObjects=[];
 }
 
-},1000);
+function setup3D(){
+ scene=new THREE.Scene();
+ scene.background=new THREE.Color(0x86b7df);
 
+ camera=new THREE.PerspectiveCamera(
+  70,
+  innerWidth/innerHeight,
+  .1,
+  1000
+ );
+
+ renderer=new THREE.WebGLRenderer({
+  canvas,
+  antialias:true
+ });
+
+ renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ renderer.setSize(innerWidth,innerHeight);
+
+ const hemi=new THREE.HemisphereLight(0xffffff,0x445566,2);
+ scene.add(hemi);
+
+ const sun=new THREE.DirectionalLight(0xffffff,2);
+ sun.position.set(20,40,10);
+ scene.add(sun);
+
+ clock=new THREE.Clock();
+
+ createPlayer();
+ animate();
 }
 
+function createPlayer(){
+ player=new THREE.Group();
 
-function startRound(){
+ const body=new THREE.Mesh(
+  new THREE.BoxGeometry(1.2,1.7,.7),
+  makeMaterial(0x347bea)
+ );
+ body.position.y=1.7;
 
-gameStage="round";
+ const head=new THREE.Mesh(
+  new THREE.SphereGeometry(.55,20,20),
+  makeMaterial(0xf0bd91)
+ );
+ head.position.y=3;
 
-gameTimer=180;
+ const armMat=makeMaterial(0xf0bd91);
 
-const roles=[
-"🕵️ Detective",
-"👤 Innocent",
-"👤 Innocent",
-"👤 Innocent",
-"🔪 Mystery"
-];
+ const armL=new THREE.Mesh(
+  new THREE.BoxGeometry(.35,1.3,.35),
+  armMat
+ );
+ armL.position.set(-.85,1.75,0);
 
-const role=
-roles[Math.floor(Math.random()*roles.length)];
+ const armR=armL.clone();
+ armR.position.x=.85;
 
-document
-.getElementById("round
+ const legMat=makeMaterial(0x252b38);
+
+ const legL=new THREE.Mesh(
+  new THREE.BoxGeometry(.4,1.2,.4),
+  legMat
+ );
+ legL.position.set(-.32,.45,0);
+
+ const legR=legL.clone();
+ legR.position.x=.32;
+
+ player.add(body,head,armL,armR,legL,legR);
+ player.position.set(0,0,8);
+
+ scene.add(player);
+}
+
+function createGround(){
+ cube(0,-.3,0,80,.5,80,0x4b8b4b);
+}
+
+function createCity(){
+ for(let x=-30;x<=30;x+=10){
+  for(let z=-25;z<=25;z+=10){
+   if(Math.random()<.55){
+    const height=3+Math.random()*8;
+    cube(x,height/2,z,6,height,6,0x7b8494);
+
+    cube(
+     x,
+     height*.55,
+     z-3.05,
+     2,
+     1.3,
+     .1,
+     0x9ed9ff
+    );
+   }
+  }
+ }
+}
+
+function createIsland(){
+ cube(0,-.5,0,65,1,65,0x3d9448);
+
+ for(let i=0;i<18;i++){
+  const x=Math.random()*50-25;
+  const z=Math.random()*50-25;
+
+  cylinder(x,1.5,z,.7,4,0x6b4828);
+  cylinder(x,4,z,.9,2.5,0x25833d);
+ }
+}
+
+function createRacer(){
+ cube(0,.05,0,12,.1,65,0x292d35);
+
+ for(let z=-30;z<=30;z+=5){
+  cube(0,.12,z,.25,.05,2,0xffffff);
+ }
+}
+
+function createFactory(){
+ cube(0,1,-15,30,2,12,0x565e68);
+
+ for(let x=-10;x<=10;x+=5){
+  cylinder(x,3,-15,1,4,0x777f88);
+ }
+}
+
+function createMystery(){
+ cube(0,-.2,0,60,.4,60,0x3c4651);
+
+ for(let x=-20;x<=20;x+=10){
+  cube(x,3,-20,7,6,2,0x5a6270);
+  cube(x,3,20,7,6,2,0x5a6270);
+ }
+
+ for(let z=-10;z<=10;z+=10){
+  cube(-25,3,z,2,6,8,0x5a6270);
+  cube(25,3,z,2,6,8,0x5a6270);
+ }
+
+ cylinder(0,1,0,3,2,0xb7bdc7);
+}
+
+function createCoins(){
+ for(let i=0;i<25;i++){
+  const coin=cylinder(
+   Math.random()*50-25,
+   1,
+   Math.random()*50-25,
+   .45,
+   .15,
+   0xffd447
+  );
+
+  coin.rotation.x=Math.PI/2;
+  coins.push(coin);
+ }
+}
+
+function createNPCs(){
+ for(let i=0;i<5;i++){
+  const npc=new THREE.Group();
+
+  const body=new THREE.Mesh(
+   new THREE.BoxGeometry(1.2,1.7,.7),
+   makeMaterial([0xe84855,0x42b883,0x9b59b6,0xf1c40f,0x347bea][i])
+  );
+  body.position.y=1.7;
+
+  const head=new THREE.Mesh(
+   new THREE.SphereGeometry(.55,16,16),
+   makeMaterial(0xf0bd91)
+  );
+  head.position.y=3;
+
+  npc.add(body,head);
+
+  npc.position.set(
+   Math.random()*30-15,
+   0,
+   Math.random()*30-15
+  );
+
+  scene.add(npc);
+  npcs.push(npc);
+ }
+}
+
+function startWorld(type){
+ clearWorld();
+
+ createGround();
+
+ gameType=type;
+
+ if(type==='mystery'){
+  createMystery();
+  createNPCs();
+  roundBox.textContent='Mystery Hunt';
+  gameMessage.textContent='Lobby: 15 seconds until the round starts.';
+ }
+
+ if(type==='coin'){
+  createCoins();
+  roundBox.textContent='Coin Rush';
+  gameMessage.textContent='Collect the coins!';
+ }
+
+ if(type==='island'){
+  createIsland();
+  roundBox.textContent='Island Survival';
+  gameMessage.textContent='Explore the island.';
+ }
+
+ if(type==='racer'){
+  createRacer();
+  roundBox.textContent='Block Racers';
+  gameMessage.textContent='Reach the finish!';
+ }
+
+ if(type==='city'){
+  createCity();
+  roundBox.textContent='Build City';
+  gameMessage.textContent='Explore the city.';
+ }
+
+ if(type==='factory'){
+  createFactory();
+  roundBox.textContent='Factory Tycoon';
+  gameMessage.textContent='Explore your factory.';
+ }
+
+ if(type==='brain'){
+  createCity();
+  createCoins();
+  roundBox.textContent='Brain Grab';
+  gameMessage.textContent='Grab the valuable objects!';
+ }
+
+ if(type==='farm'){
+  createIsland();
+  roundBox.textContent='Farm Life';
+  gameMessage.textContent='Explore your farm.';
+ }
+
+ if(type==='pets'){
+  createIsland();
+  createNPCs();
+  roundBox.textContent='Pet World';
+  gameMessage.textContent='Explore with your pets.';
+ }
+
+ if(type==='ghost'){
+  createMystery();
+  roundBox.textContent='Ghost Hunt';
+  gameMessage.textContent='Explore the area.';
+ }
+}
+
+window.playGame=(type)=>{
+ gameOverlay.style.display='block';
+
+ if(!renderer){
+  setup3D();
+ }
+
+ startWorld(type);
+
+ player.position.set(0,0,8);
+ camera.position.set(0,6,13);
+ camera.lookAt(player.position);
+
+ gameRunning=true;
+
+ if(type==='mystery'){
+  runMysteryLobby();
+ }
+};
+
+let mysteryTimer;
+
+function runMysteryLobby(){
+ let seconds=15;
+
+ clearInterval(mysteryTimer);
+
+ mysteryTimer=setInterval(()=>{
+  seconds--;
+
+  gameMessage.textContent=
+   `Lobby: round starts in ${seconds}`;
+
+  if(seconds<=0){
+   clearInterval(mysteryTimer);
+   startMysteryRound();
+  }
+ },1000);
+}
+
+function startMysteryRound(){
+ const roles=['Detective','Innocent','Mystery'];
+ const role=roles[Math.floor(Math.random()*roles.length)];
+
+ let seconds=120;
+
+ gameMessage.textContent=`Your role: ${role}`;
+
+ const interval=setInterval(()=>{
+  seconds--;
+
+  roundBox.textContent=
+   `Mystery Hunt • ${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,'0')}`;
+
+  if(seconds<=0){
+   clearInterval(interval);
+   gameMessage.textContent='Round complete!';
+  }
+ },1000);
+}
+
+/* =========================
+   MOVEMENT
+========================= */
+
+window.addEventListener('keydown',e=>{
+ keys[e.key.toLowerCase()]=true;
+
+ if(e.key==='Escape'){
+  leaveGame();
+ }
+});
+
+window.addEventListener('keyup',e=>{
+ keys[e.key.toLowerCase()]=false;
+});
+
+function movePlayer(dt){
+ if(!player)return;
+
+ const speed=7*dt;
+
+ if(keys.w||keys.arrowup)player.position.z-=speed;
+ if(keys.s||keys.arrowdown)player.position.z+=speed;
+ if(keys.a||keys.arrowleft)player.position.x-=speed;
+ if(keys.d||keys.arrowright)player.position.x+=speed;
+
+ player.position.x=Math.max(-38,Math.min(38,player.position.x));
+ player.position.z=Math.max(-38,Math.min(38,player.position.z));
+
+ camera.position.x+=(player.position.x-camera.position.x)*.08;
+ camera.position.z+=(player.position.z+10-camera.position.z)*.08;
+ camera.lookAt(
+  player.position.x,
+  player.position.y+1.5,
+  player.position.z
+ );
+
+ collectCoins();
+}
+
+function collectCoins(){
+ if(!player)return;
+
+ for(let i=coins.length-1;i>=0;i--){
+  const c=coins[i];
+
+  if(c.position.distanceTo(player.position)<1.7){
+   scene.remove(c);
+   coins.splice(i,1);
+  }
+ }
+}
+
+function animate(){
+ requestAnimationFrame(animate);
+
+ if(!renderer||!scene)return;
+
+ const dt=Math.min(clock.getDelta(),.05);
+
+ if(gameRunning){
+  movePlayer(dt);
+
+  coins.forEach(c=>{
+   c.rotation.z+=dt*4;
+  });
+
+  npcs.forEach((n,i)=>{
+   n.position.y=Math.sin(performance.now()/500+i)*.05;
+  });
+ }
+
+ renderer.render(scene,camera);
+}
+
+window.gameJump=()=>{
+ if(!player)return;
+
+ let startY=player.position.y;
+
+ const start=performance.now();
+
+ function jump(t){
+  const p=Math.min((t-start)/500,1);
+  player.position.y=Math.sin(p*Math.PI)*2;
+
+  if(p<1)requestAnimationFrame(jump);
+  else player.position.y=startY;
+ }
+
+ requestAnimationFrame(jump);
+};
+
+window.gameAction=()=>{
+ if(!player)return;
+
+ if(gameType==='brain'){
+  gameMessage.textContent='You grabbed the object!';
+ }
+
+ if(gameType==='mystery'){
+  gameMessage.textContent='You inspected the area.';
+ }
+};
+
+window.leaveGame=()=>{
+ gameRunning=false;
+ clearInterval(mysteryTimer);
+ gameOverlay.style.display='none';
+};
+
+document.querySelectorAll('.control').forEach(button=>{
+ const key=button.dataset.key;
+
+ button.addEventListener('pointerdown',e=>{
+  e.preventDefault();
+  keys[key]=true;
+ });
+
+ button.addEventListener('pointerup',e=>{
+  e.preventDefault();
+  keys[key]=false;
+ });
+
+ button.addEventListener('pointercancel',()=>{
+  keys[key]=false;
+ });
+
+ button.addEventListener('pointerleave',()=>{
+  keys[key]=false;
+ });
+});
+
+window.addEventListener('resize',()=>{
+ if(!camera||!renderer)return;
+
+ camera.aspect=innerWidth/innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth,innerHeight);
+});
+
+/* =========================
+   START
+========================= */
+
+renderGames();
+renderFeatured();
+
+if(currentUsername && user()){
+ document.getElementById('loginModal').classList.add('hidden');
+ loadUser();
+}
+
+</script>
+
+</body>
+</html>
