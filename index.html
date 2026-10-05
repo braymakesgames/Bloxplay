@@ -1,106 +1,120 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>BlockPlay</title>
+
+<title>BloxPlay</title>
 
 <style>
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #111827;
-  color: white;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
 }
 
 header {
-  background: #1f2937;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
+    background: #182235;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-nav button {
-  background: #374151;
-  color: white;
-  border: 0;
-  padding: 11px 15px;
-  border-radius: 8px;
-  margin: 3px;
+nav {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
 }
 
-nav button:active {
-  transform: scale(.96);
+button {
+    border: 0;
+    border-radius: 9px;
+    padding: 11px 15px;
+    background: #29364d;
+    color: white;
+    font-weight: bold;
+}
+
+button:active {
+    transform: scale(.96);
 }
 
 main {
-  padding: 20px;
-  max-width: 1000px;
-  margin: auto;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
 }
 
 .search {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
+    display: flex;
+    margin: 20px 0;
 }
 
 .search input {
-  flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  border: 0;
-  font-size: 16px;
+    width: 100%;
+    padding: 15px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 16px;
 }
 
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 15px;
+.gameGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
 }
 
-.game {
-  background: #1f2937;
-  border-radius: 14px;
-  padding: 18px;
+.gameCard {
+    background: #1b2638;
+    border-radius: 14px;
+    padding: 18px;
 }
 
-.game-icon {
-  font-size: 50px;
+.gameIcon {
+    font-size: 50px;
 }
 
-.game h3 {
-  margin-bottom: 5px;
+.gameCard h3 {
+    margin-bottom: 5px;
 }
 
-.game p {
-  color: #9ca3af;
+.gameCard p {
+    color: #aeb8c8;
+    min-height: 45px;
 }
 
-.play {
-  width: 100%;
-  padding: 12px;
-  background: #22c55e;
-  border: 0;
-  border-radius: 8px;
-  font-weight: bold;
-  color: white;
+.playButton {
+    width: 100%;
+    background: #22c55e;
+}
+
+.panel {
+    background: #1b2638;
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 15px;
+}
+
+input {
+    outline: none;
 }
 
 .empty {
-  color: #9ca3af;
-  text-align: center;
-  padding: 30px;
+    text-align: center;
+    color: #9ca3af;
+    padding: 30px;
 }
 </style>
 </head>
@@ -108,187 +122,329 @@ main {
 <body>
 
 <header>
-  <div class="logo">🧱 BlockPlay</div>
 
-  <nav>
-    <button onclick="showHome()">Home</button>
-    <button onclick="showGames()">Games</button>
-    <button onclick="showAccounts()">Accounts</button>
-    <button onclick="showFriends()">Friends</button>
-  </nav>
+    <div class="logo">🧱 BloxPlay</div>
+
+    <nav>
+        <button onclick="showHome()">Home</button>
+        <button onclick="showGames()">Games</button>
+        <button onclick="showAccounts()">Accounts</button>
+        <button onclick="showFriends()">Friends</button>
+    </nav>
+
 </header>
 
 <main id="app"></main>
 
+<!-- YOUR SEPARATE SCRIPTS -->
+<script src="games.js"></script>
+<script src="accounts.js"></script>
+<script src="game-launcher.js"></script>
+
 <script>
 
-const games = [
-  {
-    name: "Mystery Hunt",
-    icon: "🕵️",
-    description: "Find the hidden hunter and survive the round.",
-    tags: "mm2 mystery detective"
-  },
-  {
-    name: "Brain Grab",
-    icon: "🧠",
-    description: "Collect characters and bring them back to your base.",
-    tags: "sab collecting base"
-  },
-  {
-    name: "Island Survival",
-    icon: "🏝️",
-    description: "Survive on a dangerous block island.",
-    tags: "survival island"
-  },
-  {
-    name: "Block Racers",
-    icon: "🏎️",
-    description: "Race other players through blocky tracks.",
-    tags: "racing cars race"
-  },
-  {
-    name: "Ghost Hunt",
-    icon: "👻",
-    description: "Search the map and find mysterious ghosts.",
-    tags: "ghost hunt"
-  },
-  {
-    name: "Coin Rush",
-    icon: "🪙",
-    description: "Collect as many coins as possible.",
-    tags: "coins money simulator"
-  },
-  {
-    name: "Build City",
-    icon: "🏙️",
-    description: "Build your own block city.",
-    tags: "building city"
-  }
-];
-
 function showHome() {
-  document.getElementById("app").innerHTML = `
-    <h1>Welcome to BlockPlay</h1>
-    <p>Make. Play. Create.</p>
 
-    <div class="search">
-      <input
-        id="searchInput"
-        placeholder="🔎 Search games..."
-        oninput="searchGames()"
-      >
-    </div>
+    document.getElementById("app").innerHTML = `
+        <h1>Welcome to BloxPlay</h1>
 
-    <h2>Popular Games</h2>
+        <p>Play games, make friends, and create your own games.</p>
 
-    <div id="gameList" class="game-grid"></div>
-  `;
+        <div class="search">
+            <input
+                id="homeSearch"
+                placeholder="🔎 Search games..."
+                oninput="searchHomeGames()"
+            >
+        </div>
 
-  displayGames(games);
+        <h2>🔥 Popular Games</h2>
+
+        <div id="homeGames" class="gameGrid"></div>
+    `;
+
+    displayGames(
+        BlockPlayGames,
+        "homeGames"
+    );
 }
+
 
 function showGames() {
-  document.getElementById("app").innerHTML = `
-    <h1>🎮 Games</h1>
 
-    <div class="search">
-      <input
-        id="searchInput"
-        placeholder="🔎 Search games..."
-        oninput="searchGames()"
-      >
-    </div>
+    document.getElementById("app").innerHTML = `
+        <h1>🎮 Games</h1>
 
-    <div id="gameList" class="game-grid"></div>
-  `;
+        <div class="search">
+            <input
+                id="gameSearch"
+                placeholder="🔎 Search games..."
+                oninput="searchGamesPage()"
+            >
+        </div>
 
-  displayGames(games);
-}
-
-function searchGames() {
-  const input = document.getElementById("searchInput");
-
-  if (!input) return;
-
-  const search = input.value.toLowerCase().trim();
-
-  const results = games.filter(game =>
-    game.name.toLowerCase().includes(search) ||
-    game.description.toLowerCase().includes(search) ||
-    game.tags.toLowerCase().includes(search)
-  );
-
-  displayGames(results);
-}
-
-function displayGames(list) {
-
-  const container = document.getElementById("gameList");
-
-  if (!container) return;
-
-  if (list.length === 0) {
-    container.innerHTML = `
-      <div class="empty">
-        No games found.
-      </div>
+        <div id="gameList" class="gameGrid"></div>
     `;
-    return;
-  }
 
-  container.innerHTML = list.map(game => `
-    <div class="game">
-      <div class="game-icon">${game.icon}</div>
-
-      <h3>${game.name}</h3>
-
-      <p>${game.description}</p>
-
-      <button
-        class="play"
-        onclick="playGame('${game.name}')"
-      >
-        ▶ Play
-      </button>
-    </div>
-  `).join("");
+    displayGames(
+        BlockPlayGames,
+        "gameList"
+    );
 }
 
-function playGame(name) {
-  document.getElementById("app").innerHTML = `
-    <h1>🎮 ${name}</h1>
 
-    <div class="game">
-      <h2>Game loading...</h2>
-      <p>
-        The playable version of this game will be added next.
-      </p>
+function searchHomeGames() {
 
-      <button class="play" onclick="showGames()">
-        ← Back to Games
-      </button>
-    </div>
-  `;
+    const input =
+        document.getElementById("homeSearch");
+
+    const results =
+        searchBlockPlayGames(input.value);
+
+    displayGames(
+        results,
+        "homeGames"
+    );
 }
+
+
+function searchGamesPage() {
+
+    const input =
+        document.getElementById("gameSearch");
+
+    const results =
+        searchBlockPlayGames(input.value);
+
+    displayGames(
+        results,
+        "gameList"
+    );
+}
+
+
+function displayGames(games, containerID) {
+
+    const container =
+        document.getElementById(containerID);
+
+    if (!container) return;
+
+    if (games.length === 0) {
+
+        container.innerHTML = `
+            <div class="empty">
+                No games found.
+            </div>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = games.map(game => `
+
+        <div class="gameCard">
+
+            <div class="gameIcon">
+                ${game.icon}
+            </div>
+
+            <h3>
+                ${game.name}
+            </h3>
+
+            <p>
+                ${game.description}
+            </p>
+
+            <button
+                class="playButton"
+                onclick="launchBloxPlayGame('${game.name.replace(/'/g, "\\'")}')"
+            >
+                ▶ Play
+            </button>
+
+        </div>
+
+    `).join("");
+}
+
+
+function launchBloxPlayGame(gameName) {
+
+    if (
+        typeof BloxPlayGameLauncher !==
+        "undefined"
+    ) {
+
+        BloxPlayGameLauncher.launch(
+            gameName
+        );
+
+    } else {
+
+        alert(
+            "The game launcher could not be loaded."
+        );
+
+    }
+}
+
 
 function showAccounts() {
-  document.getElementById("app").innerHTML = `
-    <h1>👤 Accounts</h1>
-    <p>Your account system is still connected.</p>
-  `;
+
+    document.getElementById("app").innerHTML = `
+
+        <h1>👤 Accounts</h1>
+
+        <div class="panel">
+
+            <h2>Create Account</h2>
+
+            <input
+                id="usernameInput"
+                placeholder="Username"
+                maxlength="20"
+                style="
+                    width:100%;
+                    padding:14px;
+                    border-radius:9px;
+                    border:0;
+                    margin-bottom:10px;
+                "
+            >
+
+            <button onclick="createBloxAccount()">
+                Create Account
+            </button>
+
+            <p id="accountMessage"></p>
+
+        </div>
+
+        <div class="panel">
+
+            <h2>🔎 Search Accounts</h2>
+
+            <input
+                id="accountSearch"
+                placeholder="Search usernames..."
+                oninput="searchBloxAccounts()"
+                style="
+                    width:100%;
+                    padding:14px;
+                    border-radius:9px;
+                    border:0;
+                "
+            >
+
+            <div id="accountResults"></div>
+
+        </div>
+    `;
 }
+
+
+function createBloxAccount() {
+
+    const input =
+        document.getElementById("usernameInput");
+
+    const message =
+        document.getElementById("accountMessage");
+
+    const result =
+        BlockPlayAccounts.createAccount(
+            input.value
+        );
+
+    if (result.success) {
+
+        message.textContent =
+            "Account created: " +
+            result.account.username;
+
+        input.value = "";
+
+    } else {
+
+        message.textContent =
+            result.message;
+    }
+}
+
+
+function searchBloxAccounts() {
+
+    const input =
+        document.getElementById("accountSearch");
+
+    const results =
+        BlockPlayAccounts.searchAccounts(
+            input.value
+        );
+
+    const container =
+        document.getElementById("accountResults");
+
+    if (!container) return;
+
+    if (!input.value.trim()) {
+
+        container.innerHTML = "";
+
+        return;
+    }
+
+    if (results.length === 0) {
+
+        container.innerHTML =
+            `<p class="empty">No accounts found.</p>`;
+
+        return;
+    }
+
+    container.innerHTML =
+        results.map(account => `
+
+            <div class="panel">
+
+                <strong>
+                    👤 ${account.username}
+                </strong>
+
+                <br><br>
+
+                <button
+                    onclick="alert('Friend system coming next.')"
+                >
+                    ➕ Add Friend
+                </button>
+
+            </div>
+
+        `).join("");
+}
+
 
 function showFriends() {
-  document.getElementById("app").innerHTML = `
-    <h1>👥 Friends</h1>
 
-    <div class="game">
-      <h2>Friends</h2>
-      <p>Friend requests and online players will be added here.</p>
-    </div>
-  `;
+    document.getElementById("app").innerHTML = `
+
+        <h1>👥 Friends</h1>
+
+        <div class="panel">
+
+            <h2>Your Friends</h2>
+
+            <p>
+                The online friend system will connect here.
+            </p>
+
+        </div>
+    `;
 }
+
 
 showHome();
 
