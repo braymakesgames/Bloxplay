@@ -9,183 +9,534 @@
 *{box-sizing:border-box}
 
 body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#f2f2f2;
- color:#222
+margin:0;
+font-family:Arial,sans-serif;
+background:#f2f2f2;
+color:#222
 }
 
 header{
- background:#111;
- color:white;
- padding:14px 18px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- position:sticky;
- top:0;
- z-index:10;
- gap:10px;
- flex-wrap:wrap
+background:#111;
+color:white;
+padding:12px 16px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+position:sticky;
+top:0;
+z-index:50
 }
 
 .logo{
- font-size:24px;
- font-weight:bold
+font-size:24px;
+font-weight:bold
+}
+
+nav{
+display:flex;
+gap:4px;
+overflow-x:auto
 }
 
 nav button{
- background:transparent;
- color:white;
- border:0;
- margin:0 3px;
- padding:9px 10px;
- font-size:15px;
- cursor:pointer
+background:transparent;
+border:0;
+color:white;
+padding:10px 12px;
+border-radius:8px;
+font-size:15px;
+white-space:nowrap
 }
 
 nav button:hover{
- background:#333;
- border-radius:8px
+background:#333
 }
 
 .bux{
- background:#222;
- padding:8px 12px;
- border-radius:8px;
- color:#ffd83d;
- font-weight:bold
+background:#222;
+color:#ffd83d;
+padding:9px 12px;
+border-radius:8px;
+font-weight:bold
 }
 
 main{
- max-width:1100px;
- margin:auto;
- padding:25px 16px
+max-width:1100px;
+margin:auto;
+padding:25px 16px
 }
 
-.page{display:none}
-.page.active{display:block}
+.page{
+display:none
+}
+
+.page.active{
+display:block
+}
 
 .hero{
- background:linear-gradient(135deg,#202020,#444);
- color:white;
- padding:35px;
- border-radius:16px;
- margin-bottom:25px
+background:linear-gradient(135deg,#151515,#444);
+color:white;
+padding:35px;
+border-radius:16px;
+margin-bottom:25px
 }
 
 .hero h1{
- margin-top:0;
- font-size:38px
+font-size:38px;
+margin-top:0
 }
 
-.hero p{color:#ddd}
-
-.search{
- width:100%;
- padding:14px;
- border:1px solid #ccc;
- border-radius:10px;
- font-size:16px;
- margin-bottom:20px
+.search,
+input,
+select{
+width:100%;
+padding:13px;
+border:1px solid #ccc;
+border-radius:9px;
+font-size:16px;
+margin:6px 0
 }
 
 .games{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:16px
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:16px
 }
 
-.game,.account-box{
- background:white;
- border-radius:14px;
- padding:18px;
- box-shadow:0 3px 12px rgba(0,0,0,.08);
- margin-bottom:15px
+.game,
+.panel{
+background:white;
+border-radius:14px;
+padding:18px;
+box-shadow:0 3px 12px rgba(0,0,0,.08);
+margin-bottom:16px
 }
 
 .game-icon{
- height:120px;
- border-radius:10px;
- background:linear-gradient(135deg,#777,#222);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:45px;
- margin-bottom:12px
+height:120px;
+border-radius:10px;
+background:linear-gradient(135deg,#777,#222);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:45px
 }
 
-.game h3{margin:5px 0}
-.game p{color:#666}
-
-.play,.account-btn{
- width:100%;
- padding:11px;
- background:#111;
- color:white;
- border:0;
- border-radius:8px;
- font-weight:bold;
- cursor:pointer;
- margin-top:8px
+.game h3{
+margin-bottom:5px
 }
 
-.play:hover,.account-btn:hover{
- background:#333
+.game p{
+color:#666
 }
 
-input{
- padding:12px;
- width:100%;
- border:1px solid #ccc;
- border-radius:8px;
- margin:6px 0;
- font-size:16px
+button{
+cursor:pointer
 }
 
-.account-card{
- display:flex;
- justify-content:space-between;
- align-items:center;
- background:#f5f5f5;
- padding:12px;
- border-radius:9px;
- margin:8px 0;
- gap:10px
+.play,
+.mainButton{
+width:100%;
+padding:12px;
+border:0;
+border-radius:8px;
+background:#111;
+color:white;
+font-weight:bold;
+margin-top:8px
 }
 
-.account-card button{
- background:#111;
- color:white;
- border:0;
- border-radius:7px;
- padding:8px 12px
+.play:hover,
+.mainButton:hover{
+background:#333
+}
+
+.red{
+background:#c62828
+}
+
+.accountCard{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px;
+background:#f4f4f4;
+border-radius:9px;
+margin:8px 0;
+gap:10px
+}
+
+.accountCard button{
+border:0;
+background:#111;
+color:white;
+padding:8px 12px;
+border-radius:7px
 }
 
 .status{
- padding:12px;
- border-radius:8px;
- background:#eee;
- margin-bottom:15px
+padding:12px;
+background:#eee;
+border-radius:8px;
+margin-bottom:15px
 }
 
-.logout{
- background:#c62828!important
+
+/* AVATAR */
+
+.avatarEditor{
+display:grid;
+grid-template-columns:280px 1fr;
+gap:25px;
+align-items:start
 }
 
-footer{
- text-align:center;
- color:#777;
- padding:30px
+.avatarPreview{
+height:350px;
+background:linear-gradient(#9bd7ff 0 60%,#5e9b48 60%);
+border-radius:15px;
+position:relative;
+overflow:hidden
+}
+
+.avatar{
+position:absolute;
+left:50%;
+top:50%;
+width:100px;
+height:230px;
+transform:translate(-50%,-50%)
+}
+
+.avatarHead{
+width:76px;
+height:76px;
+background:#f1c27d;
+border-radius:12px;
+position:absolute;
+left:12px;
+top:0
+}
+
+.avatarBody{
+width:70px;
+height:95px;
+background:#2673d8;
+position:absolute;
+left:15px;
+top:78px;
+border-radius:8px
+}
+
+.avatarArm{
+width:25px;
+height:90px;
+background:#2673d8;
+position:absolute;
+top:82px;
+border-radius:8px
+}
+
+.avatarArm.left{
+left:-13px;
+transform:rotate(8deg)
+}
+
+.avatarArm.right{
+right:-13px;
+transform:rotate(-8deg)
+}
+
+.avatarLeg{
+width:28px;
+height:75px;
+background:#222;
+position:absolute;
+top:168px;
+border-radius:7px
+}
+
+.avatarLeg.left{
+left:17px
+}
+
+.avatarLeg.right{
+right:17px
+}
+
+.colorButtons{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px
+}
+
+.colorButtons button{
+height:42px;
+border:0;
+border-radius:8px;
+color:white;
+font-weight:bold
+}
+
+.avatarBlue{background:#2673d8}
+.avatarRed{background:#c62828}
+.avatarGreen{background:#39834a}
+.avatarPurple{background:#743db8}
+.avatarBlack{background:#222}
+.avatarOrange{background:#e88722}
+
+
+/* GAME */
+
+#gameScreen{
+display:none;
+position:fixed;
+inset:0;
+background:#111;
+z-index:100;
+color:white
+}
+
+#gameScreen.active{
+display:block
+}
+
+#gameHeader{
+position:absolute;
+top:0;
+left:0;
+right:0;
+z-index:20;
+background:rgba(0,0,0,.8);
+padding:12px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px
+}
+
+#gameHeader button{
+border:0;
+background:#c62828;
+color:white;
+padding:10px 14px;
+border-radius:8px;
+font-weight:bold
+}
+
+#gameWorld{
+position:absolute;
+inset:0;
+overflow:hidden;
+background:
+linear-gradient(
+#78c5ed 0%,
+#bfeaff 48%,
+#65a451 49%,
+#4b873b 100%
+)
+}
+
+#gameGround{
+position:absolute;
+width:1100px;
+height:1100px;
+left:50%;
+top:54%;
+transform:translate(-50%,-50%) rotateX(55deg);
+background:
+repeating-linear-gradient(
+0deg,
+#5c994d 0px,
+#5c994d 49px,
+#508b43 50px,
+#508b43 51px
+);
+border:8px solid #396d31
+}
+
+.gameRoad{
+position:absolute;
+background:#444;
+border:5px solid #555
+}
+
+.gameRoad.a{
+width:1000px;
+height:120px;
+left:50%;
+top:48%;
+transform:translate(-50%,-50%) rotateX(55deg)
+}
+
+.gameRoad.b{
+width:120px;
+height:1000px;
+left:50%;
+top:48%;
+transform:translate(-50%,-50%) rotateX(55deg)
+}
+
+.house{
+position:absolute;
+width:160px;
+height:130px;
+background:#ddd;
+border:5px solid #333
+}
+
+.house:after{
+content:"";
+position:absolute;
+width:48px;
+height:65px;
+background:#333;
+bottom:0;
+left:50%;
+transform:translateX(-50%)
+}
+
+.house.one{left:7%;top:22%}
+.house.two{right:7%;top:22%;background:#d5b8b8}
+.house.three{left:7%;bottom:12%;background:#b8c8d5}
+.house.four{right:7%;bottom:12%;background:#c6d5b8}
+
+#gamePlayer{
+position:absolute;
+width:100px;
+height:230px;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+z-index:10
+}
+
+#gamePlayer .head{
+width:76px;
+height:76px;
+background:#f1c27d;
+border-radius:12px;
+position:absolute;
+left:12px;
+top:0
+}
+
+#gamePlayer .body{
+width:70px;
+height:95px;
+background:#2673d8;
+position:absolute;
+left:15px;
+top:78px;
+border-radius:8px
+}
+
+#gamePlayer .arm{
+width:25px;
+height:90px;
+background:#2673d8;
+position:absolute;
+top:82px;
+border-radius:8px
+}
+
+#gamePlayer .arm.left{
+left:-13px;
+transform:rotate(8deg)
+}
+
+#gamePlayer .arm.right{
+right:-13px;
+transform:rotate(-8deg)
+}
+
+#gamePlayer .leg{
+width:28px;
+height:75px;
+background:#222;
+position:absolute;
+top:168px;
+border-radius:7px
+}
+
+#gamePlayer .leg.left{
+left:17px
+}
+
+#gamePlayer .leg.right{
+right:17px
+}
+
+.playerName{
+position:absolute;
+top:-28px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,.65);
+padding:4px 8px;
+border-radius:5px;
+font-size:12px;
+white-space:nowrap
+}
+
+#roundMessage{
+position:absolute;
+top:90px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,.8);
+padding:15px 22px;
+border-radius:12px;
+text-align:center;
+z-index:20;
+min-width:230px
+}
+
+#mobileControls{
+position:absolute;
+bottom:25px;
+left:20px;
+z-index:30;
+display:grid;
+grid-template-columns:55px 55px 55px;
+gap:6px
+}
+
+#mobileControls button{
+width:55px;
+height:55px;
+border:0;
+border-radius:10px;
+background:rgba(0,0,0,.7);
+color:white;
+font-size:22px
+}
+
+#up{grid-column:2}
+#left{grid-column:1}
+#down{grid-column:2}
+#right{grid-column:3;grid-row:2}
+
+#roundTimer{
+font-weight:bold
 }
 
 @media(max-width:700px){
- .hero h1{font-size:30px}
- nav{
-  width:100%;
-  overflow-x:auto;
-  white-space:nowrap
- }
+
+.avatarEditor{
+grid-template-columns:1fr
+}
+
+.avatarPreview{
+height:300px
+}
+
+.hero h1{
+font-size:30px
+}
 }
 </style>
 </head>
@@ -199,12 +550,13 @@ footer{
 <nav>
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('games')">Games</button>
+<button onclick="showPage('avatarPage')">Avatar</button>
 <button onclick="showPage('accounts')">Accounts</button>
 <button onclick="showPage('friends')">Friends</button>
 </nav>
 
 <div class="bux">
-💰 <span id="bux">0</span> BloxBux
+💰 <span id="bux">∞</span> BloxBux
 </div>
 
 </header>
@@ -212,13 +564,11 @@ footer{
 
 <main>
 
-<!-- HOME -->
-
 <section id="home" class="page active">
 
 <div class="hero">
 <h1>Welcome to BloxPlay</h1>
-<p>Play games, make friends, create experiences, and earn BloxBux.</p>
+<p>Play games, customize your avatar, and explore BloxPlay.</p>
 </div>
 
 <input
@@ -234,8 +584,6 @@ oninput="searchGames('homeSearch','homeGames')"
 
 </section>
 
-
-<!-- GAMES -->
 
 <section id="games" class="page">
 
@@ -253,7 +601,64 @@ oninput="searchGames('gameSearch','allGames')"
 </section>
 
 
-<!-- ACCOUNTS -->
+<section id="avatarPage" class="page">
+
+<h1>👤 Avatar</h1>
+
+<div class="avatarEditor">
+
+<div class="avatarPreview">
+
+<div class="avatar" id="avatarPreview">
+
+<div class="avatarHead"></div>
+<div class="avatarBody"></div>
+<div class="avatarArm left"></div>
+<div class="avatarArm right"></div>
+<div class="avatarLeg left"></div>
+<div class="avatarLeg right"></div>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Customize Avatar</h2>
+
+<p>Choose your shirt color.</p>
+
+<div class="colorButtons">
+
+<button class="avatarBlue" onclick="setAvatarColor('#2673d8')">Blue</button>
+
+<button class="avatarRed" onclick="setAvatarColor('#c62828')">Red</button>
+
+<button class="avatarGreen" onclick="setAvatarColor('#39834a')">Green</button>
+
+<button class="avatarPurple" onclick="setAvatarColor('#743db8')">Purple</button>
+
+<button class="avatarBlack" onclick="setAvatarColor('#222')">Black</button>
+
+<button class="avatarOrange" onclick="setAvatarColor('#e88722')">Orange</button>
+
+</div>
+
+<h3>Avatar</h3>
+
+<p>Head, body, arms, and legs are included.</p>
+
+<button class="mainButton" onclick="randomAvatar()">
+🎲 Random Avatar
+</button>
+
+</div>
+
+</div>
+
+</section>
+
 
 <section id="accounts" class="page">
 
@@ -261,53 +666,37 @@ oninput="searchGames('gameSearch','allGames')"
 
 <div id="accountStatus" class="status"></div>
 
-
-<div class="account-box">
+<div class="panel">
 
 <h2>Create Account</h2>
 
-<input
-id="newUsername"
-placeholder="Username"
-maxlength="20"
->
+<input id="newUsername" placeholder="Username" maxlength="20">
 
-<input
-id="newPassword"
-type="password"
-placeholder="Password"
->
+<input id="newPassword" type="password" placeholder="Password">
 
-<button class="account-btn" onclick="createAccount()">
+<button class="mainButton" onclick="createAccount()">
 Create Account
 </button>
 
 </div>
 
 
-<div class="account-box">
+<div class="panel">
 
 <h2>Login</h2>
 
-<input
-id="loginUsername"
-placeholder="Username"
->
+<input id="loginUsername" placeholder="Username">
 
-<input
-id="loginPassword"
-type="password"
-placeholder="Password"
->
+<input id="loginPassword" type="password" placeholder="Password">
 
-<button class="account-btn" onclick="login()">
+<button class="mainButton" onclick="login()">
 Login
 </button>
 
 </div>
 
 
-<div class="account-box">
+<div class="panel">
 
 <h2>Your Accounts</h2>
 
@@ -318,19 +707,13 @@ Login
 </section>
 
 
-<!-- FRIENDS -->
-
 <section id="friends" class="page">
 
-<h1>Friends</h1>
+<h1>👥 Friends</h1>
 
-<div class="game">
+<div class="panel">
 
-<h2>👥 Friends</h2>
-
-<p>
-The friends system will be connected to the BloxPlay server later.
-</p>
+<p>Friends and multiplayer connections are coming with the BloxPlay server.</p>
 
 </div>
 
@@ -344,14 +727,427 @@ BloxPlay © 2026
 </footer>
 
 
+<!-- GAME -->
+
+<div id="gameScreen">
+
+<div id="gameHeader">
+
+<strong>🔪 Mystery Hunt</strong>
+
+<span>💰 ∞ BloxBux</span>
+
+<span id="roundTimer">Lobby</span>
+
+<button onclick="leaveGame()">Leave</button>
+
+</div>
+
+
+<div id="gameWorld">
+
+<div id="gameGround"></div>
+
+<div class="gameRoad a"></div>
+<div class="gameRoad b"></div>
+
+<div class="house one"></div>
+<div class="house two"></div>
+<div class="house three"></div>
+<div class="house four"></div>
+
+
+<div id="gamePlayer">
+
+<div class="playerName" id="playerName">
+Player
+</div>
+
+<div class="head"></div>
+<div class="body"></div>
+
+<div class="arm left"></div>
+<div class="arm right"></div>
+
+<div class="leg left"></div>
+<div class="leg right"></div>
+
+</div>
+
+
+<div id="roundMessage">
+Waiting in lobby...
+</div>
+
+
+<div id="mobileControls">
+
+<button id="up">▲</button>
+<button id="left">◀</button>
+<button id="down">▼</button>
+<button id="right">▶</button>
+
+</div>
+
+</div>
+
+</div>
+
+
 <script>
 
-const games = [
+/* =========================
+ACCOUNTS
+========================= */
+
+let accounts=
+JSON.parse(localStorage.getItem("bloxplayAccounts")||"[]");
+
+let currentUsername=
+localStorage.getItem("bloxplayCurrent")||"";
+
+
+function saveAccounts(){
+
+localStorage.setItem(
+"bloxplayAccounts",
+JSON.stringify(accounts)
+);
+
+}
+
+
+function createAccount(){
+
+const username=
+document.getElementById("newUsername").value.trim();
+
+const password=
+document.getElementById("newPassword").value;
+
+if(username.length<3){
+
+alert("Username must be at least 3 characters.");
+
+return;
+}
+
+if(password.length<6){
+
+alert("Password must be at least 6 characters.");
+
+return;
+}
+
+if(accounts.length>=5){
+
+alert("You can only have 5 accounts.");
+
+return;
+}
+
+if(accounts.some(a=>
+a.username.toLowerCase()===username.toLowerCase()
+)){
+
+alert("That username already exists.");
+
+return;
+}
+
+const banned=[
+"admin",
+"owner",
+"moderator",
+"fuck",
+"shit",
+"bitch"
+];
+
+if(banned.some(word=>
+username.toLowerCase().includes(word)
+)){
+
+alert("That username is not allowed.");
+
+return;
+}
+
+accounts.push({
+
+username:username,
+password:password,
+bloxBux:0,
+friends:[],
+avatarColor:"#2673d8"
+
+});
+
+saveAccounts();
+
+currentUsername=username;
+
+localStorage.setItem(
+"bloxplayCurrent",
+username
+);
+
+document.getElementById("newUsername").value="";
+document.getElementById("newPassword").value="";
+
+renderAccounts();
+
+updateBux();
+
+loadAvatar();
+
+alert("Account created!");
+
+}
+
+
+function login(){
+
+const username=
+document.getElementById("loginUsername").value.trim();
+
+const password=
+document.getElementById("loginPassword").value;
+
+const account=accounts.find(a=>
+a.username.toLowerCase()===username.toLowerCase()
+&&
+a.password===password
+);
+
+if(!account){
+
+alert("Incorrect username or password.");
+
+return;
+}
+
+currentUsername=account.username;
+
+localStorage.setItem(
+"bloxplayCurrent",
+currentUsername
+);
+
+renderAccounts();
+updateBux();
+loadAvatar();
+
+alert("Logged in as "+currentUsername+"!");
+
+}
+
+
+function switchAccount(username){
+
+const account=accounts.find(a=>
+a.username===username
+);
+
+if(!account)return;
+
+currentUsername=username;
+
+localStorage.setItem(
+"bloxplayCurrent",
+username
+);
+
+renderAccounts();
+updateBux();
+loadAvatar();
+
+}
+
+
+function logout(){
+
+currentUsername="";
+
+localStorage.removeItem("bloxplayCurrent");
+
+renderAccounts();
+
+updateBux();
+
+}
+
+
+function renderAccounts(){
+
+const status=
+document.getElementById("accountStatus");
+
+const list=
+document.getElementById("accountList");
+
+if(currentUsername){
+
+status.innerHTML=
+"🟢 Logged in as <b>"+
+currentUsername+
+"</b>";
+
+}else{
+
+status.innerHTML=
+"🔴 Not logged in.";
+
+}
+
+list.innerHTML="";
+
+accounts.forEach(account=>{
+
+const div=document.createElement("div");
+
+div.className="accountCard";
+
+div.innerHTML=`
+
+<span>
+👤 <b>${account.username}</b>
+</span>
+
+<button onclick="switchAccount('${account.username}')">
+Switch
+</button>
+
+`;
+
+list.appendChild(div);
+
+});
+
+if(currentUsername){
+
+const button=document.createElement("button");
+
+button.className="mainButton red";
+
+button.innerText="Log Out";
+
+button.onclick=logout;
+
+list.appendChild(button);
+
+}
+
+}
+
+
+/* =========================
+AVATAR
+========================= */
+
+function setAvatarColor(color){
+
+if(!currentUsername){
+
+alert("Log into an account first.");
+
+return;
+}
+
+const account=accounts.find(a=>
+a.username===currentUsername
+);
+
+if(!account)return;
+
+account.avatarColor=color;
+
+saveAccounts();
+
+loadAvatar();
+
+}
+
+
+function loadAvatar(){
+
+if(!currentUsername)return;
+
+const account=accounts.find(a=>
+a.username===currentUsername
+);
+
+if(!account)return;
+
+const color=account.avatarColor||"#2673d8";
+
+document
+.querySelectorAll(".avatarBody,.avatarArm")
+.forEach(part=>{
+part.style.background=color;
+});
+
+document
+.querySelectorAll("#gamePlayer .body,#gamePlayer .arm")
+.forEach(part=>{
+part.style.background=color;
+});
+
+}
+
+
+function randomAvatar(){
+
+const colors=[
+"#2673d8",
+"#c62828",
+"#39834a",
+"#743db8",
+"#222",
+"#e88722"
+];
+
+const color=
+colors[Math.floor(Math.random()*colors.length)];
+
+setAvatarColor(color);
+
+}
+
+
+/* =========================
+PAGES
+========================= */
+
+function showPage(page){
+
+document
+.querySelectorAll(".page")
+.forEach(p=>{
+p.classList.remove("active");
+});
+
+document
+.getElementById(page)
+.classList.add("active");
+
+if(page==="accounts"){
+renderAccounts();
+}
+
+}
+
+
+/* =========================
+GAMES
+========================= */
+
+const games=[
 
 {
 name:"Mystery Hunt",
 icon:"🔪",
-description:"A 3D mystery game with secret roles and rounds."
+description:"A mystery game with a lobby, secret roles and rounds."
 },
 
 {
@@ -363,19 +1159,19 @@ description:"Collect strange creatures and build your collection."
 {
 name:"Island Survival",
 icon:"🏝️",
-description:"Survive events and explore a mysterious island."
+description:"Survive events and explore an island."
 },
 
 {
 name:"Block Racers",
 icon:"🏎️",
-description:"Race against other players on crazy tracks."
+description:"Race through wild tracks."
 },
 
 {
 name:"Ghost Hunt",
 icon:"👻",
-description:"Explore spooky locations and find hidden clues."
+description:"Explore strange locations and find clues."
 },
 
 {
@@ -387,425 +1183,224 @@ description:"Collect coins and become the richest player."
 {
 name:"Build City",
 icon:"🏙️",
-description:"Build and expand your own city."
+description:"Build and expand your city."
 },
 
 {
 name:"Farm Life",
 icon:"🌾",
-description:"Grow crops, sell them, and expand your farm."
+description:"Grow crops and expand your farm."
 },
 
 {
 name:"Pet World",
 icon:"🐾",
-description:"Collect pets and explore a huge world."
+description:"Collect pets and explore."
 },
 
 {
 name:"Factory Tycoon",
 icon:"🏭",
-description:"Build your factory and become a business owner."
+description:"Build a huge factory."
 }
 
 ];
 
 
-/* ACCOUNT STORAGE */
+function renderGames(search,containerId){
 
-let accounts =
-JSON.parse(localStorage.getItem("bloxplayAccounts") || "[]");
+const container=
+document.getElementById(containerId);
 
-let currentUsername =
-localStorage.getItem("bloxplayCurrent") || "";
+container.innerHTML="";
 
+games
+.filter(game=>
+game.name.toLowerCase()
+.includes(search.toLowerCase())
+)
+.forEach(game=>{
 
-/* PAGE SYSTEM */
+const index=games.indexOf(game);
 
-function showPage(pageName){
+const card=document.createElement("div");
 
- document.querySelectorAll(".page").forEach(page=>{
-  page.classList.remove("active");
- });
+card.className="game";
 
- document.getElementById(pageName).classList.add("active");
+card.innerHTML=`
 
- if(pageName==="accounts"){
-  renderAccounts();
- }
+<div class="game-icon">
+${game.icon}
+</div>
 
-}
+<h3>${game.name}</h3>
 
+<p>${game.description}</p>
 
-/* GAMES */
+<button
+class="play"
+onclick="playGame(${index})">
+▶ Play
+</button>
 
-function renderGames(searchText,containerId){
+`;
 
- const container=document.getElementById(containerId);
+container.appendChild(card);
 
- const filtered=games.filter(game=>
-  game.name.toLowerCase().includes(searchText.toLowerCase())
- );
-
- container.innerHTML="";
-
- filtered.forEach((game,index)=>{
-
-  const card=document.createElement("div");
-
-  card.className="game";
-
-  card.innerHTML=`
-
-  <div class="game-icon">${game.icon}</div>
-
-  <h3>${game.name}</h3>
-
-  <p>${game.description}</p>
-
-  <button class="play" onclick="playGame(${index})">
-  ▶ Play
-  </button>
-
-  `;
-
-  container.appendChild(card);
-
- });
+});
 
 }
 
 
-function searchGames(inputId,containerId){
+function searchGames(input,container){
 
- const search=document.getElementById(inputId).value;
-
- renderGames(search,containerId);
+renderGames(
+document.getElementById(input).value,
+container
+);
 
 }
 
 
 function playGame(index){
 
- alert(
-  games[index].name+
-  " is being built!"
- );
+if(games[index].name==="Mystery Hunt"){
+
+startMystery();
+
+}else{
+
+alert(
+games[index].name+
+" is still being built."
+);
+
+}
 
 }
 
 
-/* ACCOUNT CREATION */
+/* =========================
+MYSTERY HUNT
+========================= */
 
-function createAccount(){
+let gameRunning=false;
 
- const username=
- document.getElementById("newUsername").value.trim();
+let gameStage="lobby";
 
- const password=
- document.getElementById("newPassword").value;
+let gameTimer=20;
 
+let countdownTimer=null;
 
- if(username.length<3){
+let playerX=50;
 
-  alert("Username must be at least 3 characters.");
-
-  return;
- }
+let playerY=50;
 
 
- if(password.length<6){
+function startMystery(){
 
-  alert("Password must be at least 6 characters.");
+gameRunning=true;
 
-  return;
- }
+gameStage="lobby";
 
+gameTimer=20;
 
- if(accounts.length>=5){
+playerX=50;
+playerY=50;
 
-  alert("You can only have 5 BloxPlay accounts on this device.");
+document
+.getElementById("gameScreen")
+.classList.add("active");
 
-  return;
- }
+const account=
+accounts.find(a=>
+a.username===currentUsername
+);
 
+document.getElementById("playerName")
+.innerText=
+account
+?account.username
+:"Guest";
 
- const exists=accounts.some(account=>
-  account.username.toLowerCase()===username.toLowerCase()
- );
+loadAvatar();
 
-
- if(exists){
-
-  alert("That username already exists.");
-
-  return;
- }
-
-
- const badWords=[
-  "admin",
-  "owner",
-  "moderator",
-  "fuck",
-  "shit",
-  "bitch"
- ];
-
-
- if(badWords.some(word=>
-  username.toLowerCase().includes(word)
- )){
-
-  alert("That username is not allowed.");
-
-  return;
- }
-
-
- const newAccount={
-
-  username:username,
-
-  password:password,
-
-  bloxBux:0,
-
-  friends:[]
-
- };
-
-
- accounts.push(newAccount);
-
- saveAccounts();
-
- currentUsername=username;
-
- localStorage.setItem(
-  "bloxplayCurrent",
-  currentUsername
- );
-
- document.getElementById("newUsername").value="";
- document.getElementById("newPassword").value="";
-
- renderAccounts();
-
- updateBux();
-
- alert("Account created!");
+startLobby();
 
 }
 
 
-/* LOGIN */
+function startLobby(){
 
-function login(){
+gameStage="lobby";
 
- const username=
- document.getElementById("loginUsername").value.trim();
+gameTimer=20;
 
- const password=
- document.getElementById("loginPassword").value;
+document
+.getElementById("roundMessage")
+.innerHTML=
+"🏠 <b>Mystery Hunt Lobby</b><br>Waiting for players...";
 
-
- const account=accounts.find(a=>
-  a.username.toLowerCase()===username.toLowerCase()
-  &&
-  a.password===password
- );
-
-
- if(!account){
-
-  alert("Incorrect username or password.");
-
-  return;
- }
-
-
- currentUsername=account.username;
-
- localStorage.setItem(
-  "bloxplayCurrent",
-  currentUsername
- );
-
- document.getElementById("loginUsername").value="";
- document.getElementById("loginPassword").value="";
-
- renderAccounts();
-
- updateBux();
-
- alert("Logged in as "+currentUsername+"!");
+runCountdown();
 
 }
 
 
-/* SWITCH ACCOUNT */
+function runCountdown(){
 
-function switchAccount(username){
+clearInterval(countdownTimer);
 
- const account=accounts.find(a=>
-  a.username===username
- );
+document
+.getElementById("roundTimer")
+.innerText=
+"Lobby: "+gameTimer;
 
- if(!account)return;
+countdownTimer=
+setInterval(()=>{
 
- currentUsername=username;
+if(!gameRunning){
 
- localStorage.setItem(
-  "bloxplayCurrent",
-  username
- );
+clearInterval(countdownTimer);
 
- renderAccounts();
+return;
+}
 
- updateBux();
+gameTimer--;
+
+document
+.getElementById("roundTimer")
+.innerText=
+"Lobby: "+gameTimer;
+
+if(gameTimer<=0){
+
+clearInterval(countdownTimer);
+
+startRound();
+
+}
+
+},1000);
 
 }
 
 
-/* LOGOUT */
+function startRound(){
 
-function logout(){
+gameStage="round";
 
- currentUsername="";
+gameTimer=180;
 
- localStorage.removeItem("bloxplayCurrent");
+const roles=[
+"🕵️ Detective",
+"👤 Innocent",
+"👤 Innocent",
+"👤 Innocent",
+"🔪 Mystery"
+];
 
- renderAccounts();
+const role=
+roles[Math.floor(Math.random()*roles.length)];
 
- updateBux();
-
-}
-
-
-/* ACCOUNT DISPLAY */
-
-function renderAccounts(){
-
- const status=
- document.getElementById("accountStatus");
-
- const list=
- document.getElementById("accountList");
-
-
- if(currentUsername){
-
-  status.innerHTML=
-  "🟢 Logged in as <b>"+
-  currentUsername+
-  "</b>";
-
- }else{
-
-  status.innerHTML=
-  "🔴 You are not logged in.";
-
- }
-
-
- list.innerHTML="";
-
-
- accounts.forEach(account=>{
-
-  const div=document.createElement("div");
-
-  div.className="account-card";
-
-  div.innerHTML=`
-
-  <span>
-  👤 <b>${account.username}</b>
-  </span>
-
-  <span>
-
-  <button onclick="switchAccount('${account.username}')">
-  Switch
-  </button>
-
-  </span>
-
-  `;
-
-  list.appendChild(div);
-
- });
-
-
- if(currentUsername){
-
-  const logoutButton=
-  document.createElement("button");
-
-  logoutButton.className="account-btn logout";
-
-  logoutButton.innerText="Log Out";
-
-  logoutButton.onclick=logout;
-
-  list.appendChild(logoutButton);
-
- }
-
-}
-
-
-/* BLOXBUX */
-
-function updateBux(){
-
- const display=
- document.getElementById("bux");
-
- if(!currentUsername){
-
-  display.innerText="0";
-
-  return;
- }
-
-
- const account=accounts.find(a=>
-  a.username===currentUsername
- );
-
- if(account){
-
-  display.innerText=account.bloxBux;
-
- }
-
-}
-
-
-function saveAccounts(){
-
- localStorage.setItem(
-  "bloxplayAccounts",
-  JSON.stringify(accounts)
- );
-
-}
-
-
-/* START */
-
-renderGames("", "homeGames");
-
-renderGames("", "allGames");
-
-renderAccounts();
-
-updateBux();
-
-</script>
-
-</body>
-</html>
+document
+.getElementById("round
