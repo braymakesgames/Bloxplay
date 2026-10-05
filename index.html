@@ -2,423 +2,329 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <title>BlockPlay</title>
 
 <style>
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,body {
+  margin:0;
+  width:100%;
+  min-height:100%;
+  overflow-x:hidden;
+  touch-action:manipulation;
+  -webkit-text-size-adjust:100%;
 }
 
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #10131a;
-  color: white;
+  font-family:Arial,sans-serif;
+  background:#10131a;
+  color:white;
+}
+
+button {
+  border:0;
+  cursor:pointer;
+  touch-action:manipulation;
 }
 
 header {
-  height: 65px;
-  background: #171b24;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid #292f3b;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  height:64px;
+  background:#171b24;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  position:sticky;
+  top:0;
+  z-index:20;
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: bold;
+  font-size:23px;
+  font-weight:bold;
 }
 
 .logo span {
-  color: #00aaff;
+  color:#00aaff;
+}
+
+nav {
+  display:flex;
+  gap:4px;
 }
 
 nav button {
-  background: transparent;
-  color: white;
-  border: 0;
-  padding: 10px;
-  font-size: 15px;
-}
-
-nav button:hover {
-  color: #00aaff;
+  background:transparent;
+  color:white;
+  padding:10px;
+  font-size:14px;
 }
 
 .page {
-  padding: 22px;
-  max-width: 1200px;
-  margin: auto;
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
 }
 
 .hero {
-  background: linear-gradient(135deg, #1261a0, #151b35);
-  border-radius: 20px;
-  padding: 35px 25px;
-  margin-bottom: 25px;
-  box-shadow: 0 15px 40px #0008;
+  background:linear-gradient(135deg,#1261a0,#151b35);
+  border-radius:20px;
+  padding:30px 24px;
+  margin-bottom:24px;
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin: 0 0 8px;
+  font-size:40px;
+  margin:0 0 8px;
 }
 
 .hero p {
-  color: #d7e5f2;
-  font-size: 17px;
+  color:#d6e4ef;
 }
 
 .primary {
-  background: #00aaff;
-  border: 0;
-  color: white;
-  padding: 13px 20px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 16px;
-  margin-top: 10px;
-}
-
-.primary:active {
-  transform: scale(.97);
-}
-
-h2 {
-  margin-top: 30px;
+  background:#00aaff;
+  color:white;
+  padding:13px 20px;
+  border-radius:10px;
+  font-size:16px;
+  font-weight:bold;
 }
 
 .games {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 18px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:16px;
 }
 
 .game {
-  background: #191e28;
-  border: 1px solid #2c3442;
-  border-radius: 15px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px #0006;
+  background:#191e28;
+  border:1px solid #2c3442;
+  border-radius:15px;
+  overflow:hidden;
 }
 
 .thumbnail {
-  height: 145px;
-  position: relative;
-  overflow: hidden;
-  perspective: 500px;
+  height:130px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:55px;
 }
 
-.island {
-  background: linear-gradient(#54c8ff, #0874b8);
-}
-
-.racer {
-  background: linear-gradient(#333, #111);
-}
-
-.ghost {
-  background: linear-gradient(#261c45, #090712);
-}
-
-.coinrush {
-  background: linear-gradient(#765000, #191000);
-}
-
-.city {
-  background: linear-gradient(#65b8e8, #28384b);
-}
-
-.block3d {
-  width: 55px;
-  height: 55px;
-  position: absolute;
-  transform: rotateX(55deg) rotateZ(45deg);
-  box-shadow: 12px 12px 0 #0004;
-}
-
-.grass {
-  background: #35b84a;
-  left: 55px;
-  bottom: 35px;
-}
-
-.grass2 {
-  background: #249c3a;
-  left: 125px;
-  bottom: 55px;
-}
-
-.car {
-  width: 95px;
-  height: 45px;
-  background: #e52d35;
-  position: absolute;
-  left: 60px;
-  bottom: 35px;
-  border-radius: 12px 12px 5px 5px;
-  transform: skew(-8deg);
-}
-
-.wheel {
-  width: 23px;
-  height: 23px;
-  background: #111;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -10px;
-}
-
-.w1 { left: 12px; }
-.w2 { right: 12px; }
-
-.ghostShape {
-  position: absolute;
-  left: 75px;
-  bottom: 25px;
-  width: 80px;
-  height: 90px;
-  background: white;
-  border-radius: 45px 45px 10px 10px;
-  box-shadow: 0 0 25px #9f7cff;
-}
-
-.eye {
-  position: absolute;
-  width: 12px;
-  height: 18px;
-  background: #161020;
-  border-radius: 50%;
-  top: 30px;
-}
-
-.e1 { left: 22px; }
-.e2 { right: 22px; }
-
-.coin {
-  position: absolute;
-  width: 55px;
-  height: 55px;
-  background: #ffd21f;
-  border: 5px solid #f0a900;
-  border-radius: 50%;
-  left: 80px;
-  top: 40px;
-  box-shadow: 0 0 25px #ffd21f;
-}
-
-.building {
-  position: absolute;
-  bottom: 0;
-  width: 60px;
-  height: 105px;
-  background: #657486;
-  box-shadow: inset 8px 0 #0002;
-}
-
-.b1 { left: 35px; height: 80px; }
-.b2 { left: 105px; height: 120px; }
-.b3 { left: 175px; height: 95px; }
+.t1 {background:linear-gradient(#55cfff,#0876b9)}
+.t2 {background:linear-gradient(#444,#111)}
+.t3 {background:linear-gradient(#322253,#08050f)}
+.t4 {background:linear-gradient(#765000,#201400)}
+.t5 {background:linear-gradient(#65b8e8,#28384b)}
 
 .gameInfo {
-  padding: 14px;
+  padding:14px;
 }
 
 .gameInfo h3 {
-  margin: 0 0 5px;
+  margin:0 0 5px;
 }
 
 .gameInfo p {
-  margin: 0 0 12px;
-  color: #aeb7c5;
+  color:#aeb7c5;
 }
 
 .play {
-  width: 100%;
-  padding: 10px;
-  background: #00aaff;
-  border: 0;
-  color: white;
-  border-radius: 8px;
-  font-weight: bold;
+  width:100%;
+  padding:11px;
+  background:#00aaff;
+  color:white;
+  border-radius:8px;
+  font-weight:bold;
 }
 
-#screen {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #78c8ef;
-  z-index: 100;
-  overflow: hidden;
+.creator,
+.avatarPanel {
+  background:#191e28;
+  border:1px solid #2c3442;
+  border-radius:16px;
+  padding:20px;
 }
 
-#world {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(#79c9f2 0 55%, #62b846 55% 100%);
+.creator input {
+  width:100%;
+  padding:13px;
+  margin:8px 0 15px;
+  background:#0f131a;
+  color:white;
+  border:1px solid #394353;
+  border-radius:8px;
+  font-size:16px;
 }
 
-.sun {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-  background: #ffe34d;
-  border-radius: 50%;
-  right: 40px;
-  top: 40px;
-  box-shadow: 0 0 40px #ffe34d;
+.templates,
+.avatarChoices {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
 }
 
-.player {
-  position: absolute;
-  width: 45px;
-  height: 70px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+.choice {
+  background:#242b37;
+  color:white;
+  padding:13px;
+  border-radius:9px;
+  border:2px solid transparent;
 }
 
-.head {
-  width: 38px;
-  height: 38px;
-  background: #e0a36b;
-  margin: auto;
-  border-radius: 5px;
+.choice.selected {
+  border-color:#00aaff;
 }
 
-.body {
-  width: 45px;
-  height: 32px;
-  background: #168cff;
-  margin: auto;
-  border-radius: 5px;
+.avatarPreview {
+  width:170px;
+  height:230px;
+  margin:20px auto;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
 
-.gameText {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  background: #0009;
-  padding: 10px 14px;
-  border-radius: 9px;
-  font-weight: bold;
+.avatarHead {
+  width:80px;
+  height:80px;
+  border-radius:10px;
+  margin-top:15px;
 }
 
-.closeGame {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  background: #e93636;
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  padding: 10px 15px;
-  z-index: 10;
+.avatarBody {
+  width:100px;
+  height:85px;
+  border-radius:8px;
 }
 
-.controls {
-  position: absolute;
-  bottom: 25px;
-  left: 25px;
-  display: grid;
-  grid-template-columns: 55px 55px 55px;
-  gap: 5px;
+.avatarLegs {
+  display:flex;
+  gap:10px;
 }
 
-.controls button {
-  width: 55px;
-  height: 55px;
-  border: 0;
-  border-radius: 12px;
-  background: #111b;
-  color: white;
-  font-size: 24px;
+.avatarLeg {
+  width:40px;
+  height:70px;
+  border-radius:6px;
 }
 
-.up {
-  grid-column: 2;
+.avatarHat {
+  position:absolute;
+  top:0;
+  width:95px;
+  height:25px;
+  border-radius:8px 8px 3px 3px;
 }
 
-.left {
-  grid-column: 1;
+#gameScreen {
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#7bcdf5;
+  overflow:hidden;
+  touch-action:none;
 }
 
-.down {
-  grid-column: 2;
+#gameCanvas {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
 }
 
-.right {
-  grid-column: 3;
-  grid-row: 2;
+.gameTop {
+  position:absolute;
+  top:15px;
+  left:15px;
+  right:15px;
+  z-index:5;
+  display:flex;
+  justify-content:space-between;
+  pointer-events:none;
 }
 
-.creator {
-  background: #191e28;
-  border-radius: 16px;
-  padding: 20px;
-  border: 1px solid #2d3542;
+.gameName {
+  background:#0009;
+  padding:10px 14px;
+  border-radius:9px;
 }
 
-.creator input,
-.creator select {
-  width: 100%;
-  padding: 13px;
-  margin: 8px 0 15px;
-  border-radius: 8px;
-  border: 1px solid #394353;
-  background: #0f131a;
-  color: white;
-  font-size: 16px;
+.exit {
+  pointer-events:auto;
+  background:#e43a3a;
+  color:white;
+  padding:10px 15px;
+  border-radius:8px;
+  font-weight:bold;
 }
 
-.templateButtons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.joystick {
+  position:absolute;
+  left:25px;
+  bottom:25px;
+  width:125px;
+  height:125px;
+  border-radius:50%;
+  background:#1118;
+  border:2px solid #fff5;
+  z-index:10;
+  touch-action:none;
 }
 
-.template {
-  padding: 15px;
-  background: #242b37;
-  color: white;
-  border: 2px solid transparent;
-  border-radius: 10px;
+.stick {
+  position:absolute;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:#fff8;
+  left:33px;
+  top:33px;
 }
 
-.template.selected {
-  border-color: #00aaff;
+.lookHint {
+  position:absolute;
+  right:20px;
+  bottom:35px;
+  background:#0007;
+  padding:10px;
+  border-radius:8px;
+  color:#fff;
+  z-index:5;
+  pointer-events:none;
 }
 
-.myGame {
-  margin-top: 20px;
-  background: #202630;
-  padding: 15px;
-  border-radius: 10px;
-}
-
-.empty {
-  color: #8f99a8;
+.avatarButton {
+  margin-top:20px;
+  width:100%;
+  padding:13px;
+  background:#242b37;
+  color:white;
+  border-radius:9px;
+  font-weight:bold;
 }
 
 @media(max-width:600px) {
   .hero h1 {
-    font-size: 32px;
+    font-size:31px;
   }
 
   .page {
-    padding: 14px;
+    padding:14px;
   }
 
   nav button {
-    padding: 6px;
-    font-size: 13px;
+    padding:7px;
+    font-size:13px;
   }
 }
 </style>
@@ -427,21 +333,28 @@ h2 {
 <body>
 
 <header>
-  <div class="logo">🧱 <span>Block</span>Play</div>
+
+  <div class="logo">
+    🧱 <span>Block</span>Play
+  </div>
 
   <nav>
-    <button onclick="showHome()">Home</button>
-    <button onclick="showCreate()">Create</button>
-    <button onclick="showMyGames()">My Games</button>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('create')">Create</button>
+    <button onclick="showPage('avatar')">Avatar</button>
   </nav>
+
 </header>
 
-<main class="page" id="home">
+<main id="home" class="page">
 
   <section class="hero">
     <h1>Make. Play. Create.</h1>
-    <p>Play blocky games and build your own mini games.</p>
-    <button class="primary" onclick="showCreate()">＋ Create Game</button>
+    <p>Play 3D games and customize your BlockPlay avatar.</p>
+
+    <button class="primary" onclick="showPage('create')">
+      ＋ Create Game
+    </button>
   </section>
 
   <h2>🔥 Featured Games</h2>
@@ -449,107 +362,101 @@ h2 {
   <div class="games">
 
     <div class="game">
-      <div class="thumbnail island">
-        <div class="block3d grass"></div>
-        <div class="block3d grass2"></div>
-      </div>
-
+      <div class="thumbnail t1">🏝️</div>
       <div class="gameInfo">
-        <h3>🏝️ Island Survival</h3>
-        <p>Explore the island.</p>
-        <button class="play" onclick="startGame('Island Survival')">PLAY</button>
+        <h3>Island Survival</h3>
+        <p>Explore a 3D island.</p>
+        <button class="play" onclick="startGame('Island Survival')">
+          PLAY
+        </button>
       </div>
     </div>
 
     <div class="game">
-      <div class="thumbnail racer">
-        <div class="car">
-          <div class="wheel w1"></div>
-          <div class="wheel w2"></div>
-        </div>
-      </div>
-
+      <div class="thumbnail t2">🏎️</div>
       <div class="gameInfo">
-        <h3>🏎️ Block Racers</h3>
-        <p>Drive around the map.</p>
-        <button class="play" onclick="startGame('Block Racers')">PLAY</button>
+        <h3>Block Racers</h3>
+        <p>Explore the race world.</p>
+        <button class="play" onclick="startGame('Block Racers')">
+          PLAY
+        </button>
       </div>
     </div>
 
     <div class="game">
-      <div class="thumbnail ghost">
-        <div class="ghostShape">
-          <div class="eye e1"></div>
-          <div class="eye e2"></div>
-        </div>
-      </div>
-
+      <div class="thumbnail t3">👻</div>
       <div class="gameInfo">
-        <h3>👻 Ghost Hunt</h3>
-        <p>Find the ghost.</p>
-        <button class="play" onclick="startGame('Ghost Hunt')">PLAY</button>
+        <h3>Ghost Hunt</h3>
+        <p>Explore the dark world.</p>
+        <button class="play" onclick="startGame('Ghost Hunt')">
+          PLAY
+        </button>
       </div>
     </div>
 
     <div class="game">
-      <div class="thumbnail coinrush">
-        <div class="coin">$</div>
-      </div>
-
+      <div class="thumbnail t4">💰</div>
       <div class="gameInfo">
-        <h3>💰 Coin Rush</h3>
-        <p>Collect the coins.</p>
-        <button class="play" onclick="startGame('Coin Rush')">PLAY</button>
+        <h3>Coin Rush</h3>
+        <p>Explore and collect coins.</p>
+        <button class="play" onclick="startGame('Coin Rush')">
+          PLAY
+        </button>
       </div>
     </div>
 
     <div class="game">
-      <div class="thumbnail city">
-        <div class="building b1"></div>
-        <div class="building b2"></div>
-        <div class="building b3"></div>
-      </div>
-
+      <div class="thumbnail t5">🏙️</div>
       <div class="gameInfo">
-        <h3>🏗️ Build City</h3>
-        <p>Explore a block city.</p>
-        <button class="play" onclick="startGame('Build City')">PLAY</button>
+        <h3>Build City</h3>
+        <p>Explore the city.</p>
+        <button class="play" onclick="startGame('Build City')">
+          PLAY
+        </button>
       </div>
     </div>
 
   </div>
+
 </main>
 
-<main class="page" id="create" style="display:none">
+<main id="create" class="page" style="display:none">
 
-  <h1>🎮 Create Your Game</h1>
+  <h1>🎮 Create Game</h1>
 
   <div class="creator">
 
     <label>Game Name</label>
-    <input id="gameName" placeholder="My Awesome Game">
 
-    <label>Choose a Template</label>
+    <input id="gameName" placeholder="My Game">
 
-    <div class="templateButtons">
+    <h3>Choose a world</h3>
 
-      <button class="template selected" onclick="selectTemplate(this,'Grass')">
+    <div class="templates">
+
+      <button class="choice selected"
+        onclick="selectTemplate(this,'Grass')">
         🌳 Grass
       </button>
 
-      <button class="template" onclick="selectTemplate(this,'City')">
+      <button class="choice"
+        onclick="selectTemplate(this,'City')">
         🏙️ City
       </button>
 
-      <button class="template" onclick="selectTemplate(this,'Island')">
+      <button class="choice"
+        onclick="selectTemplate(this,'Island')">
         🏝️ Island
       </button>
 
-      <button class="template" onclick="selectTemplate(this,'Space')">
+      <button class="choice"
+        onclick="selectTemplate(this,'Space')">
         🚀 Space
       </button>
 
     </div>
+
+    <br>
 
     <button class="primary" onclick="createGame()">
       CREATE GAME
@@ -559,103 +466,309 @@ h2 {
 
 </main>
 
-<main class="page" id="myGames" style="display:none">
+<main id="avatar" class="page" style="display:none">
 
-  <h1>🎮 My Games</h1>
+  <h1>👤 Avatar</h1>
 
-  <div id="gameList"></div>
+  <div class="avatarPanel">
 
-</main>
+    <div class="avatarPreview">
 
-<div id="screen">
+      <div id="hatPreview" class="avatarHat"></div>
 
-  <div id="world">
+      <div id="headPreview" class="avatarHead"></div>
 
-    <div class="sun"></div>
+      <div id="bodyPreview" class="avatarBody"></div>
 
-    <div class="gameText" id="gameTitle">
-      Game
+      <div class="avatarLegs">
+        <div id="leg1" class="avatarLeg"></div>
+        <div id="leg2" class="avatarLeg"></div>
+      </div>
+
     </div>
 
-    <button class="closeGame" onclick="closeGame()">
-      EXIT
-    </button>
+    <h3>Skin</h3>
 
-    <div class="player" id="player">
-      <div class="head"></div>
-      <div class="body"></div>
+    <div class="avatarChoices">
+
+      <button class="choice selected"
+        onclick="setAvatar('skin','#f0b27a',this)">
+        🟤 Light
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('skin','#8d5524',this)">
+        🟤 Brown
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('skin','#ffd1a9',this)">
+        🟤 Peach
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('skin','#704214',this)">
+        🟤 Dark
+      </button>
+
     </div>
 
-    <div class="controls">
+    <h3>Shirt</h3>
 
-      <button class="up" onclick="move('up')">▲</button>
-      <button class="left" onclick="move('left')">◀</button>
-      <button class="down" onclick="move('down')">▼</button>
-      <button class="right" onclick="move('right')">▶</button>
+    <div class="avatarChoices">
+
+      <button class="choice selected"
+        onclick="setAvatar('shirt','#168cff',this)">
+        🔵 Blue
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('shirt','#e53935',this)">
+        🔴 Red
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('shirt','#22aa55',this)">
+        🟢 Green
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('shirt','#8e44ad',this)">
+        🟣 Purple
+      </button>
+
+    </div>
+
+    <h3>Pants</h3>
+
+    <div class="avatarChoices">
+
+      <button class="choice selected"
+        onclick="setAvatar('pants','#222',this)">
+        ⚫ Black
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('pants','#2455aa',this)">
+        🔵 Blue
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('pants','#777',this)">
+        ⚪ Gray
+      </button>
+
+    </div>
+
+    <h3>Hat</h3>
+
+    <div class="avatarChoices">
+
+      <button class="choice selected"
+        onclick="setAvatar('hat','none',this)">
+        🚫 None
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('hat','#111',this)">
+        🧢 Black Hat
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('hat','#d62828',this)">
+        🧢 Red Hat
+      </button>
+
+      <button class="choice"
+        onclick="setAvatar('hat','#f0c419',this)">
+        👑 Crown
+      </button>
 
     </div>
 
   </div>
 
+</main>
+
+<div id="gameScreen">
+
+  <canvas id="gameCanvas"></canvas>
+
+  <div class="gameTop">
+
+    <div class="gameName" id="gameTitle">
+      BlockPlay
+    </div>
+
+    <button class="exit" onclick="closeGame()">
+      EXIT
+    </button>
+
+  </div>
+
+  <div class="joystick" id="joystick">
+    <div class="stick" id="stick"></div>
+  </div>
+
+  <div class="lookHint">
+    Drag the screen to look around
+  </div>
+
 </div>
 
-<script>
+<script type="module">
+
+import * as THREE from
+"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 
 let selectedTemplate = "Grass";
 
-let playerX = 50;
-let playerY = 50;
+let avatar = {
+  skin:"#f0b27a",
+  shirt:"#168cff",
+  pants:"#222",
+  hat:"none"
+};
 
-function hidePages() {
-  document.getElementById("home").style.display = "none";
-  document.getElementById("create").style.display = "none";
-  document.getElementById("myGames").style.display = "none";
+try {
+  const saved =
+    localStorage.getItem("blockplay_avatar");
+
+  if(saved) {
+    avatar = JSON.parse(saved);
+  }
+} catch(e) {}
+
+let scene;
+let camera;
+let renderer;
+let player;
+let clock;
+
+let keys = {
+  up:false,
+  down:false,
+  left:false,
+  right:false
+};
+
+let cameraYaw = 0;
+let cameraPitch = 0.35;
+
+let joystickActive = false;
+let joystickX = 0;
+let joystickY = 0;
+
+let lookActive = false;
+let lastLookX = 0;
+let lastLookY = 0;
+
+const canvas =
+  document.getElementById("gameCanvas");
+
+function showPage(page) {
+
+  document.getElementById("home").style.display =
+    page === "home" ? "block" : "none";
+
+  document.getElementById("create").style.display =
+    page === "create" ? "block" : "none";
+
+  document.getElementById("avatar").style.display =
+    page === "avatar" ? "block" : "none";
+
+  updateAvatarPreview();
 }
 
-function showHome() {
-  hidePages();
-  document.getElementById("home").style.display = "block";
-}
-
-function showCreate() {
-  hidePages();
-  document.getElementById("create").style.display = "block";
-}
-
-function showMyGames() {
-  hidePages();
-  document.getElementById("myGames").style.display = "block";
-  loadGames();
-}
+window.showPage = showPage;
 
 function selectTemplate(button, template) {
 
-  document.querySelectorAll(".template").forEach(function(btn) {
-    btn.classList.remove("selected");
-  });
+  document.querySelectorAll(".choice")
+    .forEach(b => {
+      if(b.parentElement.classList.contains("templates")) {
+        b.classList.remove("selected");
+      }
+    });
 
   button.classList.add("selected");
 
   selectedTemplate = template;
 }
 
+window.selectTemplate = selectTemplate;
+
+function setAvatar(type,value,button) {
+
+  avatar[type] = value;
+
+  const parent =
+    button.parentElement;
+
+  parent.querySelectorAll(".choice")
+    .forEach(b => b.classList.remove("selected"));
+
+  button.classList.add("selected");
+
+  localStorage.setItem(
+    "blockplay_avatar",
+    JSON.stringify(avatar)
+  );
+
+  updateAvatarPreview();
+}
+
+window.setAvatar = setAvatar;
+
+function updateAvatarPreview() {
+
+  document.getElementById("headPreview").style.background =
+    avatar.skin;
+
+  document.getElementById("bodyPreview").style.background =
+    avatar.shirt;
+
+  document.getElementById("leg1").style.background =
+    avatar.pants;
+
+  document.getElementById("leg2").style.background =
+    avatar.pants;
+
+  const hat =
+    document.getElementById("hatPreview");
+
+  if(avatar.hat === "none") {
+    hat.style.display = "none";
+  } else {
+    hat.style.display = "block";
+    hat.style.background = avatar.hat;
+  }
+}
+
 function createGame() {
 
-  const name = document.getElementById("gameName").value.trim();
+  const name =
+    document.getElementById("gameName")
+    .value
+    .trim();
 
-  if (!name) {
-    alert("Enter a game name first.");
+  if(!name) {
+    alert("Enter a game name.");
     return;
   }
 
-  let games = JSON.parse(
-    localStorage.getItem("blockplay_games") || "[]"
-  );
+  let games = [];
+
+  try {
+    games =
+      JSON.parse(
+        localStorage.getItem("blockplay_games") || "[]"
+      );
+  } catch(e) {}
 
   games.push({
-    name: name,
-    template: selectedTemplate,
-    created: Date.now()
+    name:name,
+    template:selectedTemplate
   });
 
   localStorage.setItem(
@@ -667,164 +780,293 @@ function createGame() {
 
   alert("Game created!");
 
-  showMyGames();
+  startGame(name);
 }
 
-function loadGames() {
+window.createGame = createGame;
 
-  const list = document.getElementById("gameList");
+function makeAvatar() {
 
-  let games = JSON.parse(
-    localStorage.getItem("blockplay_games") || "[]"
+  const group =
+    new THREE.Group();
+
+  const skinMaterial =
+    new THREE.MeshStandardMaterial({
+      color:avatar.skin
+    });
+
+  const shirtMaterial =
+    new THREE.MeshStandardMaterial({
+      color:avatar.shirt
+    });
+
+  const pantsMaterial =
+    new THREE.MeshStandardMaterial({
+      color:avatar.pants
+    });
+
+  const head =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(0.9,0.9,0.9),
+      skinMaterial
+    );
+
+  head.position.y = 2.65;
+
+  group.add(head);
+
+  const body =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(1.2,1.25,0.65),
+      shirtMaterial
+    );
+
+  body.position.y = 1.65;
+
+  group.add(body);
+
+  const leftLeg =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(0.45,1.25,0.55),
+      pantsMaterial
+    );
+
+  leftLeg.position.set(-0.3,0.35,0);
+
+  group.add(leftLeg);
+
+  const rightLeg =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(0.45,1.25,0.55),
+      pantsMaterial
+    );
+
+  rightLeg.position.set(0.3,0.35,0);
+
+  group.add(rightLeg);
+
+  const leftArm =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(0.4,1.15,0.5),
+      shirtMaterial
+    );
+
+  leftArm.position.set(-0.8,1.7,0);
+
+  group.add(leftArm);
+
+  const rightArm =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(0.4,1.15,0.5),
+      shirtMaterial
+    );
+
+  rightArm.position.set(0.8,1.7,0);
+
+  group.add(rightArm);
+
+  if(avatar.hat !== "none") {
+
+    const hatMaterial =
+      new THREE.MeshStandardMaterial({
+        color:avatar.hat
+      });
+
+    const hat =
+      new THREE.Mesh(
+        new THREE.BoxGeometry(1.05,0.25,1.05),
+        hatMaterial
+      );
+
+    hat.position.y = 3.2;
+
+    group.add(hat);
+  }
+
+  return group;
+}
+
+function createWorld() {
+
+  scene =
+    new THREE.Scene();
+
+  scene.background =
+    new THREE.Color(0x78c9ef);
+
+  camera =
+    new THREE.PerspectiveCamera(
+      65,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      500
+    );
+
+  renderer =
+    new THREE.WebGLRenderer({
+      canvas:canvas,
+      antialias:true
+    });
+
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio,2)
   );
 
-  if (games.length === 0) {
-    list.innerHTML =
-      '<p class="empty">You have not created any games yet.</p>';
-    return;
-  }
-
-  list.innerHTML = "";
-
-  games.forEach(function(game, index) {
-
-    const div = document.createElement("div");
-
-    div.className = "myGame";
-
-    div.innerHTML = `
-      <h3>🎮 ${escapeHTML(game.name)}</h3>
-      <p>Template: ${escapeHTML(game.template)}</p>
-
-      <button class="play"
-        onclick="startGame('${escapeJS(game.name)}')">
-        PLAY
-      </button>
-
-      <button class="play"
-        style="background:#d93434;margin-top:8px"
-        onclick="deleteGame(${index})">
-        DELETE
-      </button>
-    `;
-
-    list.appendChild(div);
-  });
-}
-
-function deleteGame(index) {
-
-  let games = JSON.parse(
-    localStorage.getItem("blockplay_games") || "[]"
+  renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
   );
 
-  games.splice(index, 1);
+  const light =
+    new THREE.HemisphereLight(
+      0xffffff,
+      0x557755,
+      2
+    );
 
-  localStorage.setItem(
-    "blockplay_games",
-    JSON.stringify(games)
-  );
+  scene.add(light);
 
-  loadGames();
+  const sun =
+    new THREE.DirectionalLight(
+      0xffffff,
+      2
+    );
+
+  sun.position.set(20,30,10);
+
+  scene.add(sun);
+
+  const ground =
+    new THREE.Mesh(
+      new THREE.BoxGeometry(100,1,100),
+      new THREE.MeshStandardMaterial({
+        color:0x45a848
+      })
+    );
+
+  ground.position.y = -0.5;
+
+  scene.add(ground);
+
+  for(let x=-40;x<=40;x+=8) {
+
+    for(let z=-40;z<=40;z+=8) {
+
+      if(Math.random() > 0.7) {
+
+        const block =
+          new THREE.Mesh(
+            new THREE.BoxGeometry(
+              3,
+              Math.random()*3+1,
+              3
+            ),
+            new THREE.MeshStandardMaterial({
+              color:0x7c8a93
+            })
+          );
+
+        block.position.set(
+          x,
+          block.geometry.parameters.height/2,
+          z
+        );
+
+        scene.add(block);
+      }
+    }
+  }
+
+  player =
+    makeAvatar();
+
+  player.position.set(0,0,0);
+
+  scene.add(player);
+
+  clock =
+    new THREE.Clock();
+
+  animate();
 }
 
-function startGame(name) {
+function animate() {
 
-  document.getElementById("screen").style.display = "block";
+  requestAnimationFrame(animate);
 
-  document.getElementById("gameTitle").textContent =
-    "🎮 " + name;
+  if(!player) return;
 
-  playerX = 50;
-  playerY = 50;
+  const delta =
+    Math.min(clock.getDelta(),0.05);
 
-  updatePlayer();
-}
+  let moveX = 0;
+  let moveZ = 0;
 
-function closeGame() {
-  document.getElementById("screen").style.display = "none";
-}
+  if(keys.left) moveX -= 1;
+  if(keys.right) moveX += 1;
+  if(keys.up) moveZ -= 1;
+  if(keys.down) moveZ += 1;
 
-function move(direction) {
+  moveX += joystickX;
+  moveZ += joystickY;
 
-  const speed = 4;
+  const length =
+    Math.hypot(moveX,moveZ);
 
-  if (direction === "up") {
-    playerY -= speed;
+  if(length > 0) {
+
+    moveX /= length;
+    moveZ /= length;
+
+    const speed = 7;
+
+    const forwardX =
+      Math.sin(cameraYaw);
+
+    const forwardZ =
+      Math.cos(cameraYaw);
+
+    const rightX =
+      Math.cos(cameraYaw);
+
+    const rightZ =
+      -Math.sin(cameraYaw);
+
+    player.position.x +=
+      (forwardX * moveZ + rightX * moveX)
+      * speed * delta;
+
+    player.position.z +=
+      (forwardZ * moveZ + rightZ * moveX)
+      * speed * delta;
+
+    player.rotation.y =
+      Math.atan2(
+        forwardX * moveZ + rightX * moveX,
+        forwardZ * moveZ + rightZ * moveX
+      );
   }
 
-  if (direction === "down") {
-    playerY += speed;
-  }
+  player.position.x =
+    THREE.MathUtils.clamp(
+      player.position.x,
+      -45,
+      45
+    );
 
-  if (direction === "left") {
-    playerX -= speed;
-  }
+  player.position.z =
+    THREE.MathUtils.clamp(
+      player.position.z,
+      -45,
+      45
+    );
 
-  if (direction === "right") {
-    playerX += speed;
-  }
+  const distance = 7;
 
-  playerX = Math.max(5, Math.min(95, playerX));
-  playerY = Math.max(15, Math.min(90, playerY));
+  const height = 3.5;
 
-  updatePlayer();
-}
-
-function updatePlayer() {
-
-  const player = document.getElementById("player");
-
-  player.style.left = playerX + "%";
-  player.style.top = playerY + "%";
-}
-
-document.addEventListener("keydown", function(event) {
-
-  if (
-    document.getElementById("screen").style.display !== "block"
-  ) {
-    return;
-  }
-
-  if (event.key === "ArrowUp" || event.key === "w") {
-    move("up");
-  }
-
-  if (event.key === "ArrowDown" || event.key === "s") {
-    move("down");
-  }
-
-  if (event.key === "ArrowLeft" || event.key === "a") {
-    move("left");
-  }
-
-  if (event.key === "ArrowRight" || event.key === "d") {
-    move("right");
-  }
-
-});
-
-function escapeHTML(text) {
-
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function escapeJS(text) {
-
-  return text
-    .replaceAll("\\", "\\\\")
-    .replaceAll("'", "\\'")
-    .replaceAll("\n", "\\n")
-    .replaceAll("\r", "\\r");
-}
-
-</script>
-
-</body>
-</html>
+  const camX =
+    player.position.x -
+    Math.sin(cameraYaw) *
+    Math.cos(cameraPitch) *
+    distance;
