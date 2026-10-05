@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
 <title>BlockPlay</title>
 
@@ -19,9 +17,9 @@ html,body{
  padding:0;
  width:100%;
  min-height:100%;
+ font-family:Arial,sans-serif;
  background:#10131a;
  color:white;
- font-family:Arial,sans-serif;
  touch-action:manipulation;
  -webkit-text-size-adjust:100%;
 }
@@ -31,7 +29,6 @@ body{
 }
 
 button{
- font-family:Arial,sans-serif;
  border:0;
  cursor:pointer;
  touch-action:manipulation;
@@ -43,7 +40,7 @@ header{
  display:flex;
  align-items:center;
  justify-content:space-between;
- padding:0 16px;
+ padding:0 15px;
  position:sticky;
  top:0;
  z-index:50;
@@ -64,10 +61,10 @@ nav{
 }
 
 nav button{
- background:transparent;
+ background:none;
  color:white;
- padding:10px 8px;
- font-size:14px;
+ padding:9px 7px;
+ font-size:13px;
 }
 
 .page{
@@ -90,7 +87,6 @@ nav button{
 
 .hero p{
  color:#d8e5ef;
- margin-bottom:20px;
 }
 
 .primary{
@@ -118,8 +114,8 @@ nav button{
 .thumbnail{
  height:130px;
  display:flex;
- align-items:center;
  justify-content:center;
+ align-items:center;
  font-size:58px;
 }
 
@@ -139,7 +135,6 @@ nav button{
 
 .gameInfo p{
  color:#aeb7c5;
- margin:0 0 12px;
 }
 
 .play{
@@ -160,7 +155,7 @@ nav button{
 
 input{
  width:100%;
- padding:13px;
+ padding:14px;
  margin:8px 0 18px;
  background:#0f131a;
  color:white;
@@ -190,7 +185,7 @@ input{
 .avatarPreview{
  width:180px;
  height:240px;
- margin:10px auto 25px;
+ margin:auto;
  display:flex;
  flex-direction:column;
  align-items:center;
@@ -200,8 +195,8 @@ input{
 .head{
  width:80px;
  height:80px;
- border-radius:8px;
  margin-top:25px;
+ border-radius:8px;
 }
 
 .body{
@@ -231,11 +226,6 @@ input{
  border-radius:7px;
 }
 
-#myGamesList{
- display:grid;
- gap:12px;
-}
-
 .savedGame{
  background:#202631;
  border-radius:10px;
@@ -243,25 +233,25 @@ input{
  display:flex;
  justify-content:space-between;
  align-items:center;
- gap:10px;
+ margin-bottom:10px;
 }
 
 .savedGame button{
  background:#00aaff;
  color:white;
- padding:9px 14px;
+ padding:10px 14px;
  border-radius:7px;
 }
 
-/* 3D GAME */
+/* GAME */
 
 #gameScreen{
  display:none;
  position:fixed;
  inset:0;
  z-index:999;
- overflow:hidden;
  background:#75c9ee;
+ overflow:hidden;
  touch-action:none;
 }
 
@@ -280,7 +270,6 @@ input{
  right:14px;
  display:flex;
  justify-content:space-between;
- align-items:center;
  z-index:10;
  pointer-events:none;
 }
@@ -289,7 +278,6 @@ input{
  background:#0009;
  padding:10px 14px;
  border-radius:9px;
- font-weight:bold;
 }
 
 .exitButton{
@@ -299,6 +287,31 @@ input{
  padding:11px 15px;
  border-radius:8px;
  font-weight:bold;
+}
+
+.nameBox{
+ position:absolute;
+ top:75px;
+ left:50%;
+ transform:translateX(-50%);
+ z-index:20;
+ background:#0009;
+ padding:10px;
+ border-radius:9px;
+ width:220px;
+}
+
+.nameBox input{
+ margin:0;
+}
+
+.nameBox button{
+ margin-top:7px;
+ width:100%;
+ background:#00aaff;
+ color:white;
+ padding:10px;
+ border-radius:7px;
 }
 
 .joystick{
@@ -329,26 +342,21 @@ input{
  right:18px;
  bottom:25px;
  background:#0008;
- padding:10px 12px;
+ padding:10px;
  border-radius:8px;
  z-index:10;
  pointer-events:none;
  font-size:13px;
 }
 
-@media(max-width:600px){
- .hero h1{
-  font-size:32px;
- }
-
- .page{
-  padding:14px;
- }
-
- nav button{
-  font-size:12px;
-  padding:8px 5px;
- }
+.playerCount{
+ position:absolute;
+ top:75px;
+ right:15px;
+ background:#0009;
+ padding:9px 12px;
+ border-radius:8px;
+ z-index:10;
 }
 </style>
 </head>
@@ -357,16 +365,16 @@ input{
 
 <header>
 
- <div class="logo">
-  🧱 <span>Block</span>Play
- </div>
+<div class="logo">
+🧱 <span>Block</span>Play
+</div>
 
- <nav>
-  <button onclick="showPage('home')">Home</button>
-  <button onclick="showPage('create')">Create</button>
-  <button onclick="showPage('avatar')">Avatar</button>
-  <button onclick="showPage('mygames')">My Games</button>
- </nav>
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('create')">Create</button>
+<button onclick="showPage('avatar')">Avatar</button>
+<button onclick="showPage('mygames')">My Games</button>
+</nav>
 
 </header>
 
@@ -374,107 +382,97 @@ input{
 
 <main id="home" class="page">
 
- <section class="hero">
+<section class="hero">
 
-  <h1>Make. Play. Create.</h1>
+<h1>Make. Play. Create.</h1>
 
-  <p>
-   Play 3D games, customize your avatar,
-   and create your own worlds.
-  </p>
+<p>
+Play 3D games, customize your avatar,
+and create your own worlds.
+</p>
 
-  <button class="primary"
-  onclick="showPage('create')">
-   ＋ Create Game
-  </button>
+<button class="primary"
+onclick="showPage('create')">
+＋ Create Game
+</button>
 
- </section>
+</section>
 
- <h2>🔥 Featured Games</h2>
+<h2>🔥 Featured Games</h2>
 
- <div class="games">
+<div class="games">
 
-  <div class="game">
+<div class="game">
+<div class="thumbnail t1">🏝️</div>
 
-   <div class="thumbnail t1">🏝️</div>
+<div class="gameInfo">
+<h3>Island Survival</h3>
+<p>Explore a 3D island.</p>
 
-   <div class="gameInfo">
-    <h3>Island Survival</h3>
-    <p>Explore a 3D island.</p>
+<button class="play"
+onclick="startGame('Island Survival','Island')">
+PLAY
+</button>
+</div>
+</div>
 
-    <button class="play"
-    onclick="startGame('Island Survival','Island')">
-     PLAY
-    </button>
-   </div>
+<div class="game">
+<div class="thumbnail t2">🏎️</div>
 
-  </div>
+<div class="gameInfo">
+<h3>Block Racers</h3>
+<p>Explore the race world.</p>
 
-  <div class="game">
+<button class="play"
+onclick="startGame('Block Racers','City')">
+PLAY
+</button>
+</div>
+</div>
 
-   <div class="thumbnail t2">🏎️</div>
+<div class="game">
+<div class="thumbnail t3">👻</div>
 
-   <div class="gameInfo">
-    <h3>Block Racers</h3>
-    <p>Explore the race world.</p>
+<div class="gameInfo">
+<h3>Ghost Hunt</h3>
+<p>Explore the dark world.</p>
 
-    <button class="play"
-    onclick="startGame('Block Racers','City')">
-     PLAY
-    </button>
-   </div>
+<button class="play"
+onclick="startGame('Ghost Hunt','Space')">
+PLAY
+</button>
+</div>
+</div>
 
-  </div>
+<div class="game">
+<div class="thumbnail t4">💰</div>
 
-  <div class="game">
+<div class="gameInfo">
+<h3>Coin Rush</h3>
+<p>Explore and collect coins.</p>
 
-   <div class="thumbnail t3">👻</div>
+<button class="play"
+onclick="startGame('Coin Rush','Grass')">
+PLAY
+</button>
+</div>
+</div>
 
-   <div class="gameInfo">
-    <h3>Ghost Hunt</h3>
-    <p>Explore the dark world.</p>
+<div class="game">
+<div class="thumbnail t5">🏙️</div>
 
-    <button class="play"
-    onclick="startGame('Ghost Hunt','Space')">
-     PLAY
-    </button>
-   </div>
+<div class="gameInfo">
+<h3>Build City</h3>
+<p>Explore the city.</p>
 
-  </div>
+<button class="play"
+onclick="startGame('Build City','City')">
+PLAY
+</button>
+</div>
+</div>
 
-  <div class="game">
-
-   <div class="thumbnail t4">💰</div>
-
-   <div class="gameInfo">
-    <h3>Coin Rush</h3>
-    <p>Explore and collect coins.</p>
-
-    <button class="play"
-    onclick="startGame('Coin Rush','Grass')">
-     PLAY
-    </button>
-   </div>
-
-  </div>
-
-  <div class="game">
-
-   <div class="thumbnail t5">🏙️</div>
-
-   <div class="gameInfo">
-    <h3>Build City</h3>
-    <p>Explore the city.</p>
-
-    <button class="play"
-    onclick="startGame('Build City','City')">
-     PLAY
-    </button>
-   </div>
-
-  </div>
-
- </div>
+</div>
 
 </main>
 
@@ -482,55 +480,49 @@ input{
 
 <main id="create" class="page" style="display:none">
 
- <h1>🎮 Create Game</h1>
+<h1>🎮 Create Game</h1>
 
- <div class="panel">
+<div class="panel">
 
-  <h3>Game Name</h3>
+<h3>Game Name</h3>
 
-  <input
-   id="gameName"
-   placeholder="My Game">
+<input id="gameName"
+placeholder="My Game">
 
-  <h3>World</h3>
+<h3>World</h3>
 
-  <div class="choices">
+<div class="choices">
 
-   <button
-   class="choice selected"
-   onclick="chooseTemplate(this,'Grass')">
-    🌳 Grass
-   </button>
+<button class="choice selected"
+onclick="chooseTemplate(this,'Grass')">
+🌳 Grass
+</button>
 
-   <button
-   class="choice"
-   onclick="chooseTemplate(this,'City')">
-    🏙️ City
-   </button>
+<button class="choice"
+onclick="chooseTemplate(this,'City')">
+🏙️ City
+</button>
 
-   <button
-   class="choice"
-   onclick="chooseTemplate(this,'Island')">
-    🏝️ Island
-   </button>
+<button class="choice"
+onclick="chooseTemplate(this,'Island')">
+🏝️ Island
+</button>
 
-   <button
-   class="choice"
-   onclick="chooseTemplate(this,'Space')">
-    🚀 Space
-   </button>
+<button class="choice"
+onclick="chooseTemplate(this,'Space')">
+🚀 Space
+</button>
 
-  </div>
+</div>
 
-  <br>
+<br>
 
-  <button
-  class="primary"
-  onclick="createGame()">
-   CREATE GAME
-  </button>
+<button class="primary"
+onclick="createGame()">
+CREATE GAME
+</button>
 
- </div>
+</div>
 
 </main>
 
@@ -538,139 +530,134 @@ input{
 
 <main id="avatar" class="page" style="display:none">
 
- <h1>👤 Customize Avatar</h1>
+<h1>👤 Customize Avatar</h1>
 
- <div class="panel">
+<div class="panel">
 
-  <div class="avatarPreview">
+<div class="avatarPreview">
 
-   <div id="previewHat"
-   class="hat"
-   style="display:none">
-   </div>
+<div id="previewHat"
+class="hat"
+style="display:none"></div>
 
-   <div id="previewHead"
-   class="head">
-   </div>
+<div id="previewHead"
+class="head"></div>
 
-   <div id="previewBody"
-   class="body">
-   </div>
+<div id="previewBody"
+class="body"></div>
 
-   <div class="legs">
+<div class="legs">
 
-    <div id="previewLeg1"
-    class="leg">
-    </div>
+<div id="previewLeg1"
+class="leg"></div>
 
-    <div id="previewLeg2"
-    class="leg">
-    </div>
+<div id="previewLeg2"
+class="leg"></div>
 
-   </div>
+</div>
 
-  </div>
+</div>
 
-  <h3>Skin</h3>
+<h3>Skin</h3>
 
-  <div class="choices">
+<div class="choices">
 
-   <button class="choice selected"
-   onclick="changeAvatar('skin','#f0b27a',this)">
-    Light
-   </button>
+<button class="choice selected"
+onclick="changeAvatar('skin','#f0b27a',this)">
+Light
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('skin','#8d5524',this)">
-    Brown
-   </button>
+<button class="choice"
+onclick="changeAvatar('skin','#8d5524',this)">
+Brown
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('skin','#ffd1a9',this)">
-    Peach
-   </button>
+<button class="choice"
+onclick="changeAvatar('skin','#ffd1a9',this)">
+Peach
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('skin','#704214',this)">
-    Dark
-   </button>
+<button class="choice"
+onclick="changeAvatar('skin','#704214',this)">
+Dark
+</button>
 
-  </div>
+</div>
 
-  <h3>Shirt</h3>
+<h3>Shirt</h3>
 
-  <div class="choices">
+<div class="choices">
 
-   <button class="choice selected"
-   onclick="changeAvatar('shirt','#168cff',this)">
-    🔵 Blue
-   </button>
+<button class="choice selected"
+onclick="changeAvatar('shirt','#168cff',this)">
+🔵 Blue
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('shirt','#e53935',this)">
-    🔴 Red
-   </button>
+<button class="choice"
+onclick="changeAvatar('shirt','#e53935',this)">
+🔴 Red
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('shirt','#22aa55',this)">
-    🟢 Green
-   </button>
+<button class="choice"
+onclick="changeAvatar('shirt','#22aa55',this)">
+🟢 Green
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('shirt','#8e44ad',this)">
-    🟣 Purple
-   </button>
+<button class="choice"
+onclick="changeAvatar('shirt','#8e44ad',this)">
+🟣 Purple
+</button>
 
-  </div>
+</div>
 
-  <h3>Pants</h3>
+<h3>Pants</h3>
 
-  <div class="choices">
+<div class="choices">
 
-   <button class="choice selected"
-   onclick="changeAvatar('pants','#222222',this)">
-    ⚫ Black
-   </button>
+<button class="choice selected"
+onclick="changeAvatar('pants','#222222',this)">
+⚫ Black
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('pants','#2455aa',this)">
-    🔵 Blue
-   </button>
+<button class="choice"
+onclick="changeAvatar('pants','#2455aa',this)">
+🔵 Blue
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('pants','#777777',this)">
-    ⚪ Gray
-   </button>
+<button class="choice"
+onclick="changeAvatar('pants','#777777',this)">
+⚪ Gray
+</button>
 
-  </div>
+</div>
 
-  <h3>Hat</h3>
+<h3>Hat</h3>
 
-  <div class="choices">
+<div class="choices">
 
-   <button class="choice selected"
-   onclick="changeAvatar('hat','none',this)">
-    🚫 None
-   </button>
+<button class="choice selected"
+onclick="changeAvatar('hat','none',this)">
+🚫 None
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('hat','#111111',this)">
-    🧢 Black Hat
-   </button>
+<button class="choice"
+onclick="changeAvatar('hat','#111111',this)">
+🧢 Black Hat
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('hat','#d62828',this)">
-    🧢 Red Hat
-   </button>
+<button class="choice"
+onclick="changeAvatar('hat','#d62828',this)">
+🧢 Red Hat
+</button>
 
-   <button class="choice"
-   onclick="changeAvatar('hat','#f0c419',this)">
-    👑 Crown
-   </button>
+<button class="choice"
+onclick="changeAvatar('hat','#f0c419',this)">
+👑 Crown
+</button>
 
-  </div>
+</div>
 
- </div>
+</div>
 
 </main>
 
@@ -678,49 +665,62 @@ input{
 
 <main id="mygames" class="page" style="display:none">
 
- <h1>🎮 My Games</h1>
+<h1>🎮 My Games</h1>
 
- <div id="myGamesList">
- </div>
+<div id="myGamesList"></div>
 
 </main>
 
-<!-- 3D GAME -->
+<!-- GAME -->
 
 <div id="gameScreen">
 
- <canvas id="gameCanvas"></canvas>
+<canvas id="gameCanvas"></canvas>
 
- <div class="gameHUD">
+<div class="gameHUD">
 
-  <div
-  class="gameTitle"
-  id="gameTitle">
-   BlockPlay
-  </div>
+<div class="gameTitle"
+id="gameTitle">
+BlockPlay
+</div>
 
-  <button
-  class="exitButton"
-  onclick="closeGame()">
-   EXIT
-  </button>
+<button class="exitButton"
+onclick="closeGame()">
+EXIT
+</button>
 
- </div>
+</div>
 
- <div
- class="joystick"
- id="joystick">
+<div class="playerCount"
+id="playerCount">
+Players: 1
+</div>
 
-  <div
-  class="stick"
-  id="stick">
-  </div>
+<div class="nameBox"
+id="nameBox">
 
- </div>
+<input
+id="playerName"
+maxlength="20"
+placeholder="Your name">
 
- <div class="lookText">
-  Drag to look around
- </div>
+<button onclick="setPlayerName()">
+JOIN GAME
+</button>
+
+</div>
+
+<div class="joystick"
+id="joystick">
+
+<div class="stick"
+id="stick"></div>
+
+</div>
+
+<div class="lookText">
+Drag right/center to look
+</div>
 
 </div>
 
@@ -729,9 +729,11 @@ input{
 import * as THREE from
 "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 
-let currentPage = "home";
-
-let template = "Grass";
+/*
+=================================================
+BLOCKPLAY
+=================================================
+*/
 
 let avatar = {
  skin:"#f0b27a",
@@ -745,17 +747,18 @@ try{
  const saved =
  localStorage.getItem("blockplay_avatar");
 
- if(saved){
+ if(saved)
   avatar = JSON.parse(saved);
- }
 
 }catch(e){}
 
-let scene = null;
-let camera = null;
-let renderer = null;
-let player = null;
-let animationID = null;
+let template = "Grass";
+
+let scene;
+let camera;
+let renderer;
+let player;
+let animationID;
 
 let yaw = 0;
 let pitch = 0.35;
@@ -768,56 +771,58 @@ let lookDown = false;
 let lookX = 0;
 let lookY = 0;
 
-const canvas =
- document.getElementById("gameCanvas");
+let playerName =
+ localStorage.getItem("blockplay_name") ||
+ "Player";
+
+let otherPlayers = {};
+
+const keys = {
+ w:false,
+ a:false,
+ s:false,
+ d:false
+};
 
 function showPage(page){
 
- currentPage = page;
-
  document.getElementById("home").style.display =
- page === "home" ? "block" : "none";
+  page==="home" ? "block":"none";
 
  document.getElementById("create").style.display =
- page === "create" ? "block" : "none";
+  page==="create" ? "block":"none";
 
  document.getElementById("avatar").style.display =
- page === "avatar" ? "block" : "none";
+  page==="avatar" ? "block":"none";
 
  document.getElementById("mygames").style.display =
- page === "mygames" ? "block" : "none";
+  page==="mygames" ? "block":"none";
 
- if(page === "avatar"){
-  updatePreview();
- }
+ updatePreview();
 }
 
 window.showPage = showPage;
 
 function chooseTemplate(button,value){
 
- template = value;
+ template=value;
 
  button.parentElement
  .querySelectorAll(".choice")
- .forEach(b=>{
-  b.classList.remove("selected");
- });
+ .forEach(x=>x.classList.remove("selected"));
 
  button.classList.add("selected");
 }
 
-window.chooseTemplate = chooseTemplate;
+window.chooseTemplate=chooseTemplate;
 
 function changeAvatar(type,value,button){
 
- avatar[type] = value;
+ avatar[type]=value;
 
  button.parentElement
  .querySelectorAll(".choice")
- .forEach(b=>{
-  b.classList.remove("selected");
- });
+ .forEach(x=>x.classList.remove("selected"));
 
  button.classList.add("selected");
 
@@ -829,55 +834,64 @@ function changeAvatar(type,value,button){
  updatePreview();
 }
 
-window.changeAvatar = changeAvatar;
+window.changeAvatar=changeAvatar;
 
 function updatePreview(){
 
  document.getElementById("previewHead")
- .style.background = avatar.skin;
+ .style.background=avatar.skin;
 
  document.getElementById("previewBody")
- .style.background = avatar.shirt;
+ .style.background=avatar.shirt;
 
  document.getElementById("previewLeg1")
- .style.background = avatar.pants;
+ .style.background=avatar.pants;
 
  document.getElementById("previewLeg2")
- .style.background = avatar.pants;
+ .style.background=avatar.pants;
 
- const hat =
- document.getElementById("previewHat");
+ const hat=
+  document.getElementById("previewHat");
 
- if(avatar.hat === "none"){
+ if(avatar.hat==="none"){
 
-  hat.style.display = "none";
+  hat.style.display="none";
 
  }else{
 
-  hat.style.display = "block";
-  hat.style.background = avatar.hat;
+  hat.style.display="block";
+  hat.style.background=avatar.hat;
 
  }
 }
 
-function saveGame(name,world){
+function createGame(){
 
- let games = [];
+ const input=
+  document.getElementById("gameName");
+
+ const name=
+  input.value.trim();
+
+ if(!name){
+
+  alert("Enter a game name.");
+  return;
+ }
+
+ let games=[];
 
  try{
 
-  games =
-   JSON.parse(
-    localStorage.getItem(
-     "blockplay_games"
-    ) || "[]"
-   );
+  games=JSON.parse(
+   localStorage.getItem("blockplay_games")||"[]"
+  );
 
  }catch(e){}
 
  games.push({
   name:name,
-  world:world
+  world:template
  });
 
  localStorage.setItem(
@@ -885,255 +899,271 @@ function saveGame(name,world){
   JSON.stringify(games)
  );
 
+ input.value="";
+
  loadMyGames();
+
+ startGame(name,template);
 }
+
+window.createGame=createGame;
 
 function loadMyGames(){
 
- const list =
+ const list=
   document.getElementById("myGamesList");
 
- list.innerHTML = "";
+ list.innerHTML="";
 
- let games = [];
+ let games=[];
 
  try{
 
-  games =
-   JSON.parse(
-    localStorage.getItem(
-     "blockplay_games"
-    ) || "[]"
-   );
+  games=JSON.parse(
+   localStorage.getItem("blockplay_games")||"[]"
+  );
 
  }catch(e){}
 
- if(games.length === 0){
+ if(!games.length){
 
-  list.innerHTML =
+  list.innerHTML=
    "<p>You haven't created any games yet.</p>";
 
   return;
  }
 
- games.forEach((game,index)=>{
+ games.forEach(game=>{
 
-  const box =
+  const box=
    document.createElement("div");
 
-  box.className = "savedGame";
+  box.className="savedGame";
 
-  const title =
+  const text=
    document.createElement("div");
 
-  title.innerHTML =
-   "<b>"+escapeHTML(game.name)+"</b><br>"+
-   "<small>"+escapeHTML(game.world)+" world</small>";
+  text.innerHTML=
+   "<b>"+escapeHTML(game.name)+
+   "</b><br><small>"+
+   escapeHTML(game.world)+
+   " world</small>";
 
-  const play =
+  const button=
    document.createElement("button");
 
-  play.textContent = "PLAY";
+  button.textContent="PLAY";
 
-  play.onclick = () =>
+  button.onclick=()=>{
    startGame(game.name,game.world);
+  };
 
-  box.appendChild(title);
-  box.appendChild(play);
+  box.appendChild(text);
+  box.appendChild(button);
 
   list.appendChild(box);
-
  });
-
 }
 
-function escapeHTML(text){
+function escapeHTML(value){
 
- return String(text)
+ return String(value)
  .replaceAll("&","&amp;")
  .replaceAll("<","&lt;")
  .replaceAll(">","&gt;")
  .replaceAll('"',"&quot;");
 }
 
-function createGame(){
-
- const input =
-  document.getElementById("gameName");
-
- const name =
-  input.value.trim();
-
- if(!name){
-
-  alert("Enter a game name.");
-
-  return;
- }
-
- saveGame(name,template);
-
- input.value = "";
-
- startGame(name,template);
-}
-
-window.createGame = createGame;
+/* AVATAR */
 
 function makeAvatar(){
 
- const group =
+ const group=
   new THREE.Group();
 
- const skinMaterial =
+ const skin=
   new THREE.MeshStandardMaterial({
    color:avatar.skin
   });
 
- const shirtMaterial =
+ const shirt=
   new THREE.MeshStandardMaterial({
    color:avatar.shirt
   });
 
- const pantsMaterial =
+ const pants=
   new THREE.MeshStandardMaterial({
    color:avatar.pants
   });
 
- const head =
+ const head=
   new THREE.Mesh(
    new THREE.BoxGeometry(.9,.9,.9),
-   skinMaterial
+   skin
   );
 
- head.position.y = 2.65;
+ head.position.y=2.65;
 
  group.add(head);
 
- const body =
+ const body=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    1.2,1.25,.65
-   ),
-   shirtMaterial
+   new THREE.BoxGeometry(1.2,1.25,.65),
+   shirt
   );
 
- body.position.y = 1.65;
+ body.position.y=1.65;
 
  group.add(body);
 
- const leftArm =
+ const arm1=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    .4,1.15,.5
-   ),
-   shirtMaterial
+   new THREE.BoxGeometry(.4,1.15,.5),
+   shirt
   );
 
- leftArm.position.set(
-  -.8,1.7,0
- );
+ arm1.position.set(-.8,1.7,0);
 
- group.add(leftArm);
+ group.add(arm1);
 
- const rightArm =
+ const arm2=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    .4,1.15,.5
-   ),
-   shirtMaterial
+   new THREE.BoxGeometry(.4,1.15,.5),
+   shirt
   );
 
- rightArm.position.set(
-  .8,1.7,0
- );
+ arm2.position.set(.8,1.7,0);
 
- group.add(rightArm);
+ group.add(arm2);
 
- const leftLeg =
+ const leg1=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    .45,1.25,.55
-   ),
-   pantsMaterial
+   new THREE.BoxGeometry(.45,1.25,.55),
+   pants
   );
 
- leftLeg.position.set(
-  -.3,.35,0
- );
+ leg1.position.set(-.3,.35,0);
 
- group.add(leftLeg);
+ group.add(leg1);
 
- const rightLeg =
+ const leg2=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    .45,1.25,.55
-   ),
-   pantsMaterial
+   new THREE.BoxGeometry(.45,1.25,.55),
+   pants
   );
 
- rightLeg.position.set(
-  .3,.35,0
- );
+ leg2.position.set(.3,.35,0);
 
- group.add(rightLeg);
+ group.add(leg2);
 
- if(avatar.hat !== "none"){
+ if(avatar.hat!=="none"){
 
-  const hatMaterial =
-   new THREE.MeshStandardMaterial({
-    color:avatar.hat
-   });
-
-  const hat =
+  const hat=
    new THREE.Mesh(
     new THREE.BoxGeometry(
      1.08,.25,1.08
     ),
-    hatMaterial
+    new THREE.MeshStandardMaterial({
+     color:avatar.hat
+    })
    );
 
-  hat.position.y = 3.2;
+  hat.position.y=3.2;
 
   group.add(hat);
  }
 
+ addNameTag(group,playerName);
+
  return group;
 }
 
+/* NAME TAG */
+
+function addNameTag(object,name){
+
+ const canvas=
+  document.createElement("canvas");
+
+ canvas.width=512;
+ canvas.height=128;
+
+ const ctx=
+  canvas.getContext("2d");
+
+ ctx.clearRect(0,0,512,128);
+
+ ctx.fillStyle="rgba(0,0,0,.75)";
+
+ ctx.roundRect(
+  30,20,452,88,20
+ );
+
+ ctx.fill();
+
+ ctx.fillStyle="white";
+
+ ctx.font="bold 42px Arial";
+
+ ctx.textAlign="center";
+
+ ctx.textBaseline="middle";
+
+ ctx.fillText(
+  name.substring(0,20),
+  256,
+  64
+ );
+
+ const texture=
+  new THREE.CanvasTexture(canvas);
+
+ const material=
+  new THREE.SpriteMaterial({
+   map:texture,
+   transparent:true
+  });
+
+ const sprite=
+  new THREE.Sprite(material);
+
+ sprite.scale.set(3.2,.8,1);
+
+ sprite.position.y=4.2;
+
+ object.add(sprite);
+}
+
+/* WORLD */
+
 function addWorld(){
 
- let groundColor = 0x45a848;
+ let color=0x45a848;
 
- if(template === "City"){
-  groundColor = 0x555b63;
- }
+ if(template==="City")
+  color=0x555b63;
 
- if(template === "Island"){
-  groundColor = 0xd9bd70;
- }
+ if(template==="Island")
+  color=0xd9bd70;
 
- if(template === "Space"){
-  groundColor = 0x292d38;
- }
+ if(template==="Space")
+  color=0x292d38;
 
- const ground =
+ const ground=
   new THREE.Mesh(
-   new THREE.BoxGeometry(
-    100,1,100
-   ),
+   new THREE.BoxGeometry(100,1,100),
    new THREE.MeshStandardMaterial({
-    color:groundColor
+    color:color
    })
   );
 
- ground.position.y = -.5;
+ ground.position.y=-.5;
 
  scene.add(ground);
 
- if(template === "Island"){
+ if(template==="Island"){
 
-  const water =
+  const water=
    new THREE.Mesh(
     new THREE.BoxGeometry(
      150,.3,150
@@ -1143,33 +1173,30 @@ function addWorld(){
     })
    );
 
-  water.position.y = -1;
+  water.position.y=-1;
 
   scene.add(water);
-
  }
 
  for(let i=0;i<70;i++){
 
-  const x =
+  const x=
    Math.random()*90-45;
 
-  const z =
+  const z=
    Math.random()*90-45;
 
-  const h =
+  const h=
    Math.random()*4+1;
 
-  const block =
+  const block=
    new THREE.Mesh(
-    new THREE.BoxGeometry(
-     3,h,3
-    ),
+    new THREE.BoxGeometry(3,h,3),
     new THREE.MeshStandardMaterial({
      color:
-      template === "City"
+      template==="City"
        ? 0x777f88
-       : template === "Space"
+       : template==="Space"
        ? 0x505666
        : 0x6c9650
     })
@@ -1185,35 +1212,39 @@ function addWorld(){
  }
 }
 
+/* GAME */
+
 function startGame(name,world){
 
- template = world || "Grass";
+ template=world||"Grass";
 
  document.getElementById(
   "gameScreen"
- ).style.display = "block";
+ ).style.display="block";
 
  document.getElementById(
   "gameTitle"
- ).textContent =
-  "🎮 " + name;
+ ).textContent="🎮 "+name;
 
- scene =
+ document.getElementById(
+  "playerName"
+ ).value=playerName;
+
+ document.getElementById(
+  "nameBox"
+ ).style.display="block";
+
+ scene=
   new THREE.Scene();
 
- if(template === "Space"){
+ scene.background=
+  new THREE.Color(
+   template==="Space"
+    ? 0x090d1a
+    : 0x75cbed
+  );
 
-  scene.background =
-   new THREE.Color(0x090d1a);
-
- }else{
-
-  scene.background =
-   new THREE.Color(0x75cbed);
-
- }
-
- camera =
+ camera=
   new THREE.PerspectiveCamera(
    65,
    innerWidth/innerHeight,
@@ -1221,9 +1252,11 @@ function startGame(name,world){
    500
   );
 
- renderer =
+ renderer=
   new THREE.WebGLRenderer({
-   canvas:canvas,
+   canvas:document.getElementById(
+    "gameCanvas"
+   ),
    antialias:true
   });
 
@@ -1236,16 +1269,15 @@ function startGame(name,world){
   innerHeight
  );
 
- const skyLight =
+ scene.add(
   new THREE.HemisphereLight(
    0xffffff,
    0x526b52,
    2
-  );
+  )
+ );
 
- scene.add(skyLight);
-
- const sun =
+ const sun=
   new THREE.DirectionalLight(
    0xffffff,
    2
@@ -1259,113 +1291,154 @@ function startGame(name,world){
 
  addWorld();
 
- player =
-  makeAvatar();
+ player=makeAvatar();
 
  scene.add(player);
 
- player.position.set(
-  0,0,0
- );
+ player.position.set(0,0,0);
 
- yaw = 0;
- pitch = .35;
+ yaw=0;
+ pitch=.35;
 
  animate();
 }
 
-window.startGame = startGame;
+window.startGame=startGame;
+
+function setPlayerName(){
+
+ const input=
+  document.getElementById("playerName");
+
+ const name=
+  input.value.trim();
+
+ if(!name)
+  return;
+
+ playerName=
+  name.substring(0,20);
+
+ localStorage.setItem(
+  "blockplay_name",
+  playerName
+ );
+
+ document.getElementById(
+  "nameBox"
+ ).style.display="none";
+
+ if(player){
+
+  scene.remove(player);
+
+  player=makeAvatar();
+
+  scene.add(player);
+ }
+
+}
+
+window.setPlayerName=setPlayerName;
+
+/* CONTROLS */
 
 function animate(){
 
- animationID =
+ animationID=
   requestAnimationFrame(animate);
 
- if(!player) return;
+ if(!player)
+  return;
 
- let x = 0;
- let z = 0;
+ let x=0;
+ let z=0;
 
- if(keys.w) z -= 1;
- if(keys.s) z += 1;
- if(keys.a) x -= 1;
- if(keys.d) x += 1;
+ if(keys.w) z-=1;
+ if(keys.s) z+=1;
+ if(keys.a) x-=1;
+ if(keys.d) x+=1;
 
- x += joystickX;
- z += joystickY;
+ /*
+ IMPORTANT:
+ joystick UP now means forward.
+ */
 
- const len =
+ x+=joystickX;
+ z+=joystickY;
+
+ const length=
   Math.hypot(x,z);
 
- if(len > 0){
+ if(length>0){
 
-  x /= len;
-  z /= len;
+  x/=length;
+  z/=length;
 
-  const speed = 7;
+  const speed=7;
 
-  const forwardX =
-   Math.sin(yaw);
+  /*
+  Forward is NEGATIVE Z.
+  */
 
-  const forwardZ =
-   Math.cos(yaw);
-
-  const rightX =
-   Math.cos(yaw);
-
-  const rightZ =
+  const forwardX=
    -Math.sin(yaw);
 
-  const dx =
-   forwardX*z +
+  const forwardZ=
+   -Math.cos(yaw);
+
+  const rightX=
+   Math.cos(yaw);
+
+  const rightZ=
+   -Math.sin(yaw);
+
+  const dx=
+   forwardX*(-z)+
    rightX*x;
 
-  const dz =
-   forwardZ*z +
+  const dz=
+   forwardZ*(-z)+
    rightZ*x;
 
-  player.position.x +=
-   dx*speed*(1/60);
+  player.position.x+=
+   dx*speed/60;
 
-  player.position.z +=
-   dz*speed*(1/60);
+  player.position.z+=
+   dz*speed/60;
 
-  player.rotation.y =
+  player.rotation.y=
    Math.atan2(dx,dz);
  }
 
- player.position.x =
+ player.position.x=
   THREE.MathUtils.clamp(
-   player.position.x,
-   -47,47
+   player.position.x,-47,47
   );
 
- player.position.z =
+ player.position.z=
   THREE.MathUtils.clamp(
-   player.position.z,
-   -47,47
+   player.position.z,-47,47
   );
 
- const distance = 7;
+ const distance=7;
 
- const targetY = 1.6;
-
- const camX =
-  player.position.x -
-  Math.sin(yaw) *
-  Math.cos(pitch) *
+ const camX=
+  player.position.x+
+  Math.sin(yaw)*
+  Math.cos(pitch)*
   distance;
 
- const camZ =
-  player.position.z -
-  Math.cos(yaw) *
-  Math.cos(pitch) *
+ const camZ=
+  player.position.z+
+  Math.cos(yaw)*
+  Math.cos(pitch)*
   distance;
 
- const camY =
-  player.position.y +
-  targetY +
-  Math.sin(pitch) *
+ const camY=
+  player.position.y+
+  1.6+
+  Math.sin(pitch)*
   distance;
 
  camera.position.lerp(
@@ -1389,31 +1462,22 @@ function animate(){
  );
 }
 
-const keys = {
- w:false,
- a:false,
- s:false,
- d:false
-};
+/* KEYBOARD */
 
 document.addEventListener(
  "keydown",
  e=>{
 
-  if(e.key==="w" ||
-     e.key==="ArrowUp")
+  if(e.key==="w"||e.key==="ArrowUp")
    keys.w=true;
 
-  if(e.key==="s" ||
-     e.key==="ArrowDown")
+  if(e.key==="s"||e.key==="ArrowDown")
    keys.s=true;
 
-  if(e.key==="a" ||
-     e.key==="ArrowLeft")
+  if(e.key==="a"||e.key==="ArrowLeft")
    keys.a=true;
 
-  if(e.key==="d" ||
-     e.key==="ArrowRight")
+  if(e.key==="d"||e.key==="ArrowRight")
    keys.d=true;
  }
 );
@@ -1422,66 +1486,65 @@ document.addEventListener(
  "keyup",
  e=>{
 
-  if(e.key==="w" ||
-     e.key==="ArrowUp")
+  if(e.key==="w"||e.key==="ArrowUp")
    keys.w=false;
 
-  if(e.key==="s" ||
-     e.key==="ArrowDown")
+  if(e.key==="s"||e.key==="ArrowDown")
    keys.s=false;
 
-  if(e.key==="a" ||
-     e.key==="ArrowLeft")
+  if(e.key==="a"||e.key==="ArrowLeft")
    keys.a=false;
 
-  if(e.key==="d" ||
-     e.key==="ArrowRight")
+  if(e.key==="d"||e.key==="ArrowRight")
    keys.d=false;
  }
 );
 
-const joystick =
+/* JOYSTICK */
+
+const joystick=
  document.getElementById("joystick");
 
-const stick =
+const stick=
  document.getElementById("stick");
 
-function moveJoystick(e){
+function updateJoystick(e){
 
- const rect =
+ const rect=
   joystick.getBoundingClientRect();
 
- const cx =
-  rect.left + rect.width/2;
+ const centerX=
+  rect.left+rect.width/2;
 
- const cy =
-  rect.top + rect.height/2;
+ const centerY=
+  rect.top+rect.height/2;
 
- let x =
-  e.clientX-cx;
+ let x=e.clientX-centerX;
+ let y=e.clientY-centerY;
 
- let y =
-  e.clientY-cy;
+ const max=42;
 
- const max = 42;
-
- const distance =
+ const distance=
   Math.hypot(x,y);
 
- if(distance > max){
+ if(distance>max){
 
-  x =
-   x/distance*max;
-
-  y =
-   y/distance*max;
+  x=x/distance*max;
+  y=y/distance*max;
  }
 
- stick.style.transform =
+ stick.style.transform=
   "translate("+x+"px,"+y+"px)";
 
- joystickX = x/max;
- joystickY = y/max;
+ joystickX=x/max;
+
+ /*
+ Y is NOT inverted here.
+ UP gives a negative browser Y value,
+ and animate() converts that into forward.
+ */
+
+ joystickY=y/max;
 
  e.preventDefault();
 }
@@ -1490,13 +1553,13 @@ joystick.addEventListener(
  "pointerdown",
  e=>{
 
-  joystickDown = true;
+  joystickDown=true;
 
   joystick.setPointerCapture(
    e.pointerId
   );
 
-  moveJoystick(e);
+  updateJoystick(e);
  }
 );
 
@@ -1505,25 +1568,27 @@ joystick.addEventListener(
  e=>{
 
   if(joystickDown)
-   moveJoystick(e);
+   updateJoystick(e);
  }
 );
 
 joystick.addEventListener(
  "pointerup",
- e=>{
+ ()=>{
 
-  joystickDown = false;
+  joystickDown=false;
 
-  joystickX = 0;
-  joystickY = 0;
+  joystickX=0;
+  joystickY=0;
 
-  stick.style.transform =
+  stick.style.transform=
    "translate(0,0)";
  }
 );
 
-const gameScreen =
+/* CAMERA */
+
+const gameScreen=
  document.getElementById(
   "gameScreen"
  );
@@ -1533,19 +1598,17 @@ gameScreen.addEventListener(
  e=>{
 
   if(
-   e.target.closest(".joystick") ||
-   e.target.closest(".exitButton")
+   e.target.closest(".joystick")||
+   e.target.closest(".exitButton")||
+   e.target.closest(".nameBox")
   ){
    return;
   }
 
-  lookDown = true;
+  lookDown=true;
 
-  lookX =
-   e.clientX;
-
-  lookY =
-   e.clientY;
+  lookX=e.clientX;
+  lookY=e.clientY;
 
   gameScreen.setPointerCapture(
    e.pointerId
@@ -1557,25 +1620,28 @@ gameScreen.addEventListener(
  "pointermove",
  e=>{
 
-  if(!lookDown) return;
+  if(!lookDown)
+   return;
 
-  const dx =
+  const dx=
    e.clientX-lookX;
 
-  const dy =
+  const dy=
    e.clientY-lookY;
 
-  lookX =
-   e.clientX;
+  lookX=e.clientX;
+  lookY=e.clientY;
 
-  lookY =
-   e.clientY;
+  /*
+  RIGHT = look right.
+  LEFT = look left.
+  */
 
-  yaw -= dx*.006;
+  yaw-=dx*.006;
 
-  pitch -= dy*.004;
+  pitch-=dy*.004;
 
-  pitch =
+  pitch=
    THREE.MathUtils.clamp(
     pitch,
     -.1,
@@ -1589,41 +1655,41 @@ gameScreen.addEventListener(
 gameScreen.addEventListener(
  "pointerup",
  ()=>{
-  lookDown = false;
+  lookDown=false;
  }
 );
+
+/* EXIT */
 
 function closeGame(){
 
  document.getElementById(
   "gameScreen"
- ).style.display = "none";
+ ).style.display="none";
 
- if(animationID){
+ if(animationID)
   cancelAnimationFrame(animationID);
- }
 
- if(renderer){
+ if(renderer)
   renderer.dispose();
- }
 
- scene = null;
- camera = null;
- renderer = null;
- player = null;
- animationID = null;
+ scene=null;
+ camera=null;
+ renderer=null;
+ player=null;
+ animationID=null;
 }
 
-window.closeGame = closeGame;
+window.closeGame=closeGame;
 
 window.addEventListener(
  "resize",
  ()=>{
 
-  if(!camera || !renderer)
+  if(!camera||!renderer)
    return;
 
-  camera.aspect =
+  camera.aspect=
    innerWidth/innerHeight;
 
   camera.updateProjectionMatrix();
