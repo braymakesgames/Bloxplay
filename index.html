@@ -1,21 +1,830 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BlockPlay</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlockPlay</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #10131a;
+  color: white;
+}
+
+header {
+  height: 65px;
+  background: #171b24;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  border-bottom: 1px solid #292f3b;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #00aaff;
+}
+
+nav button {
+  background: transparent;
+  color: white;
+  border: 0;
+  padding: 10px;
+  font-size: 15px;
+}
+
+nav button:hover {
+  color: #00aaff;
+}
+
+.page {
+  padding: 22px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1261a0, #151b35);
+  border-radius: 20px;
+  padding: 35px 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 15px 40px #0008;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin: 0 0 8px;
+}
+
+.hero p {
+  color: #d7e5f2;
+  font-size: 17px;
+}
+
+.primary {
+  background: #00aaff;
+  border: 0;
+  color: white;
+  padding: 13px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.primary:active {
+  transform: scale(.97);
+}
+
+h2 {
+  margin-top: 30px;
+}
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.game {
+  background: #191e28;
+  border: 1px solid #2c3442;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px #0006;
+}
+
+.thumbnail {
+  height: 145px;
+  position: relative;
+  overflow: hidden;
+  perspective: 500px;
+}
+
+.island {
+  background: linear-gradient(#54c8ff, #0874b8);
+}
+
+.racer {
+  background: linear-gradient(#333, #111);
+}
+
+.ghost {
+  background: linear-gradient(#261c45, #090712);
+}
+
+.coinrush {
+  background: linear-gradient(#765000, #191000);
+}
+
+.city {
+  background: linear-gradient(#65b8e8, #28384b);
+}
+
+.block3d {
+  width: 55px;
+  height: 55px;
+  position: absolute;
+  transform: rotateX(55deg) rotateZ(45deg);
+  box-shadow: 12px 12px 0 #0004;
+}
+
+.grass {
+  background: #35b84a;
+  left: 55px;
+  bottom: 35px;
+}
+
+.grass2 {
+  background: #249c3a;
+  left: 125px;
+  bottom: 55px;
+}
+
+.car {
+  width: 95px;
+  height: 45px;
+  background: #e52d35;
+  position: absolute;
+  left: 60px;
+  bottom: 35px;
+  border-radius: 12px 12px 5px 5px;
+  transform: skew(-8deg);
+}
+
+.wheel {
+  width: 23px;
+  height: 23px;
+  background: #111;
+  border-radius: 50%;
+  position: absolute;
+  bottom: -10px;
+}
+
+.w1 { left: 12px; }
+.w2 { right: 12px; }
+
+.ghostShape {
+  position: absolute;
+  left: 75px;
+  bottom: 25px;
+  width: 80px;
+  height: 90px;
+  background: white;
+  border-radius: 45px 45px 10px 10px;
+  box-shadow: 0 0 25px #9f7cff;
+}
+
+.eye {
+  position: absolute;
+  width: 12px;
+  height: 18px;
+  background: #161020;
+  border-radius: 50%;
+  top: 30px;
+}
+
+.e1 { left: 22px; }
+.e2 { right: 22px; }
+
+.coin {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: #ffd21f;
+  border: 5px solid #f0a900;
+  border-radius: 50%;
+  left: 80px;
+  top: 40px;
+  box-shadow: 0 0 25px #ffd21f;
+}
+
+.building {
+  position: absolute;
+  bottom: 0;
+  width: 60px;
+  height: 105px;
+  background: #657486;
+  box-shadow: inset 8px 0 #0002;
+}
+
+.b1 { left: 35px; height: 80px; }
+.b2 { left: 105px; height: 120px; }
+.b3 { left: 175px; height: 95px; }
+
+.gameInfo {
+  padding: 14px;
+}
+
+.gameInfo h3 {
+  margin: 0 0 5px;
+}
+
+.gameInfo p {
+  margin: 0 0 12px;
+  color: #aeb7c5;
+}
+
+.play {
+  width: 100%;
+  padding: 10px;
+  background: #00aaff;
+  border: 0;
+  color: white;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#screen {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #78c8ef;
+  z-index: 100;
+  overflow: hidden;
+}
+
+#world {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#79c9f2 0 55%, #62b846 55% 100%);
+}
+
+.sun {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: #ffe34d;
+  border-radius: 50%;
+  right: 40px;
+  top: 40px;
+  box-shadow: 0 0 40px #ffe34d;
+}
+
+.player {
+  position: absolute;
+  width: 45px;
+  height: 70px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.head {
+  width: 38px;
+  height: 38px;
+  background: #e0a36b;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.body {
+  width: 45px;
+  height: 32px;
+  background: #168cff;
+  margin: auto;
+  border-radius: 5px;
+}
+
+.gameText {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: #0009;
+  padding: 10px 14px;
+  border-radius: 9px;
+  font-weight: bold;
+}
+
+.closeGame {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: #e93636;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 15px;
+  z-index: 10;
+}
+
+.controls {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  display: grid;
+  grid-template-columns: 55px 55px 55px;
+  gap: 5px;
+}
+
+.controls button {
+  width: 55px;
+  height: 55px;
+  border: 0;
+  border-radius: 12px;
+  background: #111b;
+  color: white;
+  font-size: 24px;
+}
+
+.up {
+  grid-column: 2;
+}
+
+.left {
+  grid-column: 1;
+}
+
+.down {
+  grid-column: 2;
+}
+
+.right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.creator {
+  background: #191e28;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #2d3542;
+}
+
+.creator input,
+.creator select {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0 15px;
+  border-radius: 8px;
+  border: 1px solid #394353;
+  background: #0f131a;
+  color: white;
+  font-size: 16px;
+}
+
+.templateButtons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.template {
+  padding: 15px;
+  background: #242b37;
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 10px;
+}
+
+.template.selected {
+  border-color: #00aaff;
+}
+
+.myGame {
+  margin-top: 20px;
+  background: #202630;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.empty {
+  color: #8f99a8;
+}
+
+@media(max-width:600px) {
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .page {
+    padding: 14px;
+  }
+
+  nav button {
+    padding: 6px;
+    font-size: 13px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <h1>🧱 BlockPlay</h1>
-  <p>Make and play games!</p>
 
-  <h2>🎮 Games</h2>
+<header>
+  <div class="logo">🧱 <span>Block</span>Play</div>
 
-  <button>🏝️ Island Survival</button>
-  <button>🏎️ Block Racers</button>
-  <button>👻 Ghost Hunt</button>
-  <button>💰 Coin Rush</button>
-  <button>🏗️ Build City</button>
+  <nav>
+    <button onclick="showHome()">Home</button>
+    <button onclick="showCreate()">Create</button>
+    <button onclick="showMyGames()">My Games</button>
+  </nav>
+</header>
 
-  <h2>🛠️ Create</h2>
-  <button>+ Create Game</button>
+<main class="page" id="home">
+
+  <section class="hero">
+    <h1>Make. Play. Create.</h1>
+    <p>Play blocky games and build your own mini games.</p>
+    <button class="primary" onclick="showCreate()">＋ Create Game</button>
+  </section>
+
+  <h2>🔥 Featured Games</h2>
+
+  <div class="games">
+
+    <div class="game">
+      <div class="thumbnail island">
+        <div class="block3d grass"></div>
+        <div class="block3d grass2"></div>
+      </div>
+
+      <div class="gameInfo">
+        <h3>🏝️ Island Survival</h3>
+        <p>Explore the island.</p>
+        <button class="play" onclick="startGame('Island Survival')">PLAY</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <div class="thumbnail racer">
+        <div class="car">
+          <div class="wheel w1"></div>
+          <div class="wheel w2"></div>
+        </div>
+      </div>
+
+      <div class="gameInfo">
+        <h3>🏎️ Block Racers</h3>
+        <p>Drive around the map.</p>
+        <button class="play" onclick="startGame('Block Racers')">PLAY</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <div class="thumbnail ghost">
+        <div class="ghostShape">
+          <div class="eye e1"></div>
+          <div class="eye e2"></div>
+        </div>
+      </div>
+
+      <div class="gameInfo">
+        <h3>👻 Ghost Hunt</h3>
+        <p>Find the ghost.</p>
+        <button class="play" onclick="startGame('Ghost Hunt')">PLAY</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <div class="thumbnail coinrush">
+        <div class="coin">$</div>
+      </div>
+
+      <div class="gameInfo">
+        <h3>💰 Coin Rush</h3>
+        <p>Collect the coins.</p>
+        <button class="play" onclick="startGame('Coin Rush')">PLAY</button>
+      </div>
+    </div>
+
+    <div class="game">
+      <div class="thumbnail city">
+        <div class="building b1"></div>
+        <div class="building b2"></div>
+        <div class="building b3"></div>
+      </div>
+
+      <div class="gameInfo">
+        <h3>🏗️ Build City</h3>
+        <p>Explore a block city.</p>
+        <button class="play" onclick="startGame('Build City')">PLAY</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<main class="page" id="create" style="display:none">
+
+  <h1>🎮 Create Your Game</h1>
+
+  <div class="creator">
+
+    <label>Game Name</label>
+    <input id="gameName" placeholder="My Awesome Game">
+
+    <label>Choose a Template</label>
+
+    <div class="templateButtons">
+
+      <button class="template selected" onclick="selectTemplate(this,'Grass')">
+        🌳 Grass
+      </button>
+
+      <button class="template" onclick="selectTemplate(this,'City')">
+        🏙️ City
+      </button>
+
+      <button class="template" onclick="selectTemplate(this,'Island')">
+        🏝️ Island
+      </button>
+
+      <button class="template" onclick="selectTemplate(this,'Space')">
+        🚀 Space
+      </button>
+
+    </div>
+
+    <button class="primary" onclick="createGame()">
+      CREATE GAME
+    </button>
+
+  </div>
+
+</main>
+
+<main class="page" id="myGames" style="display:none">
+
+  <h1>🎮 My Games</h1>
+
+  <div id="gameList"></div>
+
+</main>
+
+<div id="screen">
+
+  <div id="world">
+
+    <div class="sun"></div>
+
+    <div class="gameText" id="gameTitle">
+      Game
+    </div>
+
+    <button class="closeGame" onclick="closeGame()">
+      EXIT
+    </button>
+
+    <div class="player" id="player">
+      <div class="head"></div>
+      <div class="body"></div>
+    </div>
+
+    <div class="controls">
+
+      <button class="up" onclick="move('up')">▲</button>
+      <button class="left" onclick="move('left')">◀</button>
+      <button class="down" onclick="move('down')">▼</button>
+      <button class="right" onclick="move('right')">▶</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+let selectedTemplate = "Grass";
+
+let playerX = 50;
+let playerY = 50;
+
+function hidePages() {
+  document.getElementById("home").style.display = "none";
+  document.getElementById("create").style.display = "none";
+  document.getElementById("myGames").style.display = "none";
+}
+
+function showHome() {
+  hidePages();
+  document.getElementById("home").style.display = "block";
+}
+
+function showCreate() {
+  hidePages();
+  document.getElementById("create").style.display = "block";
+}
+
+function showMyGames() {
+  hidePages();
+  document.getElementById("myGames").style.display = "block";
+  loadGames();
+}
+
+function selectTemplate(button, template) {
+
+  document.querySelectorAll(".template").forEach(function(btn) {
+    btn.classList.remove("selected");
+  });
+
+  button.classList.add("selected");
+
+  selectedTemplate = template;
+}
+
+function createGame() {
+
+  const name = document.getElementById("gameName").value.trim();
+
+  if (!name) {
+    alert("Enter a game name first.");
+    return;
+  }
+
+  let games = JSON.parse(
+    localStorage.getItem("blockplay_games") || "[]"
+  );
+
+  games.push({
+    name: name,
+    template: selectedTemplate,
+    created: Date.now()
+  });
+
+  localStorage.setItem(
+    "blockplay_games",
+    JSON.stringify(games)
+  );
+
+  document.getElementById("gameName").value = "";
+
+  alert("Game created!");
+
+  showMyGames();
+}
+
+function loadGames() {
+
+  const list = document.getElementById("gameList");
+
+  let games = JSON.parse(
+    localStorage.getItem("blockplay_games") || "[]"
+  );
+
+  if (games.length === 0) {
+    list.innerHTML =
+      '<p class="empty">You have not created any games yet.</p>';
+    return;
+  }
+
+  list.innerHTML = "";
+
+  games.forEach(function(game, index) {
+
+    const div = document.createElement("div");
+
+    div.className = "myGame";
+
+    div.innerHTML = `
+      <h3>🎮 ${escapeHTML(game.name)}</h3>
+      <p>Template: ${escapeHTML(game.template)}</p>
+
+      <button class="play"
+        onclick="startGame('${escapeJS(game.name)}')">
+        PLAY
+      </button>
+
+      <button class="play"
+        style="background:#d93434;margin-top:8px"
+        onclick="deleteGame(${index})">
+        DELETE
+      </button>
+    `;
+
+    list.appendChild(div);
+  });
+}
+
+function deleteGame(index) {
+
+  let games = JSON.parse(
+    localStorage.getItem("blockplay_games") || "[]"
+  );
+
+  games.splice(index, 1);
+
+  localStorage.setItem(
+    "blockplay_games",
+    JSON.stringify(games)
+  );
+
+  loadGames();
+}
+
+function startGame(name) {
+
+  document.getElementById("screen").style.display = "block";
+
+  document.getElementById("gameTitle").textContent =
+    "🎮 " + name;
+
+  playerX = 50;
+  playerY = 50;
+
+  updatePlayer();
+}
+
+function closeGame() {
+  document.getElementById("screen").style.display = "none";
+}
+
+function move(direction) {
+
+  const speed = 4;
+
+  if (direction === "up") {
+    playerY -= speed;
+  }
+
+  if (direction === "down") {
+    playerY += speed;
+  }
+
+  if (direction === "left") {
+    playerX -= speed;
+  }
+
+  if (direction === "right") {
+    playerX += speed;
+  }
+
+  playerX = Math.max(5, Math.min(95, playerX));
+  playerY = Math.max(15, Math.min(90, playerY));
+
+  updatePlayer();
+}
+
+function updatePlayer() {
+
+  const player = document.getElementById("player");
+
+  player.style.left = playerX + "%";
+  player.style.top = playerY + "%";
+}
+
+document.addEventListener("keydown", function(event) {
+
+  if (
+    document.getElementById("screen").style.display !== "block"
+  ) {
+    return;
+  }
+
+  if (event.key === "ArrowUp" || event.key === "w") {
+    move("up");
+  }
+
+  if (event.key === "ArrowDown" || event.key === "s") {
+    move("down");
+  }
+
+  if (event.key === "ArrowLeft" || event.key === "a") {
+    move("left");
+  }
+
+  if (event.key === "ArrowRight" || event.key === "d") {
+    move("right");
+  }
+
+});
+
+function escapeHTML(text) {
+
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function escapeJS(text) {
+
+  return text
+    .replaceAll("\\", "\\\\")
+    .replaceAll("'", "\\'")
+    .replaceAll("\n", "\\n")
+    .replaceAll("\r", "\\r");
+}
+
+</script>
+
 </body>
 </html>
