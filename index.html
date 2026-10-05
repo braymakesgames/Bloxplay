@@ -9,1334 +9,641 @@
 <style>
 * {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+body {
   margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
   font-family: Arial, sans-serif;
   background: #10131a;
   color: white;
-  touch-action: manipulation;
-  overscroll-behavior: none;
 }
 
-button, input {
-  font: inherit;
+header {
+  background: #181d27;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+nav button {
+  background: #303847;
+  color: white;
+  border: 0;
+  padding: 9px;
+  margin: 2px;
+  border-radius: 8px;
+}
+
+.page {
+  padding: 25px;
+}
+
+.hidden {
+  display: none;
+}
+
+.card {
+  background: #1b212c;
+  padding: 20px;
+  border-radius: 15px;
+  margin-top: 15px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #10131a;
+  color: white;
 }
 
 button {
   cursor: pointer;
-  border: 0;
-}
-
-.hidden {
-  display: none !important;
-}
-
-#app {
-  min-height: 100vh;
-}
-
-/* HEADER */
-
-header {
-  height: 65px;
-  background: #171b24;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid #292f3d;
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
-.logo {
-  font-size: 23px;
-  font-weight: bold;
-}
-
-.logo span {
-  color: #4da3ff;
-}
-
-.headerButtons {
-  display: flex;
-  gap: 7px;
-}
-
-.headerButtons button {
-  background: #242a37;
-  color: white;
-  padding: 9px 12px;
-  border-radius: 9px;
-}
-
-.headerButtons button:active {
-  transform: scale(.96);
-}
-
-/* PAGES */
-
-.page {
-  padding: 25px;
-  max-width: 1100px;
-  margin: auto;
-}
-
-.hero {
-  background: linear-gradient(135deg, #1d2940, #18202d);
-  border-radius: 18px;
-  padding: 30px;
-  margin-bottom: 25px;
-}
-
-.hero h1 {
-  font-size: 42px;
-  margin: 0 0 8px;
-}
-
-.hero p {
-  color: #b8c0cf;
 }
 
 .primary {
   background: #4da3ff;
   color: white;
-  padding: 13px 20px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-/* GAMES */
-
-.gamesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 15px;
-}
-
-.gameCard {
-  background: #191e28;
-  border: 1px solid #292f3d;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
-.gameImage {
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 55px;
-  background: linear-gradient(135deg, #30445e, #18202b);
-}
-
-.gameInfo {
-  padding: 13px;
-}
-
-.gameInfo h3 {
-  margin: 0 0 8px;
-}
-
-.playButton {
-  background: #4da3ff;
-  color: white;
-  width: 100%;
-  padding: 10px;
+  border: 0;
+  padding: 12px 18px;
   border-radius: 8px;
 }
 
-/* ACCOUNT */
-
-.accountBox {
-  max-width: 500px;
-  margin: 30px auto;
-  background: #191e28;
-  border: 1px solid #292f3d;
-  padding: 25px;
-  border-radius: 18px;
-}
-
-.accountBox h2 {
-  margin-top: 0;
-}
-
-.accountInput {
-  width: 100%;
-  padding: 13px;
+.account {
+  background: #292f3b;
+  padding: 12px;
+  margin-top: 8px;
   border-radius: 9px;
-  border: 1px solid #3a4252;
-  background: #10131a;
-  color: white;
-  margin-bottom: 12px;
-  outline: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.accountInput:focus {
-  border-color: #4da3ff;
+.account button {
+  background: #4da3ff;
+  color: white;
+  border: 0;
+  padding: 8px;
+  border-radius: 7px;
 }
 
 .error {
   color: #ff7070;
-  min-height: 22px;
-  margin-bottom: 8px;
-}
-
-.accountList {
-  display: grid;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.accountItem {
-  background: #242a37;
-  padding: 14px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.accountName {
-  font-weight: bold;
-}
-
-.accountActions {
-  display: flex;
-  gap: 6px;
-}
-
-.smallButton {
-  background: #343c4c;
-  color: white;
-  padding: 8px 10px;
-  border-radius: 8px;
-}
-
-.deleteButton {
-  background: #9e3944;
-}
-
-/* AVATAR */
-
-.avatarPreview {
-  width: 160px;
-  height: 160px;
-  background: #242a37;
-  border-radius: 18px;
-  margin: 20px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 80px;
-}
-
-/* GAME */
-
-#gameScreen {
-  position: fixed;
-  inset: 0;
-  background: #111;
-  z-index: 100;
-  overflow: hidden;
-}
-
-#gameCanvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-#gameTop {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  display: flex;
-  justify-content: space-between;
-  z-index: 5;
-  pointer-events: none;
-}
-
-#gameTop > * {
-  pointer-events: auto;
-}
-
-#playerNameLabel {
-  background: rgba(0,0,0,.65);
-  padding: 8px 12px;
-  border-radius: 9px;
-}
-
-#exitGame {
-  background: rgba(0,0,0,.7);
-  color: white;
-  padding: 9px 13px;
-  border-radius: 9px;
-}
-
-/* MOBILE CONTROLS */
-
-#controls {
-  position: absolute;
-  bottom: 25px;
-  left: 20px;
-  right: 20px;
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none;
-}
-
-#joystick {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  border: 2px solid rgba(255,255,255,.3);
-  position: relative;
-  pointer-events: auto;
-  touch-action: none;
-}
-
-#stick {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.65);
-  position: absolute;
-  left: 35px;
-  top: 35px;
-}
-
-#lookArea {
-  width: 45%;
-  height: 180px;
-  pointer-events: auto;
-  touch-action: none;
-}
-
-@media (max-width: 600px) {
-  .page {
-    padding: 16px;
-  }
-
-  .hero h1 {
-    font-size: 32px;
-  }
-
-  .headerButtons button {
-    padding: 8px;
-    font-size: 12px;
-  }
 }
 </style>
 </head>
 
 <body>
 
-<div id="app">
-
 <header>
-  <div class="logo">🧱 <span>BlockPlay</span></div>
 
-  <div class="headerButtons">
-    <button onclick="showPage('home')">Home</button>
-    <button onclick="showPage('accounts')">Accounts</button>
-    <button onclick="showPage('avatar')">Avatar</button>
-    <button onclick="showPage('games')">My Games</button>
-  </div>
+<div class="logo">🧱 BlockPlay</div>
+
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('accounts')">Accounts</button>
+<button onclick="showPage('avatar')">Avatar</button>
+<button onclick="showPage('games')">My Games</button>
+</nav>
+
 </header>
-
-<!-- HOME -->
 
 <section id="home" class="page">
 
-  <div class="hero">
-    <h1>Make. Play. Create.</h1>
-    <p id="welcomeText">Create your own block games.</p>
+<h1>Make. Play. Create.</h1>
 
-    <button class="primary" onclick="showPage('create')">
-      + Create Game
-    </button>
-  </div>
+<p id="welcome">
+Welcome to BlockPlay!
+</p>
 
-  <h2>Featured Games</h2>
+<button class="primary" onclick="showPage('create')">
+Create Game
+</button>
 
-  <div class="gamesGrid">
+<div class="card">
 
-    <div class="gameCard">
-      <div class="gameImage">🏝️</div>
-      <div class="gameInfo">
-        <h3>Island Survival</h3>
-        <button class="playButton" onclick="startGame('Island Survival')">Play</button>
-      </div>
-    </div>
+<h2>🎮 Featured Games</h2>
 
-    <div class="gameCard">
-      <div class="gameImage">🏎️</div>
-      <div class="gameInfo">
-        <h3>Block Racers</h3>
-        <button class="playButton" onclick="startGame('Block Racers')">Play</button>
-      </div>
-    </div>
+<p>🏝️ Island Survival</p>
+<p>🏎️ Block Racers</p>
+<p>👻 Ghost Hunt</p>
+<p>💰 Coin Rush</p>
+<p>🏗️ Build City</p>
 
-    <div class="gameCard">
-      <div class="gameImage">👻</div>
-      <div class="gameInfo">
-        <h3>Ghost Hunt</h3>
-        <button class="playButton" onclick="startGame('Ghost Hunt')">Play</button>
-      </div>
-    </div>
+</div>
 
-    <div class="gameCard">
-      <div class="gameImage">💰</div>
-      <div class="gameInfo">
-        <h3>Coin Rush</h3>
-        <button class="playButton" onclick="startGame('Coin Rush')">Play</button>
-      </div>
-    </div>
-
-    <div class="gameCard">
-      <div class="gameImage">🏗️</div>
-      <div class="gameInfo">
-        <h3>Build City</h3>
-        <button class="playButton" onclick="startGame('Build City')">Play</button>
-      </div>
-    </div>
-
-  </div>
 </section>
 
-<!-- ACCOUNTS -->
 
 <section id="accounts" class="page hidden">
 
-  <div class="accountBox">
+<div class="card">
 
-    <h2>👤 Accounts</h2>
+<h1>👤 Accounts</h1>
 
-    <p id="currentAccountText">
-      No account selected.
-    </p>
+<p id="current">
+No account selected.
+</p>
 
-    <input
-      id="usernameInput"
-      class="accountInput"
-      maxlength="16"
-      placeholder="Enter username"
-      autocomplete="off"
-    >
+<input
+id="username"
+maxlength="16"
+placeholder="Username"
+>
 
-    <div id="accountError" class="error"></div>
+<p id="error" class="error"></p>
 
-    <button class="primary" onclick="createAccount()">
-      Create Account
-    </button>
+<button
+class="primary"
+onclick="createAccount()">
+Create Account
+</button>
 
-    <div class="accountList" id="accountList"></div>
+<div id="accountList"></div>
 
-  </div>
+</div>
 
 </section>
 
-<!-- AVATAR -->
 
 <section id="avatar" class="page hidden">
 
-  <div class="accountBox">
+<div class="card">
 
-    <h2>🧍 Avatar</h2>
+<h1>🧍 Avatar</h1>
 
-    <div class="avatarPreview" id="avatarPreview">
-      🧍
-    </div>
+<div style="font-size:100px;text-align:center;">
+🧍
+</div>
 
-    <label>Skin</label>
+<p>
+Your avatar will be saved to the account you're using.
+</p>
 
-    <input
-      id="skinColor"
-      type="color"
-      value="#ffd2a6"
-      class="accountInput"
-      onchange="saveAvatar()"
-    >
-
-    <label>Shirt</label>
-
-    <input
-      id="shirtColor"
-      type="color"
-      value="#4da3ff"
-      class="accountInput"
-      onchange="saveAvatar()"
-    >
-
-    <label>Pants</label>
-
-    <input
-      id="pantsColor"
-      type="color"
-      value="#303030"
-      class="accountInput"
-      onchange="saveAvatar()"
-    >
-
-    <button class="primary" onclick="saveAvatar()">
-      Save Avatar
-    </button>
-
-  </div>
+</div>
 
 </section>
 
-<!-- CREATE -->
 
 <section id="create" class="page hidden">
 
-  <div class="accountBox">
+<div class="card">
 
-    <h2>🎮 Create Game</h2>
+<h1>🎮 Create Game</h1>
 
-    <input
-      id="gameName"
-      class="accountInput"
-      maxlength="30"
-      placeholder="Game name"
-    >
+<input
+id="gameName"
+placeholder="Game name"
+maxlength="30"
+>
 
-    <select id="gameTemplate" class="accountInput">
-      <option>Grass</option>
-      <option>City</option>
-      <option>Island</option>
-      <option>Space</option>
-    </select>
+<button
+class="primary"
+onclick="createGame()">
+Create
+</button>
 
-    <button class="primary" onclick="createGame()">
-      Create
-    </button>
-
-  </div>
+</div>
 
 </section>
 
-<!-- MY GAMES -->
 
 <section id="games" class="page hidden">
 
-  <h2>🎮 My Games</h2>
+<div class="card">
 
-  <div id="myGamesList" class="gamesGrid"></div>
+<h1>🎮 My Games</h1>
+
+<div id="myGames">
+No games yet.
+</div>
+
+</div>
 
 </section>
 
-</div>
-
-<!-- 3D GAME -->
-
-<div id="gameScreen" class="hidden">
-
-  <canvas id="gameCanvas"></canvas>
-
-  <div id="gameTop">
-    <div id="playerNameLabel"></div>
-    <button id="exitGame" onclick="exitGame()">Exit</button>
-  </div>
-
-  <div id="controls">
-
-    <div id="joystick">
-      <div id="stick"></div>
-    </div>
-
-    <div id="lookArea"></div>
-
-  </div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 
 <script>
 
-/* =========================
-   ACCOUNT SYSTEM
-========================= */
-
-const BAD_WORDS = [
-  "badword",
-  "admin",
-  "moderator"
-];
-
-let accounts = JSON.parse(
-  localStorage.getItem("blockplayAccounts") || "{}"
+let accounts =
+JSON.parse(
+localStorage.getItem("blockplayAccounts") || "{}"
 );
 
 let currentAccount =
-  localStorage.getItem("blockplayCurrentAccount") || null;
+localStorage.getItem("blockplayCurrentAccount") || "";
 
-function saveAccounts() {
-  localStorage.setItem(
-    "blockplayAccounts",
-    JSON.stringify(accounts)
-  );
+const blockedWords = [
+"badword",
+"admin",
+"moderator"
+];
+
+
+function save() {
+
+localStorage.setItem(
+"blockplayAccounts",
+JSON.stringify(accounts)
+);
+
+if (currentAccount) {
+
+localStorage.setItem(
+"blockplayCurrentAccount",
+currentAccount
+);
+
 }
 
-function cleanUsername(name) {
-  return name.trim().replace(/[^a-zA-Z0-9_]/g, "");
 }
 
-function usernameAllowed(name) {
-
-  const lower = name.toLowerCase();
-
-  for (const word of BAD_WORDS) {
-    if (lower.includes(word)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function createAccount() {
-
-  const input =
-    document.getElementById("usernameInput");
-
-  const error =
-    document.getElementById("accountError");
-
-  let name = cleanUsername(input.value);
-
-  error.textContent = "";
-
-  if (name.length < 3) {
-    error.textContent =
-      "Username must be at least 3 characters.";
-    return;
-  }
-
-  if (!usernameAllowed(name)) {
-    error.textContent =
-      "That username contains a blocked word.";
-    return;
-  }
-
-  if (accounts[name]) {
-    error.textContent =
-      "That username already exists.";
-    return;
-  }
-
-  accounts[name] = {
-    username: name,
-
-    avatar: {
-      skin: "#ffd2a6",
-      shirt: "#4da3ff",
-      pants: "#303030"
-    },
-
-    games: []
-  };
-
-  currentAccount = name;
-
-  saveAccounts();
-
-  localStorage.setItem(
-    "blockplayCurrentAccount",
-    currentAccount
-  );
-
-  input.value = "";
-
-  updateAccountUI();
-  loadAvatar();
-
-  showPage("home");
-}
-
-function switchAccount(name) {
-
-  if (!accounts[name]) return;
-
-  currentAccount = name;
-
-  localStorage.setItem(
-    "blockplayCurrentAccount",
-    currentAccount
-  );
-
-  updateAccountUI();
-  loadAvatar();
-  loadMyGames();
-
-  showPage("home");
-}
-
-function deleteAccount(name) {
-
-  if (!accounts[name]) return;
-
-  delete accounts[name];
-
-  if (currentAccount === name) {
-
-    const remaining =
-      Object.keys(accounts);
-
-    currentAccount =
-      remaining.length > 0
-        ? remaining[0]
-        : null;
-
-    if (currentAccount) {
-      localStorage.setItem(
-        "blockplayCurrentAccount",
-        currentAccount
-      );
-    } else {
-      localStorage.removeItem(
-        "blockplayCurrentAccount"
-      );
-    }
-  }
-
-  saveAccounts();
-
-  updateAccountUI();
-  loadMyGames();
-}
-
-function updateAccountUI() {
-
-  const text =
-    document.getElementById(
-      "currentAccountText"
-    );
-
-  const welcome =
-    document.getElementById(
-      "welcomeText"
-    );
-
-  const list =
-    document.getElementById(
-      "accountList"
-    );
-
-  if (currentAccount) {
-
-    text.textContent =
-      "Current account: " +
-      currentAccount;
-
-    welcome.textContent =
-      "Welcome, " +
-      currentAccount +
-      "! Create your own block games.";
-
-  } else {
-
-    text.textContent =
-      "No account selected.";
-
-    welcome.textContent =
-      "Create your own block games.";
-
-  }
-
-  list.innerHTML = "";
-
-  Object.keys(accounts).forEach(name => {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "accountItem";
-
-    item.innerHTML = `
-      <div class="accountName">
-        👤 ${escapeHTML(name)}
-      </div>
-
-      <div class="accountActions">
-
-        <button
-          class="smallButton"
-          onclick="switchAccount('${escapeJS(name)}')">
-          Switch
-        </button>
-
-        <button
-          class="smallButton deleteButton"
-          onclick="deleteAccount('${escapeJS(name)}')">
-          Delete
-        </button>
-
-      </div>
-    `;
-
-    list.appendChild(item);
-  });
-}
-
-function escapeHTML(text) {
-
-  return text
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function escapeJS(text) {
-  return text.replaceAll("\\", "\\\\")
-             .replaceAll("'", "\\'");
-}
-
-/* =========================
-   AVATAR
-========================= */
-
-function loadAvatar() {
-
-  if (!currentAccount) return;
-
-  const avatar =
-    accounts[currentAccount].avatar;
-
-  document.getElementById("skinColor").value =
-    avatar.skin;
-
-  document.getElementById("shirtColor").value =
-    avatar.shirt;
-
-  document.getElementById("pantsColor").value =
-    avatar.pants;
-}
-
-function saveAvatar() {
-
-  if (!currentAccount) {
-    alert("Create or switch to an account first.");
-    return;
-  }
-
-  accounts[currentAccount].avatar = {
-
-    skin:
-      document.getElementById("skinColor").value,
-
-    shirt:
-      document.getElementById("shirtColor").value,
-
-    pants:
-      document.getElementById("pantsColor").value
-  };
-
-  saveAccounts();
-}
-
-/* =========================
-   CREATE GAMES
-========================= */
-
-function createGame() {
-
-  if (!currentAccount) {
-    alert("Create an account first.");
-    return;
-  }
-
-  const name =
-    document.getElementById("gameName")
-      .value
-      .trim();
-
-  const template =
-    document.getElementById(
-      "gameTemplate"
-    ).value;
-
-  if (!name) {
-    alert("Enter a game name.");
-    return;
-  }
-
-  accounts[currentAccount].games.push({
-
-    name: name,
-
-    template: template,
-
-    created:
-      Date.now()
-  });
-
-  saveAccounts();
-
-  document.getElementById(
-    "gameName"
-  ).value = "";
-
-  loadMyGames();
-
-  showPage("games");
-}
-
-function loadMyGames() {
-
-  const list =
-    document.getElementById(
-      "myGamesList"
-    );
-
-  list.innerHTML = "";
-
-  if (!currentAccount) {
-
-    list.innerHTML =
-      "<p>Create an account first.</p>";
-
-    return;
-  }
-
-  const games =
-    accounts[currentAccount].games;
-
-  if (games.length === 0) {
-
-    list.innerHTML =
-      "<p>You have not created any games yet.</p>";
-
-    return;
-  }
-
-  games.forEach((game, index) => {
-
-    const card =
-      document.createElement("div");
-
-    card.className =
-      "gameCard";
-
-    card.innerHTML = `
-
-      <div class="gameImage">
-        🎮
-      </div>
-
-      <div class="gameInfo">
-
-        <h3>
-          ${escapeHTML(game.name)}
-        </h3>
-
-        <p>
-          ${escapeHTML(game.template)}
-        </p>
-
-        <button
-          class="playButton"
-          onclick="startGame('${escapeJS(game.name)}')">
-          Play
-        </button>
-
-      </div>
-    `;
-
-    list.appendChild(card);
-  });
-}
-
-/* =========================
-   PAGE SYSTEM
-========================= */
 
 function showPage(page) {
 
-  document.querySelectorAll(".page")
-    .forEach(p =>
-      p.classList.add("hidden")
-    );
+document
+.querySelectorAll(".page")
+.forEach(function(p) {
 
-  const selected =
-    document.getElementById(page);
+p.classList.add("hidden");
 
-  if (selected) {
-    selected.classList.remove("hidden");
-  }
+});
 
-  if (page === "accounts") {
-    updateAccountUI();
-  }
+document
+.getElementById(page)
+.classList.remove("hidden");
 
-  if (page === "avatar") {
-    loadAvatar();
-  }
-
-  if (page === "games") {
-    loadMyGames();
-  }
+if (page === "accounts") {
+updateAccounts();
 }
 
-/* =========================
-   3D GAME
-========================= */
-
-let scene;
-let camera;
-let renderer;
-let player;
-let gameRunning = false;
-
-let playerX = 0;
-let playerZ = 0;
-
-let cameraAngle = 0;
-let cameraDistance = 7;
-
-let moveX = 0;
-let moveZ = 0;
-
-function startGame(gameName) {
-
-  if (!currentAccount) {
-    alert("Create or switch to an account first.");
-    showPage("accounts");
-    return;
-  }
-
-  document.getElementById(
-    "gameScreen"
-  ).classList.remove("hidden");
-
-  document.getElementById(
-    "playerNameLabel"
-  ).textContent =
-    currentAccount;
-
-  setup3D();
-
-  gameRunning = true;
-
-  animate();
+if (page === "games") {
+updateGames();
 }
 
-function setup3D() {
-
-  scene =
-    new THREE.Scene();
-
-  scene.background =
-    new THREE.Color(0x87bdf5);
-
-  camera =
-    new THREE.PerspectiveCamera(
-      70,
-      window.innerWidth /
-      window.innerHeight,
-      0.1,
-      1000
-    );
-
-  renderer =
-    new THREE.WebGLRenderer({
-      canvas:
-        document.getElementById(
-          "gameCanvas"
-        ),
-      antialias: true
-    });
-
-  renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-  );
-
-  renderer.setPixelRatio(
-    Math.min(
-      window.devicePixelRatio,
-      2
-    )
-  );
-
-  const light =
-    new THREE.HemisphereLight(
-      0xffffff,
-      0x555555,
-      2
-    );
-
-  scene.add(light);
-
-  const ground =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        40,
-        1,
-        40
-      ),
-      new THREE.MeshStandardMaterial({
-        color: 0x55a85a
-      })
-    );
-
-  ground.position.y = -0.5;
-
-  scene.add(ground);
-
-  createPlayer();
-
-  window.addEventListener(
-    "resize",
-    resizeGame
-  );
 }
 
-function createPlayer() {
 
-  if (player) {
-    scene.remove(player);
-  }
+function createAccount() {
 
-  player =
-    new THREE.Group();
+let input =
+document.getElementById("username");
 
-  const avatar =
-    accounts[currentAccount].avatar;
+let error =
+document.getElementById("error");
 
-  const bodyMaterial =
-    new THREE.MeshStandardMaterial({
-      color:
-        avatar.shirt
-    });
+let name =
+input.value
+.trim()
+.replace(/[^a-zA-Z0-9_]/g, "");
 
-  const skinMaterial =
-    new THREE.MeshStandardMaterial({
-      color:
-        avatar.skin
-    });
+error.textContent = "";
 
-  const pantsMaterial =
-    new THREE.MeshStandardMaterial({
-      color:
-        avatar.pants
-    });
+if (name.length < 3) {
 
-  const body =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        1,
-        1.4,
-        .6
-      ),
-      bodyMaterial
-    );
+error.textContent =
+"Username must be at least 3 characters.";
 
-  body.position.y = 1.7;
+return;
 
-  player.add(body);
-
-  const head =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        .9,
-        .9,
-        .9
-      ),
-      skinMaterial
-    );
-
-  head.position.y = 2.85;
-
-  player.add(head);
-
-  const legs =
-    new THREE.Mesh(
-      new THREE.BoxGeometry(
-        .85,
-        1.1,
-        .55
-      ),
-      pantsMaterial
-    );
-
-  legs.position.y = .45;
-
-  player.add(legs);
-
-  player.position.set(
-    0,
-    0,
-    0
-  );
-
-  scene.add(player);
 }
 
-function animate() {
 
-  if (!gameRunning) return;
+let lower =
+name.toLowerCase();
 
-  requestAnimationFrame(
-    animate
-  );
+for (let word of blockedWords) {
 
-  const speed = .12;
+if (lower.includes(word)) {
 
-  playerX += moveX * speed;
-  playerZ += moveZ * speed;
+error.textContent =
+"That username is not allowed.";
 
-  playerX =
-    Math.max(
-      -18,
-      Math.min(
-        18,
-        playerX
-      )
-    );
+return;
 
-  playerZ =
-    Math.max(
-      -18,
-      Math.min(
-        18,
-        playerZ
-      )
-    );
-
-  player.position.x =
-    playerX;
-
-  player.position.z =
-    playerZ;
-
-  const cameraX =
-    playerX +
-    Math.sin(cameraAngle) *
-    cameraDistance;
-
-  const cameraZ =
-    playerZ +
-    Math.cos(cameraAngle) *
-    cameraDistance;
-
-  camera.position.set(
-    cameraX,
-    5,
-    cameraZ
-  );
-
-  camera.lookAt(
-    player.position.x,
-    1.5,
-    player.position.z
-  );
-
-  renderer.render(
-    scene,
-    camera
-  );
 }
 
-function resizeGame() {
-
-  if (!camera || !renderer)
-    return;
-
-  camera.aspect =
-    window.innerWidth /
-    window.innerHeight;
-
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(
-    window.innerWidth,
-    window.innerHeight
-  );
 }
 
-function exitGame() {
 
-  gameRunning = false;
+if (accounts[name]) {
 
-  document.getElementById(
-    "gameScreen"
-  ).classList.add("hidden");
+error.textContent =
+"That account already exists.";
+
+return;
+
 }
 
-/* =========================
-   JOYSTICK
-========================= */
 
-const joystick =
-  document.getElementById(
-    "joystick"
-  );
+accounts[name] = {
 
-const stick =
-  document.getElementById(
-    "stick"
-  );
+username: name,
 
-let joystickActive = false;
+games: [],
 
-joystick.addEventListener(
-  "pointerdown",
-  e => {
+avatar: {
 
-    joystickActive = true;
+skin: "#ffd2a6",
 
-    joystick.setPointerCapture(
-      e.pointerId
-    );
+shirt: "#4da3ff",
 
-    updateJoystick(e);
-  }
+pants: "#303030"
+
+}
+
+};
+
+
+currentAccount = name;
+
+save();
+
+input.value = "";
+
+updateAccounts();
+
+updateWelcome();
+
+}
+
+
+function switchAccount(name) {
+
+currentAccount = name;
+
+save();
+
+updateAccounts();
+
+updateWelcome();
+
+alert(
+"Switched to " + name
 );
 
-joystick.addEventListener(
-  "pointermove",
-  e => {
+}
 
-    if (!joystickActive)
-      return;
 
-    updateJoystick(e);
-  }
+function deleteAccount(name) {
+
+delete accounts[name];
+
+if (currentAccount === name) {
+
+let names =
+Object.keys(accounts);
+
+currentAccount =
+names.length > 0
+? names[0]
+: "";
+
+}
+
+save();
+
+updateAccounts();
+
+updateWelcome();
+
+}
+
+
+function updateAccounts() {
+
+let list =
+document.getElementById("accountList");
+
+let current =
+document.getElementById("current");
+
+if (currentAccount) {
+
+current.textContent =
+"Current account: " +
+currentAccount;
+
+} else {
+
+current.textContent =
+"No account selected.";
+
+}
+
+
+list.innerHTML = "";
+
+Object.keys(accounts)
+.forEach(function(name) {
+
+let div =
+document.createElement("div");
+
+div.className = "account";
+
+div.innerHTML =
+"<strong>👤 " +
+escapeHTML(name) +
+"</strong>";
+
+let buttons =
+document.createElement("div");
+
+let switchButton =
+document.createElement("button");
+
+switchButton.textContent =
+"Switch";
+
+switchButton.onclick =
+function() {
+
+switchAccount(name);
+
+};
+
+
+let deleteButton =
+document.createElement("button");
+
+deleteButton.textContent =
+"Delete";
+
+deleteButton.style.marginLeft =
+"5px";
+
+deleteButton.style.background =
+"#a33";
+
+deleteButton.onclick =
+function() {
+
+deleteAccount(name);
+
+};
+
+
+buttons.appendChild(
+switchButton
 );
 
-joystick.addEventListener(
-  "pointerup",
-  resetJoystick
+buttons.appendChild(
+deleteButton
 );
 
-joystick.addEventListener(
-  "pointercancel",
-  resetJoystick
+div.appendChild(buttons);
+
+list.appendChild(div);
+
+});
+
+}
+
+
+function updateWelcome() {
+
+let welcome =
+document.getElementById("welcome");
+
+if (currentAccount) {
+
+welcome.textContent =
+"Welcome, " +
+currentAccount +
+"!";
+
+} else {
+
+welcome.textContent =
+"Welcome to BlockPlay!";
+
+}
+
+}
+
+
+function createGame() {
+
+if (!currentAccount) {
+
+alert(
+"Create an account first."
 );
 
-function updateJoystick(e) {
+showPage("accounts");
 
-  const rect =
-    joystick.getBoundingClientRect();
+return;
 
-  let x =
-    e.clientX -
-    (rect.left + rect.width / 2);
+}
 
-  let y =
-    e.clientY -
+
+let input =
+document.getElementById("gameName");
+
+let name =
+input.value.trim();
+
+if (!name) {
+
+alert(
+"Enter a game name."
+);
+
+return;
+
+}
+
+
+accounts[currentAccount]
+.games
+.push(name);
+
+save();
+
+input.value = "";
+
+updateGames();
+
+alert(
+"Game created!"
+);
+
+}
+
+
+function updateGames() {
+
+let box =
+document.getElementById("myGames");
+
+if (!currentAccount) {
+
+box.textContent =
+"Create an account first.";
+
+return;
+
+}
+
+
+let games =
+accounts[currentAccount].games;
+
+if (games.length === 0) {
+
+box.textContent =
+"No games yet.";
+
+return;
+
+}
+
+
+box.innerHTML = "";
+
+games.forEach(function(game) {
+
+let p =
+document.createElement("p");
+
+p.textContent =
+"🎮 " + game;
+
+box.appendChild(p);
+
+});
+
+}
+
+
+function escapeHTML(text) {
+
+return text
+.replaceAll("&", "&amp;")
+.replaceAll("<", "&lt;")
+.replaceAll(">", "&gt;")
+.replaceAll('"', "&quot;")
+.replaceAll("'", "&#039;");
+
+}
+
+
+updateAccounts();
+
+updateWelcome();
+
+updateGames();
+
+</script>
+
+</body>
+</html>
